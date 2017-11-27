@@ -1,36 +1,63 @@
 package com.example.myrestaurant.Model;
 
-import java.util.ArrayList;
+import java.util.*;
 
 /**
- * Created by 站站 on 2017/11/21.
+ * Created by vj on 11/25/17.
  */
 
 public class Customer {
-    private String customerID;
-    private String customerPass;
-    private ArrayList<Order> orders;
+    private String userName;
+  private   String passWord;
+    double timeAtCurrentOrder;
+    /* Indicates the current ongoing order of the customer */
+    ArrayList<Integer> customerActiveOrder = new ArrayList<Integer>();
+    /* Indicates the list of orders made by the customer (history of orders).
+     * Does not include the current ongoing customer */
+    ArrayList<ArrayList<Integer>> customerCompletedOrderList = new ArrayList<ArrayList<Integer>>();
 
-    public Customer() {
-        this.orders = new ArrayList<>();
+    public Customer(String userName, String passWord) {
+        this.userName = userName;
+        this.passWord = passWord;
     }
 
-    public String getCustomerID() {
-        return customerID;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setCustomerID(String customerID) {
-        this.customerID = customerID;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getCustomerPass() {
-        return customerPass;
+    public String getPassWord() {
+        return passWord;
     }
 
-    public void setCustomerPass(String customerPass) {
-        this.customerPass = customerPass;
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
     }
-    public void addOrder(Order order) {
-       orders.add(order);
+
+    public double getTimeAtCurrentOrder() {
+        return timeAtCurrentOrder;
+    }
+
+    public void setTimeAtCurrentOrder(double timeAtCurrentOrder) {
+        this.timeAtCurrentOrder = timeAtCurrentOrder;
+    }
+
+    public ArrayList<Integer> getCustomerActiveOrder() {
+        return customerActiveOrder;
+    }
+
+    public void setCustomerActiveOrder(ArrayList<Integer> customerActiveOrder) {
+        this.customerActiveOrder = customerActiveOrder;
+    }
+
+    public ArrayList<ArrayList<Integer>> getCustomerCompletedOrderList() {
+        return customerCompletedOrderList;
+    }
+
+    public void setCustomerCompletedOrderList(ArrayList<ArrayList<Integer>> customerCompletedOrderList) {
+        this.customerCompletedOrderList = customerCompletedOrderList;
     }
 }

@@ -34,7 +34,7 @@ public class SignupActivity extends AppCompatActivity {
         editTextUsername = (EditText) findViewById(R.id.TextUsername);
         editTextPassword = (EditText) findViewById(R.id.TextPassword);
 
-        buttonSubmit = (Button) findViewById(R.id.buttonLogin);
+        buttonSubmit = (Button) findViewById(R.id.buttonSubmit);
 
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
 
@@ -45,8 +45,10 @@ public class SignupActivity extends AppCompatActivity {
                 GetUsername = editTextUsername.getText().toString();
                 GetPassword = editTextPassword.getText().toString();
 
-                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(SignupActivity.this, SignUpService.class);
+                intent.putExtra(SignUpService.USERNAME,GetUsername);
+                intent.putExtra(SignUpService.USERPASS,GetPassword);
+                startService(intent);
                 //SendDataToServer(GetUsername, GetPassword);
 
             }
