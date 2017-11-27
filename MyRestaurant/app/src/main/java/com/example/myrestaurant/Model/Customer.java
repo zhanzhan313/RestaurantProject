@@ -1,12 +1,15 @@
 package com.example.myrestaurant.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.*;
 
 /**
  * Created by vj on 11/25/17.
  */
 
-public class Customer {
+public class Customer{
     private String userName;
   private   String passWord;
     double timeAtCurrentOrder;
@@ -60,4 +63,6 @@ public class Customer {
     public void setCustomerCompletedOrderList(ArrayList<ArrayList<Integer>> customerCompletedOrderList) {
         this.customerCompletedOrderList = customerCompletedOrderList;
     }
+
+
 }
