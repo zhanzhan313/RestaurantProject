@@ -3,6 +3,7 @@ package com.example.myrestaurant.Controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +24,7 @@ public class SignupActivity extends AppCompatActivity {
     Button buttonSubmit;
 
     String DataParseUrl = "http://chakusoza.com/devs/ucu/signup.php";
-
+    private static final String TAG = "SignupActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +45,11 @@ public class SignupActivity extends AppCompatActivity {
 
                 GetUsername = editTextUsername.getText().toString();
                 GetPassword = editTextPassword.getText().toString();
-
+                Log.d(TAG, "GetUsername: "+GetUsername);
+                Log.d(TAG, "GetPassword: "+GetPassword);
                 Intent intent = new Intent(SignupActivity.this, SignUpService.class);
-                intent.putExtra(SignUpService.USERNAME,GetUsername);
-                intent.putExtra(SignUpService.USERPASS,GetPassword);
+                intent.putExtra("USERNAME",GetUsername);
+                intent.putExtra("USERPASS",GetPassword);
                 startService(intent);
                 //SendDataToServer(GetUsername, GetPassword);
 

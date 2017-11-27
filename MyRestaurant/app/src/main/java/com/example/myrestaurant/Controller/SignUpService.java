@@ -13,8 +13,8 @@ import java.util.Map;
 
 public class SignUpService extends Service {
     public static String actionTodo="1";
-    public static String USERNAME;
-    public static String USERPASS;
+//    public static String USERNAME;
+//    public static String USERPASS;
     Map<String, Customer> customerHashMap = new HashMap<String, Customer>();
     public static final String NOTIFICATION = "com.example.vj.foodorderserver";
 
@@ -22,6 +22,7 @@ public class SignUpService extends Service {
     }
 
     private static final String TAG = "SignUpService";
+
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
@@ -49,8 +50,8 @@ public class SignUpService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand: ");
-        String userName=intent.getStringExtra(USERNAME);
-        String userPass=intent.getStringExtra(USERPASS);
+        String userName=intent.getStringExtra("USERNAME");
+        String userPass=intent.getStringExtra("USERPASS");
         Log.d(TAG, userName+" "+userPass);
 
         if (customerHashMap != null && customerHashMap.containsKey(userName)){
