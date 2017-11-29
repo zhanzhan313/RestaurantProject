@@ -249,27 +249,14 @@ public class FoodOrderServer extends Service{
         return null;
     }
 
-    public void sendBroadcastActivity(String result){
-        Intent broadcastIntent = new Intent(NOTIFICATION);
-        if(result == "0") {
-            broadcastIntent.putExtra("SignUpDone", signUpSuccess);
-        }
-        if(result == "1") {
-            broadcastIntent.putExtra("SuccessLogin", loginSuccess);
-        }
-        else if(result == "2"){
-            broadcastIntent.putExtra("WrongPassword", passcodeWrong);
-        }
-        else if(result == "3"){
-            broadcastIntent.putExtra("NoCustomerRecord", userNameExists);
-        }
-        else if(result == "4"){
-            broadcastIntent.putExtra("UserNameExists", noRecord);
-        }
-        else{
-            System.out.println("Wrong result code received!!");
-        }
+    public void sendBroadcastActivity(String service, String status){
+
+        Intent broadcastIntent = new Intent();
+        //broadcastIntent.putExtra("SignUpStatus", "signUpSuccess");
+        broadcastIntent.putExtra(service, status);
+        broadcastIntent.setAction(".FoodOrderServer");
         sendBroadcast(broadcastIntent);
+
     }
 
     public void sendBroadcastOrderActivity(Boolean isOrderPlaced, int estimatedTime){
@@ -300,27 +287,32 @@ public class FoodOrderServer extends Service{
 
     } */
 
-    public void handleLogin(Intent intent){
-        String username  = intent.getStringExtra(userName);
-        String password = intent.getStringExtra(passCode);
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void handleLogin(SignupLogin server){
+        Log.d(TAG, "inside handleLogin");
+        String username  = server.getUsername();
+        String password = server.getPassword();
+        Intent broadcastIntent = new Intent();
         if (customerHashMap.containsKey(username)){
-            Log.d("Customer present", username);
+            Log.d(TAG, "Customer " + username + " present!");
             Customer customer = customerHashMap.get(username);
-            if (customer.getPassWord() == password){
-                System.out.println("Customer found");
-                    /* Send a status code indicating successful login */
-                sendBroadcastActivity(loginSuccess);
+            if (Objects.equals(customer.getPassWord(), password)){
+                Log.d(TAG, "Password matched!");
+                /* Send a status code indicating successful login */
+                sendBroadcastActivity("LoginStatus", "LoginSucessful");
             }
             else{
-                System.out.println("Password entered is wrong");
+                Log.d(TAG, "Wrong Password!");
+                Log.d(TAG, "Existing password = " + customer.getPassWord() + ", received Password = " + password);
                     /* Send a status code indicating wrong password */
-                sendBroadcastActivity(passcodeWrong);
+                sendBroadcastActivity("LoginStatus", "WrongPassword");
             }
         }
         else{
-            System.out.println("No record of customer found");
-                /* Send a status code indicating that no customer found, and signup may be required */
-            sendBroadcastActivity(noRecord);
+            Log.d(TAG, "No Customer!");
+            /* Send a status code indicating that no customer found, and signup may be required */
+            sendBroadcastActivity("LoginStatus", "NorecordFound");
         }
     }
 
@@ -330,21 +322,15 @@ public class FoodOrderServer extends Service{
         String password = server.getPassword();
         Intent broadcastIntent = new Intent();
         if (customerHashMap != null && customerHashMap.containsKey(username)){
-                 /* Send a status code indicating Username already exists, pick a new one */
-            //sendBroadcastActivity("userNameExists");
-            broadcastIntent.putExtra("SignUpStatus", "userNameExists");
-            broadcastIntent.setAction(".FoodOrderServer");
-            sendBroadcast(broadcastIntent);
+            /* Send a status code indicating Username already exists, pick a new one */
+            sendBroadcastActivity("SignUpStatus", "userNameExists");
         }
         else {
             Customer newCustomer = new Customer(username, password);
             customerHashMap.put(username, newCustomer);
             Log.d(TAG, "Added new new customer");
             /* Send a status code indicating successful signup */
-
-            broadcastIntent.putExtra("SignUpStatus", "signUpSuccess");
-            broadcastIntent.setAction(".FoodOrderServer");
-            sendBroadcast(broadcastIntent);
+            sendBroadcastActivity("SignUpStatus", "signUpSuccess");
         }
     }
 
@@ -354,7 +340,6 @@ public class FoodOrderServer extends Service{
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         Log.d(TAG, "onStartCommand: ");
-
         InventoryList kitchenInventory = InventoryList.getInstance();
 
         /* Already assign the kitchen inventory with 50 items , and deduct the same from Inventory database */
@@ -381,10 +366,15 @@ public class FoodOrderServer extends Service{
         if (Objects.equals(actionreceived, "SignUp")){
             handleSignup(server);
         }
-        else if (actionreceived == "LOgin"){
-            handleLogin(intent);
+        else if (Objects.equals(actionreceived, "Login")){
+            /* Use below 4 lines for testing login */
+            //String username = "vj";
+            //String password = "1234";
+            //Customer newCustomer = new Customer(username, password);
+            //customerHashMap.put(username, newCustomer);
+            handleLogin(server);
         }
-        else if (actionreceived == "ORDERPLACEMENT"){
+        else if (Objects.equals(actionreceived, "OrderPlacement")){
             /* TODO : Need to sync with Client code for this intent */
             /* TODO : Need to have a separate class for OrderList (and OrderItem) recognised by both client and server */
             /* TODO : Also Client code to have object for type Order and put it intent and send it through Parcelable */
@@ -438,7 +428,7 @@ public class FoodOrderServer extends Service{
             /* We could do this for multi threads -> multi customers */
             //updateServerSideOrderList(order);
         }
-        else if (actionreceived == "STATUSCHECK") {
+        else if (Objects.equals(actionreceived, "OrderStatusCheck")) {
             /* Handle track order status message from client */
             String username = intent.getStringExtra(userName);
             int preparationTime = 13;
