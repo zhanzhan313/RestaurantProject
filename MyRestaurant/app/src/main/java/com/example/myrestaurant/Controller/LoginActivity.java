@@ -1,6 +1,9 @@
 package com.example.myrestaurant.Controller;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myrestaurant.R;
 
@@ -29,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     Button buttonLogin;
     public static final String USER_NAME = "USERNAME";
     private static final String TAG = "LoginActivity";
+    private LoginActivity.MyReceiver receiver = null;
     String username;
     String password;
 
@@ -64,12 +69,19 @@ public class LoginActivity extends AppCompatActivity {
                 username = editTextUserName.getText().toString();
                 password = editTextPassword.getText().toString();
 
-                Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
-                startActivity(intent);
+                Log.d(TAG, "In Login activity : Username: "+username);
+                Log.d(TAG, "In Login activity : Password: "+password);
+                Intent intent = new Intent(LoginActivity.this, FoodOrderServer.class);
 
+                Log.d(TAG, "Just before intent sending");
+                intent.putExtra("ServerObject", new SignupLogin(username,password,"Login"));
+                startService(intent);
 
-                //SendDataToServer(GetUsername, GetPassword);
+                receiver = new MyReceiver();
+                IntentFilter filter=new IntentFilter();
 
+                filter.addAction(".FoodOrderServer");
+                LoginActivity.this.registerReceiver(receiver,filter);
             }
         });
 
@@ -159,6 +171,33 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         return content.toString();
+    }
+
+    public class MyReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle=intent.getExtras();
+            String result= bundle.getString("LoginStatus");
+            Log.d(TAG, "In BroadcastReceiver : onReceive: "+ result);
+            if(result.equals("LoginSucessful"))
+            {
+
+                Toast toast=Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT);
+                toast.show();
+                Intent signtoMenu = new Intent(LoginActivity.this,MenuActivity.class);
+                startActivity(signtoMenu);
+            }
+            else if(result.equals("WrongPassword"))
+            {
+                Toast toast=Toast.makeText(getApplicationContext(), "Login Fail! Please enter right password!", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            else if(result.equals("NorecordFound"))
+            {
+                Toast toast=Toast.makeText(getApplicationContext(), "Login Fail! No username found, please sign up first", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
     }
 }
 
