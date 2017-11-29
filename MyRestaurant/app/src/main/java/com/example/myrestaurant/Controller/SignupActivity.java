@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myrestaurant.Model.Customer;
 import com.example.myrestaurant.R;
 
 /**
@@ -54,19 +53,21 @@ public class SignupActivity extends AppCompatActivity {
 
                 Log.d(TAG, "GetUsername: "+GetUsername);
                 Log.d(TAG, "GetPassword: "+GetPassword);
-                Intent intent = new Intent(SignupActivity.this, SignUpService.class);
+                Intent intent = new Intent(SignupActivity.this, FoodOrderServer.class);
 //                intent.putExtra("CUSTOMER",customer);
 //                Intent intent = new Intent(SignupActivity.this, FoodOrderServer.class);
-                intent.putExtra("ServerObject", new SignupLogin(GetUsername,GetPassword,"SignUpsuccessfully"));
+                Log.d(TAG, "Just before intent sending");
+                intent.putExtra("ServerObject", new SignupLogin(GetUsername,GetPassword,"SignUp"));
                 startService(intent);
-//                intent.putExtra("USERNAME",GetUsername);
+//                intent.putExt ra("USERNAME",GetUsername);
 //                intent.putExtra("USERPASS",GetPassword);
-                startService(intent);
+                //startService(intent);
 
                 receiver=new MyReceiver();
                 IntentFilter filter=new IntentFilter();
 
-                filter.addAction(".SignUpService");
+                //filter.addAction(".SignUpService");
+                filter.addAction(".FoodOrderServer");
                 SignupActivity.this.registerReceiver(receiver,filter);
                 //SendDataToServer(GetUsername, GetPassword);
 
@@ -99,19 +100,19 @@ public class MyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle bundle=intent.getExtras();
-        String result= bundle.getString("RESULT");
-        Log.d(TAG, "onReceive: "+result);
-        if(result.equals("SignUpSuccessfully"))
+        String result= bundle.getString("SignUpStatus");
+        Log.d(TAG, "In BroadcastReceiver : onReceive: "+ result);
+        if(result.equals("signUpSuccess"))
         {
 
-            Toast toast=Toast.makeText(getApplicationContext(), "Sign Up Successfully!", Toast.LENGTH_SHORT);
+            Toast toast=Toast.makeText(getApplicationContext(), "Sign Up Successful!", Toast.LENGTH_SHORT);
             toast.show();
             Intent signtoMenu =new Intent(SignupActivity.this,MenuActivity.class);
             startActivity(signtoMenu);
         }
-        else if(result.equals("SignUpFail"))
+        else if(result.equals("userNameExists"))
         {
-            Toast toast=Toast.makeText(getApplicationContext(), "Sign Up Fail! User name has been occupied1", Toast.LENGTH_SHORT);
+            Toast toast=Toast.makeText(getApplicationContext(), "Sign Up Fail! User name already exists! Pick another one!", Toast.LENGTH_SHORT);
             toast.show();
         }
     }

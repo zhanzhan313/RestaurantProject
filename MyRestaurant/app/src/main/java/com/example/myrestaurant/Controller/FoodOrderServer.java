@@ -1,8 +1,10 @@
 package com.example.myrestaurant.Controller;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -14,15 +16,18 @@ import com.example.myrestaurant.Model.Order;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -35,6 +40,7 @@ public class FoodOrderServer extends Service{
     final String FILE = "/Users/vj/Desktop/Inventory.txt";
     final String databasefile = "/Users/vj/Desktop/CustomerDatabase.txt";
     public static final String NOTIFICATION = "com.example.vj.foodorderserver";
+    private static final String TAG = "FoodOrderServer";
     static final String userNameExists = "4";
     static final String loginSuccess = "3";
     static final String passcodeWrong = "2";
@@ -103,8 +109,11 @@ public class FoodOrderServer extends Service{
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
+
+    /*
     public void updateInventoryDatabase(InventoryList inventory){
+        Log.d(TAG, "updateInventoryDatabase");
         try {
             infile = new FileReader(FILE);
         } catch (FileNotFoundException e) {
@@ -113,23 +122,24 @@ public class FoodOrderServer extends Service{
             e1.printStackTrace();
         }
 
+        Log.d(TAG, "Before Bufin");
         try (BufferedReader bufin = new BufferedReader(infile)) {
             String Currline = null;
             String[] tempstring = null;
             int FoodItemCount;
 
             while((Currline = bufin.readLine()) != null) {
-				/* Added this extra check since certain files may have extra hidden characters */
+				// Added this extra check since certain files may have extra hidden characters
                 if(Currline.contains(" ")) {
                     oldContent = Currline;
                     tempstring = Currline.split(" ");
                     System.out.println("Value = " + tempstring[1]);
                     FoodItemCount = getFoodItemCount(tempstring, inventory);
-                    /* Now update with the latest food item count */
-                    String newContent = oldContent.replaceAll(tempstring[1], Integer.toString(FoodItemCount));
+                    // Now update with the latest food item count
+                    /* String newContent = oldContent.replaceAll(tempstring[1], Integer.toString(FoodItemCount));
                     System.out.println("New line = " + newContent);
 
-                    if (alreadyBuffered = false) {
+                    if (alreadyBuffered == false) {
                         bufout = new BufferedWriter(new FileWriter(FILE));
                         alreadyBuffered = true;
                     }
@@ -146,20 +156,90 @@ public class FoodOrderServer extends Service{
             e2.printStackTrace();
         }
     }
+    */
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void updateInventoryDatabase(InventoryList inventory){
+        FileInputStream in = null;
+        FileOutputStream out = null;
+        BufferedReader reader = null;
+        StringBuilder content = new StringBuilder();
+        try {
+            Log.d(TAG, "inside updateInventoryDatabase");
+            in = openFileInput("InventoryDatabase.txt");
+            reader = new BufferedReader(new InputStreamReader(in));
+            String[] tempstring = null;
+            String Currline = "";
+            int FoodItemCount;
+            while ((Currline = reader.readLine()) != null) {
+                Log.d(TAG, "Currline is " + Currline);
+                oldContent = Currline;
+                tempstring = Currline.split(" ");
+                System.out.println("Value = " + tempstring[1]);
+                FoodItemCount = getFoodItemCount(tempstring, inventory);
+                // Now update with the latest food item count
+                String newContent = oldContent.replaceAll(tempstring[1], Integer.toString(FoodItemCount));
+                Log.d(TAG, "Newline is " + newContent);
+
+                out = openFileOutput("InventoryDatabase.txt", Context.MODE_PRIVATE);
+                bufout = new BufferedWriter(new OutputStreamWriter(out));
+
+                bufout.write(newContent);
+                bufout.flush();
+                //bufout.newLine();
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return;
+    }
+
+    public void createInventoryDatabase(){
+        FileOutputStream out = null;
+        BufferedWriter writer = null;
+        try {
+            out = openFileOutput("InventoryDatabase.txt", Context.MODE_PRIVATE);
+            writer = new BufferedWriter(new OutputStreamWriter(out));
+
+            /* TODO Get rid of duplicate code */
+            writer.write("Burger 500" + "\n" + "Chicken 500" + "\n" + "FrenchFries 500" +  "\n" + "OnionRings 500");
+            writer.flush();
+
+            Log.d(TAG, "Done adding items to database");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onCreate() {
 
-        Toast.makeText(this, "Service Created...",Toast.LENGTH_LONG).show();
+        Log.d(TAG, "onCreate");
+
         InventoryList kitchenInventory = InventoryList.getInstance();
+        createInventoryDatabase();
 
-        /* Already assign the kitchen inventory with 50 items , and deduct the same from Inventory database */
-        for (int count = 0; count < 4; count++){
-            kitchenInventory.fooditemCount.add(50);
-        }
-
-        updateInventoryDatabase(kitchenInventory);
     }
 
 
@@ -244,40 +324,67 @@ public class FoodOrderServer extends Service{
         }
     }
 
-    public void handleSignup(Intent intent){
-        String username  = intent.getStringExtra(userName);
-        String password = intent.getStringExtra(passCode);
+    public void handleSignup(SignupLogin server){
+        Log.d(TAG, "inside handleSignup");
+        String username  = server.getUsername();
+        String password = server.getPassword();
+        Intent broadcastIntent = new Intent();
         if (customerHashMap != null && customerHashMap.containsKey(username)){
                  /* Send a status code indicating Username already exists, pick a new one */
-            sendBroadcastActivity(userNameExists);
+            //sendBroadcastActivity("userNameExists");
+            broadcastIntent.putExtra("SignUpStatus", "userNameExists");
+            broadcastIntent.setAction(".FoodOrderServer");
+            sendBroadcast(broadcastIntent);
         }
-        Customer newCustomer = new Customer(username, password);
-        customerHashMap.put(username, newCustomer);
-             /* Send a status code indicating successful signup */
-        sendBroadcastActivity(signUpSuccess);
+        else {
+            Customer newCustomer = new Customer(username, password);
+            customerHashMap.put(username, newCustomer);
+            Log.d(TAG, "Added new new customer");
+            /* Send a status code indicating successful signup */
+
+            broadcastIntent.putExtra("SignUpStatus", "signUpSuccess");
+            broadcastIntent.setAction(".FoodOrderServer");
+            sendBroadcast(broadcastIntent);
+        }
     }
 
-    private static final String TAG = "FoodOrderServer";
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-  @Override
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        System.out.print("onStartCommand");
-        Log.d(TAG, "onstartCommand");
-     String userName=intent.getStringExtra(USERNAME);
-        String userPass=intent.getStringExtra(USERPASS);
-        Log.d(TAG, userName+" "+userPass);
 
+        Log.d(TAG, "onStartCommand: ");
 
-        /* TODO : Need to sync with Client code for this intent */
-        int actionreceived = intent.getIntExtra("actionTodo", DEFAULT);
+        InventoryList kitchenInventory = InventoryList.getInstance();
 
-        if (actionreceived == SIGNUP){
-            handleSignup(intent);
+        /* Already assign the kitchen inventory with 50 items , and deduct the same from Inventory database */
+        for (int count = 0; count < 4; count++){
+            kitchenInventory.fooditemCount.add(50);
         }
-        else if (actionreceived == LOGIN){
+
+        updateInventoryDatabase(kitchenInventory);
+
+        Bundle b = intent.getExtras();
+        SignupLogin server = (SignupLogin)b.getParcelable("ServerObject");
+
+        String action = server.getActionToDo();
+        String userName = server.getUsername();
+        String userPass = server.getPassword();
+        //save(userName,userPass);
+        Log.d(TAG, "ActionTodo = "+action);
+        Log.d(TAG, "Username = "+userName);
+        Log.d(TAG, "Password = "+userPass);
+
+
+        String actionreceived = server.actionToDo;
+
+        if (Objects.equals(actionreceived, "SignUp")){
+            handleSignup(server);
+        }
+        else if (actionreceived == "LOgin"){
             handleLogin(intent);
         }
-        else if (actionreceived == ORDERPLACEMENT){
+        else if (actionreceived == "ORDERPLACEMENT"){
             /* TODO : Need to sync with Client code for this intent */
             /* TODO : Need to have a separate class for OrderList (and OrderItem) recognised by both client and server */
             /* TODO : Also Client code to have object for type Order and put it intent and send it through Parcelable */
@@ -287,7 +394,6 @@ public class FoodOrderServer extends Service{
 
             String username  = order.getUserName();
             ArrayList<Integer> ordereditems = order.getOrderItemQuantity();
-            InventoryList kitchenInventory = InventoryList.getInstance();
 
             /* Get the customer object using the username as key */
             Customer customer = customerHashMap.get(username);
@@ -297,6 +403,8 @@ public class FoodOrderServer extends Service{
             int count = 0;
             int estimatedTime = 15;
             ArrayList<Integer> remainingFoodCount = new ArrayList<Integer>();
+            //InventoryList kitchenInventory = InventoryList.getInstance();
+
             while(it.hasNext()) {
                 int fooditemcount = it.next();
                 if (fooditemcount == 0){
@@ -330,7 +438,7 @@ public class FoodOrderServer extends Service{
             /* We could do this for multi threads -> multi customers */
             //updateServerSideOrderList(order);
         }
-        else if (actionreceived == STATUSCHECK) {
+        else if (actionreceived == "STATUSCHECK") {
             /* Handle track order status message from client */
             String username = intent.getStringExtra(userName);
             int preparationTime = 13;

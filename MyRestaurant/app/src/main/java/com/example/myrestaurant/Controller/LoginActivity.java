@@ -1,12 +1,10 @@
 package com.example.myrestaurant.Controller;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-
 import android.os.AsyncTask;
-
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,11 +14,9 @@ import android.widget.TextView;
 import com.example.myrestaurant.R;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 /**
  * A login screen that offers login via email/password.
@@ -70,6 +66,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
                 startActivity(intent);
+
+
                 //SendDataToServer(GetUsername, GetPassword);
 
             }
