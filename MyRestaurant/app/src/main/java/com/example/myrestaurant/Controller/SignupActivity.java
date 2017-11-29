@@ -29,7 +29,6 @@ public class SignupActivity extends AppCompatActivity {
 
     Button buttonSubmit;
 
-    String DataParseUrl = "http://chakusoza.com/devs/ucu/signup.php";
     private static final String TAG = "SignupActivity";
 
     @Override
