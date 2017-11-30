@@ -5,7 +5,7 @@ import java.util.*;
 public class Order {
 
     // In this class actionTodo = Orderplacement
-    int actionTodo;
+    String actionTodo;
     float orderPlacedTime;
     String userName;
 
@@ -17,7 +17,7 @@ public class Order {
     */
     ArrayList<Integer> orderItemQuantity = new ArrayList<Integer>();
 
-    public int getActionTodo() {
+    public String getActionTodo() {
         return actionTodo;
     }
 
@@ -33,7 +33,7 @@ public class Order {
         return orderItemQuantity;
     }
 
-    public void setActionTodo(int actionTodo) {
+    public void setActionTodo(String actionTodo) {
         this.actionTodo = actionTodo;
     }
 

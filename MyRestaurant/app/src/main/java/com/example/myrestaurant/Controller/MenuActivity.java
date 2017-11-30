@@ -1,7 +1,5 @@
 package com.example.myrestaurant.Controller;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -19,12 +17,7 @@ import com.example.myrestaurant.R;
 
 public class MenuActivity extends AppCompatActivity {
 
-    EditText quantityText_1, quantityText_2, quantityText_3, quantityText_4;
-    ImageView buttonAdd_1, buttonAdd_2, buttonAdd_3,buttonAdd_4;
-    ImageView buttonRemove_1,buttonRemove_2,buttonRemove_3,buttonRemove_4;
-    private int quantity_1 = 0, quantity_2 = 0,quantity_3 =0,quantity_4 =0, totalItems=0;
-    private double price_1 =5.5, price_2 = 6.00, price_3= 2.00, price_4=2.5,totalPrice=0;
-    TextView priceText_1, priceText_2,priceText_3,priceText_4, totalPriceText, totalItemsText;
+    private static final String TAG = "MenuActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
