@@ -1,7 +1,9 @@
 package com.example.myrestaurant.Controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myrestaurant.Model.Order;
 import com.example.myrestaurant.R;
+
+import java.util.Date;
 
 
 public class MenuActivity extends AppCompatActivity {
@@ -175,7 +180,22 @@ public class MenuActivity extends AppCompatActivity {
         });
 
 
+        Button button=(Button) findViewById(R.id.placeOrderbutton);
 
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Order order=new Order();
+                order.setOrderPlacedTime(new Date());
+                Log.d(TAG, "Just before intent sending");
+
+                Intent intent = new Intent(MenuActivity.this, FoodOrderServer.class);
+                intent.putExtra(FoodOrderServer.actiontodo, "OrderPlacement");
+                intent.putExtra("ServerObject", order);
+                startService(intent);
+            }
+        });
 
 
 

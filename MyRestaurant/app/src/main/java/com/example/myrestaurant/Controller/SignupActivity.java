@@ -49,11 +49,14 @@ public class SignupActivity extends AppCompatActivity {
 
                 GetUsername = editTextUsername.getText().toString();
                 GetPassword = editTextPassword.getText().toString();
-
+                if(GetUsername.equals("")||GetPassword.equals(""))
+                {
+                    Toast.makeText(getApplicationContext(), "Login Fail! Please input Something", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Log.d(TAG, "GetUsername: "+GetUsername);
                 Log.d(TAG, "GetPassword: "+GetPassword);
                 Intent intent = new Intent(SignupActivity.this, FoodOrderServer.class);
-
                 Log.d(TAG, "Just before intent sending");
                 intent.putExtra(FoodOrderServer.actiontodo, "SignUp");
                 intent.putExtra("ServerObject", new SignupLogin(GetUsername,GetPassword,"SignUp"));
@@ -80,16 +83,6 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
-////    private static final String TAG = "SignupActivity";
-//    private BroadcastReceiver receiver=new BroadcastReceiver() {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            Log.d(TAG, "onReceive");
-//            Bundle bundle=intent.getExtras();
-//           String result= bundle.getString("RESULT");
-//            Log.d(TAG, "onReceive: "+result);
-//        }
-//    };
 public class MyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {

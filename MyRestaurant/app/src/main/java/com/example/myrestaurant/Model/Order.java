@@ -1,14 +1,39 @@
 package com.example.myrestaurant.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.example.myrestaurant.Controller.SignupLogin;
+
 import java.util.*;
 
-public class Order {
+public class Order implements Parcelable {
 
     // In this class actionTodo = Orderplacement
     String actionTodo;
-    float orderPlacedTime;
+    Date orderPlacedTime;
     String userName;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(actionTodo);
+        dest.writeString(orderPlacedTime.toString());
+        dest.writeString(userName);
+    }
+    public static final Creator<Order> CREATOR = new Creator<Order>() {
+        @Override
+        public Order createFromParcel(Parcel source) {
+            return null;
+        }
 
+        @Override
+        public Order[] newArray(int size) {
+            return new Order[0];
+        }
+    };
+    @Override
+    public int describeContents() {
+        return 0;
+    }
     /*
     orderItemQuantity[0] - Indicates quantity for Burger.
     orderItemQuantity[1] - Indicates quantity for Chicken.
@@ -25,9 +50,7 @@ public class Order {
         return userName;
     }
 
-    public float getOrderPlacedTime() {
-        return orderPlacedTime;
-    }
+
 
     public ArrayList<Integer> getOrderItemQuantity() {
         return orderItemQuantity;
@@ -37,7 +60,11 @@ public class Order {
         this.actionTodo = actionTodo;
     }
 
-    public void setOrderPlacedTime(float orderPlacedTime) {
+    public Date getOrderPlacedTime() {
+        return orderPlacedTime;
+    }
+
+    public void setOrderPlacedTime(Date orderPlacedTime) {
         this.orderPlacedTime = orderPlacedTime;
     }
 

@@ -51,8 +51,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String readFromFile=load();
-                Log.d(TAG, "onClick: "+readFromFile);
                 Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
                 startActivity(intent);
             }
@@ -65,10 +63,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                load();
                 username = editTextUserName.getText().toString();
                 password = editTextPassword.getText().toString();
-
+              if(username.equals("")||password.equals(""))
+            {
+                Toast.makeText(getApplicationContext(), "Login Fail! Please input Something", Toast.LENGTH_SHORT).show();
+                return;
+            }
                 Log.d(TAG, "In Login activity : Username: "+username);
                 Log.d(TAG, "In Login activity : Password: "+password);
                 Intent intent = new Intent(LoginActivity.this, FoodOrderServer.class);
@@ -136,42 +137,8 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
 
-//            for (String credential : DUMMY_CREDENTIALS) {
-//                String[] pieces = credential.split(":");
-//                if (pieces[0].equals(mEmail)) {
-//                    // Account exists, return true if the password matches.
-//                    return pieces[1].equals(mPassword);
-//                }
-//            }
-
-            // TODO: register the new account here.
             return true;
         }
-    }
-
-    public String load() {
-        FileInputStream in = null;
-        BufferedReader reader = null;
-        StringBuilder content = new StringBuilder();
-        try {
-            in = openFileInput("data");
-            reader = new BufferedReader(new InputStreamReader(in));
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                content.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return content.toString();
     }
 
     public class MyReceiver extends BroadcastReceiver {
@@ -201,25 +168,4 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 }
-
-//        @Override
-//        protected void onPostExecute(final Boolean success) {
-//            mAuthTask = null;
-//            showProgress(false);
-//
-//            if (success) {
-//                finish();
-//            } else {
-//                mPasswordView.setError(getString(R.string.error_incorrect_password));
-//                mPasswordView.requestFocus();
-//            }
-//        }
-//
-//        @Override
-//        protected void onCancelled() {
-//            mAuthTask = null;
-//            showProgress(false);
-//        }
-//    }
-//}
 
