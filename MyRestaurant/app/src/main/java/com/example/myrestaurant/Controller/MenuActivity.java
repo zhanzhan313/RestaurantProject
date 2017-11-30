@@ -3,13 +3,14 @@ package com.example.myrestaurant.Controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,63 @@ public class MenuActivity extends AppCompatActivity {
         priceText_2.setText("$"+ price_2);
         priceText_3.setText("$"+ price_3);
         priceText_4.setText("$"+ price_4);
+
+
+        quantityText_1.addTextChangedListener(new TextWatcher(){
+
+            public void afterTextChanged(Editable s) {
+                quantity_1 = Integer.parseInt(quantityText_1.getText().toString());
+                totalItems = quantity_1 + quantity_2 +quantity_3 + quantity_4;
+                totalPrice = quantity_1 * price_1 + quantity_2 * price_2 + quantity_3 * price_3 + quantity_4 * price_4;
+                totalPriceText.setText("$" + totalPrice);
+                totalItemsText.setText("" + totalItems);
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+        });
+
+        quantityText_2.addTextChangedListener(new TextWatcher(){
+
+            public void afterTextChanged(Editable s) {
+                quantity_2 = Integer.parseInt(quantityText_2.getText().toString());
+                totalItems = quantity_1 + quantity_2 +quantity_3 + quantity_4;
+                totalPrice = quantity_1 * price_1 + quantity_2 * price_2 + quantity_3 * price_3 + quantity_4 * price_4;
+                totalPriceText.setText("$" + totalPrice);
+                totalItemsText.setText("" + totalItems);
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+        });
+
+        quantityText_3.addTextChangedListener(new TextWatcher(){
+
+            public void afterTextChanged(Editable s) {
+                quantity_3 = Integer.parseInt(quantityText_3.getText().toString());
+                totalItems = quantity_1 + quantity_2 +quantity_3 + quantity_4;
+                totalPrice = quantity_1 * price_1 + quantity_2 * price_2 + quantity_3 * price_3 + quantity_4 * price_4;
+                totalPriceText.setText("$" + totalPrice);
+                totalItemsText.setText("" + totalItems);
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+        });
+
+        quantityText_4.addTextChangedListener(new TextWatcher(){
+
+            public void afterTextChanged(Editable s) {
+                quantity_4 = Integer.parseInt(quantityText_4.getText().toString());
+                totalItems = quantity_1 + quantity_2 +quantity_3 + quantity_4;
+                totalPrice = quantity_1 * price_1 + quantity_2 * price_2 + quantity_3 * price_3 + quantity_4 * price_4;
+                totalPriceText.setText("$" + totalPrice);
+                totalItemsText.setText("" + totalItems);
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+        });
 
         buttonAdd_1 = (ImageView) findViewById(R.id.item_add_1);
         buttonAdd_1.setOnClickListener(new View.OnClickListener() {
