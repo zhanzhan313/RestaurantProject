@@ -54,22 +54,17 @@ public class SignupActivity extends AppCompatActivity {
                 Log.d(TAG, "GetUsername: "+GetUsername);
                 Log.d(TAG, "GetPassword: "+GetPassword);
                 Intent intent = new Intent(SignupActivity.this, FoodOrderServer.class);
-//                intent.putExtra("CUSTOMER",customer);
-//                Intent intent = new Intent(SignupActivity.this, FoodOrderServer.class);
+
                 Log.d(TAG, "Just before intent sending");
+                intent.putExtra(FoodOrderServer.actiontodo, "SignUp");
                 intent.putExtra("ServerObject", new SignupLogin(GetUsername,GetPassword,"SignUp"));
                 startService(intent);
-//                intent.putExt ra("USERNAME",GetUsername);
-//                intent.putExtra("USERPASS",GetPassword);
-                //startService(intent);
 
                 receiver=new MyReceiver();
                 IntentFilter filter=new IntentFilter();
 
-                //filter.addAction(".SignUpService");
                 filter.addAction(".FoodOrderServer");
                 SignupActivity.this.registerReceiver(receiver,filter);
-                //SendDataToServer(GetUsername, GetPassword);
 
             }
         });
