@@ -74,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, FoodOrderServer.class);
 
                 Log.d(TAG, "Just before intent sending");
+                intent.putExtra(FoodOrderServer.actiontodo, "Login");
                 intent.putExtra("ServerObject", new SignupLogin(username,password,"Login"));
                 startService(intent);
 
