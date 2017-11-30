@@ -330,18 +330,25 @@ public class FoodOrderServer extends Service{
             /* TODO : Need to sync with Client code for this intent */
             /* TODO : Need to have a separate class for OrderList (and OrderItem) recognised by both client and server */
             /* TODO : Also Client code to have object for type Order and put it intent and send it through Parcelable */
+            Log.d(TAG, "Order is placed");
+            Order currentorder = b.getParcelable("OrderObject");
 
-            Order currentorder = (Order)b.getParcelable("OrderObject");
-
-            String username  = currentorder.getUserName();
-            ArrayList<Integer> ordereditems = currentorder.getOrderItemQuantity();
+            String string = b.getParcelable("TestString");
+            Log.d(TAG, string);
+            String time = currentorder.getOrderPlacedTime();
+            String username=currentorder.getUserName();
+            double totalPrice=currentorder.getOrderTotal();
+            int [] orderItem=currentorder.getOrderItemQuantity();
+            Log.d(TAG, "time"+time);
+            Log.d(TAG, "totalPrice"+totalPrice);
+            Log.d(TAG, "orderItem"+orderItem);
 
             /* Get the customer object using the username as key */
             Customer customer = customerHashMap.get(username);
             if (customer == null){
                 Log.e(TAG, "Trying to place order for non-member " + username);
             }
-            customer.setCustomerActiveOrder(ordereditems);
+//            customer.setCustomerActiveOrder(orderItem);
 
             Iterator<Integer> it = customer.getCustomerActiveOrder().iterator();
             int count = 0;

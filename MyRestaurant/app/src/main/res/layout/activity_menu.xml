@@ -223,7 +223,7 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/remove_1"
         app:layout_constraintLeft_toRightOf="@+id/item_img_1"
-        android:layout_marginLeft="157dp"
+        android:layout_marginLeft="136dp"
         app:layout_constraintTop_toTopOf="@+id/item_img_1"
         android:layout_marginTop="17dp" />
 
@@ -235,7 +235,7 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/remove_1"
         app:layout_constraintLeft_toRightOf="@+id/item_img_2"
-        android:layout_marginLeft="157dp"
+        android:layout_marginLeft="136dp"
         app:layout_constraintTop_toTopOf="@+id/item_img_2"
         android:layout_marginTop="17dp" />
 
@@ -246,7 +246,7 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/remove_1"
         app:layout_constraintLeft_toRightOf="@+id/item_img_3"
-        android:layout_marginLeft="157dp"
+        android:layout_marginLeft="136dp"
         app:layout_constraintTop_toTopOf="@+id/item_img_3"
         android:layout_marginTop="17dp" />
 
@@ -257,7 +257,7 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/remove_1"
         app:layout_constraintLeft_toRightOf="@+id/item_img_4"
-        android:layout_marginLeft="157dp"
+        android:layout_marginLeft="136dp"
         app:layout_constraintTop_toTopOf="@+id/item_img_4"
         android:layout_marginTop="17dp" />
 
