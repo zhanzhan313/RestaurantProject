@@ -55,9 +55,10 @@ public class FoodOrderServer extends Service{
     static final int preparingPhase = 1;
     static final int packagingPhase = 2;
     static final int orderReady = 3;
-    public static String actionTodo="1";
+    //public static String actionTodo="1";
     public static String USERNAME;
     public static String USERPASS;
+    public static final String actiontodo = "";
 
 
     Map<String, Customer> customerHashMap = new HashMap<String, Customer>();
@@ -109,55 +110,6 @@ public class FoodOrderServer extends Service{
 
     }
 
-
-
-    /*
-    public void updateInventoryDatabase(InventoryList inventory){
-        Log.d(TAG, "updateInventoryDatabase");
-        try {
-            infile = new FileReader(FILE);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-
-        Log.d(TAG, "Before Bufin");
-        try (BufferedReader bufin = new BufferedReader(infile)) {
-            String Currline = null;
-            String[] tempstring = null;
-            int FoodItemCount;
-
-            while((Currline = bufin.readLine()) != null) {
-				// Added this extra check since certain files may have extra hidden characters
-                if(Currline.contains(" ")) {
-                    oldContent = Currline;
-                    tempstring = Currline.split(" ");
-                    System.out.println("Value = " + tempstring[1]);
-                    FoodItemCount = getFoodItemCount(tempstring, inventory);
-                    // Now update with the latest food item count
-                    /* String newContent = oldContent.replaceAll(tempstring[1], Integer.toString(FoodItemCount));
-                    System.out.println("New line = " + newContent);
-
-                    if (alreadyBuffered == false) {
-                        bufout = new BufferedWriter(new FileWriter(FILE));
-                        alreadyBuffered = true;
-                    }
-
-                    bufout.write(newContent);
-                    bufout.flush();
-                    bufout.newLine();
-                }
-                else {
-                    System.out.println("Line corrupted, hidden characters. Use cleaned and newly created file");
-                }
-            }
-        }catch (IOException e2) {
-            e2.printStackTrace();
-        }
-    }
-    */
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void updateInventoryDatabase(InventoryList inventory){
         FileInputStream in = null;
@@ -186,8 +138,6 @@ public class FoodOrderServer extends Service{
 
                 bufout.write(newContent);
                 bufout.flush();
-                //bufout.newLine();
-
             }
 
         } catch (IOException e) {
@@ -211,7 +161,6 @@ public class FoodOrderServer extends Service{
             out = openFileOutput("InventoryDatabase.txt", Context.MODE_PRIVATE);
             writer = new BufferedWriter(new OutputStreamWriter(out));
 
-            /* TODO Get rid of duplicate code */
             writer.write("Burger 500" + "\n" + "Chicken 500" + "\n" + "FrenchFries 500" +  "\n" + "OnionRings 500");
             writer.flush();
 
@@ -255,6 +204,7 @@ public class FoodOrderServer extends Service{
         //broadcastIntent.putExtra("SignUpStatus", "signUpSuccess");
         broadcastIntent.putExtra(service, status);
         broadcastIntent.setAction(".FoodOrderServer");
+        Log.d(TAG, "Sent broadcast");
         sendBroadcast(broadcastIntent);
 
     }
@@ -349,51 +299,55 @@ public class FoodOrderServer extends Service{
 
         updateInventoryDatabase(kitchenInventory);
 
+        String actionreceived = intent.getStringExtra(actiontodo);
         Bundle b = intent.getExtras();
-        SignupLogin server = (SignupLogin)b.getParcelable("ServerObject");
-
-        String action = server.getActionToDo();
-        String userName = server.getUsername();
-        String userPass = server.getPassword();
-        //save(userName,userPass);
-        Log.d(TAG, "ActionTodo = "+action);
-        Log.d(TAG, "Username = "+userName);
-        Log.d(TAG, "Password = "+userPass);
-
-
-        String actionreceived = server.actionToDo;
 
         if (Objects.equals(actionreceived, "SignUp")){
+            SignupLogin server = (SignupLogin)b.getParcelable("ServerObject");
+            String userName = server.getUsername();
+            String userPass = server.getPassword();
+            Log.d(TAG, "Username = "+userName);
+            Log.d(TAG, "Password = "+userPass);
+
             handleSignup(server);
         }
         else if (Objects.equals(actionreceived, "Login")){
+            SignupLogin server = (SignupLogin)b.getParcelable("ServerObject");
+            String userName = server.getUsername();
+            String userPass = server.getPassword();
+            Log.d(TAG, "Username = "+userName);
+            Log.d(TAG, "Password = "+userPass);
+
             /* Use below 4 lines for testing login */
-            //String username = "vj";
-            //String password = "1234";
-            //Customer newCustomer = new Customer(username, password);
-            //customerHashMap.put(username, newCustomer);
+            String username = "vj";
+            String password = "1234";
+            Customer newCustomer = new Customer(username, password);
+            customerHashMap.put(username, newCustomer);
             handleLogin(server);
+
         }
         else if (Objects.equals(actionreceived, "OrderPlacement")){
             /* TODO : Need to sync with Client code for this intent */
             /* TODO : Need to have a separate class for OrderList (and OrderItem) recognised by both client and server */
             /* TODO : Also Client code to have object for type Order and put it intent and send it through Parcelable */
 
-            /* The object that is passed from Client side should have Variable declared by name "orderlist"? */
-            Order order = (Order)intent.getParcelableExtra("order");
+            Order currentorder = (Order)b.getParcelable("OrderObject");
 
-            String username  = order.getUserName();
-            ArrayList<Integer> ordereditems = order.getOrderItemQuantity();
+            String username  = currentorder.getUserName();
+            ArrayList<Integer> ordereditems = currentorder.getOrderItemQuantity();
 
             /* Get the customer object using the username as key */
             Customer customer = customerHashMap.get(username);
+            if (customer == null){
+                Log.e(TAG, "Trying to place order for non-member " + username);
+            }
             customer.setCustomerActiveOrder(ordereditems);
 
             Iterator<Integer> it = customer.getCustomerActiveOrder().iterator();
             int count = 0;
             int estimatedTime = 15;
+            //getEstimatedTimeFood();
             ArrayList<Integer> remainingFoodCount = new ArrayList<Integer>();
-            //InventoryList kitchenInventory = InventoryList.getInstance();
 
             while(it.hasNext()) {
                 int fooditemcount = it.next();
