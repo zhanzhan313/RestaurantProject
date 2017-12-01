@@ -59,7 +59,7 @@ public class FoodOrderServer extends Service{
     public static String USERNAME;
     public static String USERPASS;
     public static final String actiontodo = "";
-    public static final String teststring = "";
+    public static final String username = "";
 
 
     Map<String, Customer> customerHashMap = new HashMap<String, Customer>();
@@ -208,11 +208,12 @@ public class FoodOrderServer extends Service{
         return null;
     }
 
-    public void sendBroadcastActivity(String service, String status){
+    public void sendBroadcastActivity(String service, String status, String username){
 
         Intent broadcastIntent = new Intent();
         //broadcastIntent.putExtra("SignUpStatus", "signUpSuccess");
         broadcastIntent.putExtra(service, status);
+        broadcastIntent.putExtra("username", username);
         broadcastIntent.setAction(".FoodOrderServer");
         Log.d(TAG, "Sent broadcast");
         sendBroadcast(broadcastIntent);
@@ -222,9 +223,11 @@ public class FoodOrderServer extends Service{
     public void sendBroadcastOrderActivity(Boolean isOrderPlaced, int estimatedTime){
 
         /* After this the UI could go into Preparing state */
-        Intent broadcastIntent = new Intent(NOTIFICATION);
+        Intent broadcastIntent = new Intent();
         broadcastIntent.putExtra("isorderplaced", isOrderPlaced);
         broadcastIntent.putExtra("estimatedtime", estimatedTime);
+        broadcastIntent.setAction(".FoodOrderServer");
+        Log.d(TAG, "Sent Order status broadcast");
         sendBroadcast(broadcastIntent);
 
     }
@@ -260,19 +263,19 @@ public class FoodOrderServer extends Service{
             if (Objects.equals(customer.getPassWord(), password)){
                 Log.d(TAG, "Password matched!");
                 /* Send a status code indicating successful login */
-                sendBroadcastActivity("LoginStatus", "LoginSucessful");
+                sendBroadcastActivity("LoginStatus", "LoginSucessful", username);
             }
             else{
                 Log.d(TAG, "Wrong Password!");
                 Log.d(TAG, "Existing password = " + customer.getPassWord() + ", received Password = " + password);
                     /* Send a status code indicating wrong password */
-                sendBroadcastActivity("LoginStatus", "WrongPassword");
+                sendBroadcastActivity("LoginStatus", "WrongPassword", username);
             }
         }
         else{
             Log.d(TAG, "No Customer!");
             /* Send a status code indicating that no customer found, and signup may be required */
-            sendBroadcastActivity("LoginStatus", "NorecordFound");
+            sendBroadcastActivity("LoginStatus", "NorecordFound", username);
         }
     }
 
@@ -283,14 +286,14 @@ public class FoodOrderServer extends Service{
         Intent broadcastIntent = new Intent();
         if (customerHashMap != null && customerHashMap.containsKey(username)){
             /* Send a status code indicating Username already exists, pick a new one */
-            sendBroadcastActivity("SignUpStatus", "userNameExists");
+            sendBroadcastActivity("SignUpStatus", "userNameExists", username);
         }
         else {
             Customer newCustomer = new Customer(username, password);
             customerHashMap.put(username, newCustomer);
             Log.d(TAG, "Added new new customer");
             /* Send a status code indicating successful signup */
-            sendBroadcastActivity("SignUpStatus", "signUpSuccess");
+            sendBroadcastActivity("SignUpStatus", "signUpSuccess", username);
         }
     }
 
@@ -302,10 +305,8 @@ public class FoodOrderServer extends Service{
         Log.d(TAG, "onStartCommand: ");
 
         String actionreceived = intent.getStringExtra(actiontodo);
-        String test = intent.getStringExtra(teststring);
 
         Log.d(TAG, "actionreceived: " + actionreceived);
-        Log.d(TAG, "test: " + test);
 
         Bundle b = intent.getExtras();
 
@@ -338,44 +339,55 @@ public class FoodOrderServer extends Service{
             /* TODO : Need to have a separate class for OrderList (and OrderItem) recognised by both client and server */
             /* TODO : Also Client code to have object for type Order and put it intent and send it through Parcelable */
             Log.d(TAG, "Order is placed");
-            InventoryList kitchenInventory = InventoryList.getInstance();
-            Order currentorder = b.getParcelable("OrderObject");
 
+            Order currentorder = b.getParcelable("OrderObject");
+            InventoryList kitchenInventory = InventoryList.getInstance();
             //double time = currentorder.getOrderPlacedTime();
             String username=currentorder.getUserName();
-            //double totalPrice=currentorder.getOrderTotal();
-            int [] orderItem=currentorder.getOrderItemQuantity();
-            //Log.d(TAG, "time"+time);
-            //Log.d(TAG, "totalPrice"+totalPrice);
-            Log.d(TAG, "orderItem"+orderItem);
+            Log.d(TAG, "AT foodorderserver received username " + username);
 
             /* Get the customer object using the username as key */
             Customer customer = customerHashMap.get(username);
             if (customer == null){
                 Log.e(TAG, "Trying to place order for non-member " + username);
             }
-//            customer.setCustomerActiveOrder(orderItem);
+            else {
 
-            Log.d(TAG, "Moving ahead");
+                ArrayList<Integer> checkingquant = currentorder.getOrderItemQuantity();
 
-            Iterator<Integer> it = customer.getCustomerActiveOrder().iterator();
-            int count = 0;
-            int estimatedTime = 15;
-            //getEstimatedTimeFood();
-            ArrayList<Integer> remainingFoodCount = new ArrayList<Integer>();
+                if (checkingquant.size() == 0){
+                    Log.d(TAG, "Error: ArrayList size received 0");
 
-            while(it.hasNext()) {
-                int fooditemcount = it.next();
-                if (fooditemcount == 0){
-                    continue;
                 }
-                else if (fooditemcount > kitchenInventory.fooditemCount.get(count)){
-                    // The item requested exceed what we have in kitchen, have to make an emergency request to Inventory
+                for(int temp: checkingquant){
+                    Log.d(TAG, "Food quantity = " + temp);
                 }
-                else{
-                    // We can honor this request right away
-                    remainingFoodCount.add(kitchenInventory.fooditemCount.get(count) - fooditemcount);
-                    isOrderPlaced = true;
+
+                customer.setCustomerActiveOrder(currentorder.getOrderItemQuantity());
+                Log.d(TAG, "Moving ahead : we just assigned customer object with order arraylist");
+
+                Iterator<Integer> it2 = customer.getCustomerActiveOrder().iterator();
+                int count = 0;
+                int estimatedTime = 15;
+                //getEstimatedTimeFood();
+                ArrayList<Integer> remainingFoodCount = new ArrayList<Integer>();
+
+                while (it2.hasNext()) {
+                    int fooditemcount = it2.next();
+                    if (fooditemcount == 0) {
+                        continue;
+                    } else if (fooditemcount > kitchenInventory.fooditemCount.get(count)) {
+                        // The item requested exceed what we have in kitchen, have to make an emergency request to Inventory
+                    } else {
+                        // We can honor this request right away
+                        Log.d(TAG, "inside we can honor this request");
+                        isOrderPlaced = true;
+                        remainingFoodCount.add(kitchenInventory.fooditemCount.get(count) - fooditemcount);
+                    }
+                    count++;
+                }
+
+                if(isOrderPlaced == true){
                     customer.setTimeAtCurrentOrder(new Date().getTime() / 1000);
                     sendBroadcastOrderActivity(isOrderPlaced, estimatedTime);
 
@@ -386,16 +398,19 @@ public class FoodOrderServer extends Service{
                         public void run() {
                             sendBroadcastStatusActivity(orderReady);
                         }
-                    }, 15*60*1000);
+                    }, 15 * 60 * 1000);
                 }
-                count++;
-            }
 
-            // Update kitchen inventory with the food item count remaining
-            kitchenInventory.setFooditemCount(remainingFoodCount);
+                for(int temp: remainingFoodCount){
+                    Log.d(TAG, "Remaining quantity in inventory = " + temp);
+                }
+
+                // Update kitchen inventory with the food item count remaining
+                kitchenInventory.setFooditemCount(remainingFoodCount);
 
             /* We could do this for multi threads -> multi customers */
-            //updateServerSideOrderList(order);
+                //updateServerSideOrderList(order);
+            }
         }
         else if (Objects.equals(actionreceived, "OrderStatusCheck")) {
             /* Handle track order status message from client */
