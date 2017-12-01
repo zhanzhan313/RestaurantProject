@@ -17,11 +17,6 @@ import android.widget.Toast;
 
 import com.example.myrestaurant.R;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 /**
  * A login screen that offers login via email/password.
  */
@@ -146,13 +141,16 @@ public class LoginActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Bundle bundle=intent.getExtras();
             String result= bundle.getString("LoginStatus");
-            Log.d(TAG, "In BroadcastReceiver : onReceive: "+ result);
+            String username = bundle.getString("username");
+            Log.d(TAG, "In BroadcastReceiver : result: "+ result + " and username " + username);
             if(result.equals("LoginSucessful"))
             {
 
                 Toast toast=Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT);
                 toast.show();
                 Intent signtoMenu = new Intent(LoginActivity.this,MenuActivity.class);
+                signtoMenu.putExtra("username", username);
+                Log.d(TAG, "Added username to intent and sending to Menu page");
                 startActivity(signtoMenu);
             }
             else if(result.equals("WrongPassword"))
