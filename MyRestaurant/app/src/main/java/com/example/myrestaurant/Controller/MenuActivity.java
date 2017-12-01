@@ -34,7 +34,7 @@ public class MenuActivity extends AppCompatActivity {
     TextView priceText_1, priceText_2,priceText_3,priceText_4, totalPriceText, totalItemsText;
     private static final String TAG = "MenuActivity";
     private static String userName = "";
-    private MenuActivity.MyReceiver receiver = null;
+    private MenuActivity.MyOrderReceiver receiver = null;
 
     Button placeOrderbutton;
     @Override
@@ -295,15 +295,16 @@ public class MenuActivity extends AppCompatActivity {
                 Log.d(TAG, "totalPrice"+totalPrice);
 
                 intent.putExtra(FoodOrderServer.actiontodo, "OrderPlacement");
-                Log.d(TAG, "Passing username now to Food order server with Order, userName" + userName);
+                Log.d(TAG, "Passing username now to Food order server with Order, userName " + userName);
                 intent.putExtra("OrderObject", new Order(userName, foodquantity));
                 startService(intent);
 
-                receiver = new MenuActivity.MyReceiver();
+                receiver = new MenuActivity.MyOrderReceiver();
                 IntentFilter filter = new IntentFilter();
 
-                filter.addAction(".FoodOrderServer");
+                filter.addAction(".OrderStatus");
                 MenuActivity.this.registerReceiver(receiver,filter);
+
             }
         });
 
@@ -336,22 +337,20 @@ public class MenuActivity extends AppCompatActivity {
         return  true;
     }
 
-    public class MyReceiver extends BroadcastReceiver {
+    public class MyOrderReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "In BroadcastReceiver ");
             Bundle bundle=intent.getExtras();
+            String test = bundle.getString("teststring");
             Boolean orderplaced = bundle.getBoolean("isorderplaced");
             int estimatedtime = bundle.getInt("estimatedtime");
+            Log.d(TAG, "test = " + test);
             Log.d(TAG, "In BroadcastReceiver : orderplaced: "+ orderplaced + " and estimatedtime " + estimatedtime);
             if(orderplaced == true)
             {
-
-                Toast toast=Toast.makeText(getApplicationContext(), "Order Successful! Estimated time = " + estimatedtime, Toast.LENGTH_SHORT);
+                Toast toast=Toast.makeText(getApplicationContext(), "Order Successful! Estimated time = " + estimatedtime + " mins", Toast.LENGTH_SHORT);
                 toast.show();
-                //Intent signtoMenu = new Intent(LoginActivity.this,MenuActivity.class);
-                //signtoMenu.putExtra("username", username);
-                //Log.d(TAG, "Added username to intent and sending to Menu page");
-                //startActivity(signtoMenu);
             }
             else
             {
