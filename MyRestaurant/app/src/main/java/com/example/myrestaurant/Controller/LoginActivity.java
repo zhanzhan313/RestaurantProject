@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                 receiver = new MyReceiver();
                 IntentFilter filter=new IntentFilter();
 
-                filter.addAction(".FoodOrderServer");
+                filter.addAction(".LoginStatus");
                 LoginActivity.this.registerReceiver(receiver,filter);
             }
         });
