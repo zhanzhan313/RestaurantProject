@@ -1,23 +1,21 @@
 package com.example.myrestaurant.Model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * Created by vj on 11/25/17.
  */
 
 public class Customer{
-    private String userName;
-  private   String passWord;
-    double timeAtCurrentOrder;
-    /* Indicates the current ongoing order of the customer */
+    private   String userName;
+    private   String passWord;
+    double    timeAtCurrentOrder;
+
     ArrayList<Integer> customerActiveOrder = new ArrayList<Integer>();
+
     /* Indicates the list of orders made by the customer (history of orders).
      * Does not include the current ongoing customer */
-    ArrayList<ArrayList<Integer>> customerCompletedOrderList = new ArrayList<ArrayList<Integer>>();
+    ArrayList<int[]> customerCompletedOrderList = new ArrayList<int[]>();
 
     public Customer(String userName, String passWord) {
         this.userName = userName;
@@ -56,13 +54,11 @@ public class Customer{
         this.customerActiveOrder = customerActiveOrder;
     }
 
-    public ArrayList<ArrayList<Integer>> getCustomerCompletedOrderList() {
+    public ArrayList<int[]> getCustomerCompletedOrderList() {
         return customerCompletedOrderList;
     }
 
-    public void setCustomerCompletedOrderList(ArrayList<ArrayList<Integer>> customerCompletedOrderList) {
+    public void setCustomerCompletedOrderList(ArrayList<int[]> customerCompletedOrderList) {
         this.customerCompletedOrderList = customerCompletedOrderList;
     }
-
-
 }
