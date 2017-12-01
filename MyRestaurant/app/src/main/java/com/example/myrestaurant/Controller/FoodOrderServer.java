@@ -59,6 +59,7 @@ public class FoodOrderServer extends Service{
     public static String USERNAME;
     public static String USERPASS;
     public static final String actiontodo = "";
+    public static final String teststring = "";
 
 
     Map<String, Customer> customerHashMap = new HashMap<String, Customer>();
@@ -189,6 +190,15 @@ public class FoodOrderServer extends Service{
         InventoryList kitchenInventory = InventoryList.getInstance();
         createInventoryDatabase();
 
+        //InventoryList kitchenInventory = InventoryList.getInstance();
+
+        /* Already assign the kitchen inventory with 50 items , and deduct the same from Inventory database */
+        for (int count = 0; count < 4; count++){
+            kitchenInventory.fooditemCount.add(50);
+        }
+
+        updateInventoryDatabase(kitchenInventory);
+
     }
 
 
@@ -290,16 +300,13 @@ public class FoodOrderServer extends Service{
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         Log.d(TAG, "onStartCommand: ");
-        InventoryList kitchenInventory = InventoryList.getInstance();
-
-        /* Already assign the kitchen inventory with 50 items , and deduct the same from Inventory database */
-        for (int count = 0; count < 4; count++){
-            kitchenInventory.fooditemCount.add(50);
-        }
-
-        updateInventoryDatabase(kitchenInventory);
 
         String actionreceived = intent.getStringExtra(actiontodo);
+        String test = intent.getStringExtra(teststring);
+
+        Log.d(TAG, "actionreceived: " + actionreceived);
+        Log.d(TAG, "test: " + test);
+
         Bundle b = intent.getExtras();
 
         if (Objects.equals(actionreceived, "SignUp")){
@@ -331,16 +338,15 @@ public class FoodOrderServer extends Service{
             /* TODO : Need to have a separate class for OrderList (and OrderItem) recognised by both client and server */
             /* TODO : Also Client code to have object for type Order and put it intent and send it through Parcelable */
             Log.d(TAG, "Order is placed");
+            InventoryList kitchenInventory = InventoryList.getInstance();
             Order currentorder = b.getParcelable("OrderObject");
 
-            String string = b.getParcelable("TestString");
-            Log.d(TAG, string);
-            String time = currentorder.getOrderPlacedTime();
+            //double time = currentorder.getOrderPlacedTime();
             String username=currentorder.getUserName();
-            double totalPrice=currentorder.getOrderTotal();
+            //double totalPrice=currentorder.getOrderTotal();
             int [] orderItem=currentorder.getOrderItemQuantity();
-            Log.d(TAG, "time"+time);
-            Log.d(TAG, "totalPrice"+totalPrice);
+            //Log.d(TAG, "time"+time);
+            //Log.d(TAG, "totalPrice"+totalPrice);
             Log.d(TAG, "orderItem"+orderItem);
 
             /* Get the customer object using the username as key */
@@ -349,6 +355,8 @@ public class FoodOrderServer extends Service{
                 Log.e(TAG, "Trying to place order for non-member " + username);
             }
 //            customer.setCustomerActiveOrder(orderItem);
+
+            Log.d(TAG, "Moving ahead");
 
             Iterator<Integer> it = customer.getCustomerActiveOrder().iterator();
             int count = 0;
@@ -382,8 +390,6 @@ public class FoodOrderServer extends Service{
                 }
                 count++;
             }
-
-            Log.d(TAG, "Doing a test for git push, will be removed later");
 
             // Update kitchen inventory with the food item count remaining
             kitchenInventory.setFooditemCount(remainingFoodCount);
