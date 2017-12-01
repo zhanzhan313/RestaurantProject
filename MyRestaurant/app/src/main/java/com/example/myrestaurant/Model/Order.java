@@ -3,6 +3,8 @@ package com.example.myrestaurant.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 public class Order implements Parcelable {
     // In this class actionTodo = Orderplacement
     private String actionTodo;
@@ -10,10 +12,11 @@ public class Order implements Parcelable {
     private String userName;
     private static int orderID = 0;
 
-    private int[] orderItemQuantity = new int[4];
+    //private int[] orderItemQuantity = new int[4];
+    private ArrayList<Integer>  orderItemQuantity = new ArrayList<Integer>();
     private double orderTotal;
 
-    public Order(String userName, int[] orderItemQuantity) {
+    public Order(String userName, ArrayList<Integer> orderItemQuantity) {
         this.userName = userName;
         this.orderItemQuantity = orderItemQuantity;
     }
@@ -22,8 +25,8 @@ public class Order implements Parcelable {
         actionTodo = in.readString();
         orderPlacedTime = in.readDouble();
         userName = in.readString();
-        orderItemQuantity = in.createIntArray();
         orderTotal = in.readDouble();
+        orderItemQuantity = in.readArrayList(null);
     }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {
@@ -48,8 +51,8 @@ public class Order implements Parcelable {
         parcel.writeString(actionTodo);
         parcel.writeDouble(orderPlacedTime);
         parcel.writeString(userName);
-        parcel.writeIntArray(orderItemQuantity);
         parcel.writeDouble(orderTotal);
+        parcel.writeList(orderItemQuantity);
     }
 
     public String getActionTodo() {
@@ -84,11 +87,11 @@ public class Order implements Parcelable {
         Order.orderID = orderID;
     }
 
-    public int[] getOrderItemQuantity() {
+    public ArrayList<Integer> getOrderItemQuantity() {
         return orderItemQuantity;
     }
 
-    public void setOrderItemQuantity(int[] orderItemQuantity) {
+    public void setOrderItemQuantity(ArrayList<Integer> orderItemQuantity) {
         this.orderItemQuantity = orderItemQuantity;
     }
 
