@@ -383,6 +383,8 @@ public class FoodOrderServer extends Service{
                 count++;
             }
 
+            Log.d(TAG, "Doing a test for git push, will be removed later");
+
             // Update kitchen inventory with the food item count remaining
             kitchenInventory.setFooditemCount(remainingFoodCount);
 
