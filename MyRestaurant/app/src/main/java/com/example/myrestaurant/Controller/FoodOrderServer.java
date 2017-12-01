@@ -208,13 +208,20 @@ public class FoodOrderServer extends Service{
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void sendBroadcastActivity(String service, String status, String username){
 
         Intent broadcastIntent = new Intent();
         //broadcastIntent.putExtra("SignUpStatus", "signUpSuccess");
         broadcastIntent.putExtra(service, status);
         broadcastIntent.putExtra("username", username);
-        broadcastIntent.setAction(".FoodOrderServer");
+        if(Objects.equals(service, "SignUpStatus")){
+            broadcastIntent.setAction(".SignUpStatus");
+        }
+        else{
+            broadcastIntent.setAction(".LoginStatus");
+        }
+
         Log.d(TAG, "Sent broadcast");
         sendBroadcast(broadcastIntent);
 
@@ -223,10 +230,11 @@ public class FoodOrderServer extends Service{
     public void sendBroadcastOrderActivity(Boolean isOrderPlaced, int estimatedTime){
 
         /* After this the UI could go into Preparing state */
+        Log.d(TAG, "Inside sendBroadcastOrderActivity" );
         Intent broadcastIntent = new Intent();
         broadcastIntent.putExtra("isorderplaced", isOrderPlaced);
         broadcastIntent.putExtra("estimatedtime", estimatedTime);
-        broadcastIntent.setAction(".FoodOrderServer");
+        broadcastIntent.setAction(".OrderStatus");
         Log.d(TAG, "Sent Order status broadcast");
         sendBroadcast(broadcastIntent);
 
@@ -279,6 +287,7 @@ public class FoodOrderServer extends Service{
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void handleSignup(SignupLogin server){
         Log.d(TAG, "inside handleSignup");
         String username  = server.getUsername();
@@ -327,10 +336,10 @@ public class FoodOrderServer extends Service{
             Log.d(TAG, "Password = "+userPass);
 
             /* Use below 4 lines for testing login */
-            String username = "vj";
-            String password = "1234";
-            Customer newCustomer = new Customer(username, password);
-            customerHashMap.put(username, newCustomer);
+            //String username = "vj";
+            //String password = "1234";
+            //Customer newCustomer = new Customer(username, password);
+            //customerHashMap.put(username, newCustomer);
             handleLogin(server);
 
         }
@@ -437,6 +446,7 @@ public class FoodOrderServer extends Service{
                 // error : track order msg received before order placement?
             }
         }
+        Log.d(TAG, "Reached last part return START_STICKY");
         return START_STICKY;
     }
 
