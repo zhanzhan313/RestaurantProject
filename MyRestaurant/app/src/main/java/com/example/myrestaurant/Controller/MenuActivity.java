@@ -18,9 +18,6 @@ import android.widget.Toast;
 import com.example.myrestaurant.Model.Order;
 import com.example.myrestaurant.R;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -246,45 +243,34 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "placeOrderbutton,Just before intent sending");
-                Order order=new Order();
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy,MM,dd,   HH:mm:ss");
-                Date curDate =  new Date(System.currentTimeMillis());
 
-                String   str   =   formatter.format(curDate);
-                order.setOrderPlacedTime(str);
+                int quantity1=Integer.parseInt(quantityText_1.getText().toString());
+                Log.d(TAG, "Here after quantity 1");
+                int quantity2=Integer.parseInt(quantityText_2.getText().toString());
+                Log.d(TAG, "Here after quantity 2");
+                int quantity3=Integer.parseInt(quantityText_3.getText().toString());
+                Log.d(TAG, "Here after quantity 3");
+                int quantity4=Integer.parseInt(quantityText_4.getText().toString());
+                Log.d(TAG, "Here after quantity 4");
+                Log.d(TAG, "Here after quantity declared");
+                int [] foodquantity=new int[]{quantity1,quantity2,quantity3,quantity4};
+
+                Intent intent = new Intent(MenuActivity.this, FoodOrderServer.class);
+                Log.d(TAG, "Just before intent sending");
+                Log.d(TAG, "Just before intent sending");
+                Log.d(TAG, "totalPrice"+totalPrice);
+                Log.d(TAG, "foodquantity"+foodquantity[1]);
+
+                intent.putExtra(FoodOrderServer.actiontodo, "OrderPlacement");
+                intent.putExtra("OrderObject", new Order("vj",foodquantity));
+                startService(intent);
+
                  /*
                    orderItemQuantity[0] - Indicates quantity for Burger.
                    orderItemQuantity[1] - Indicates quantity for Chicken.
                    orderItemQuantity[2] - Indicates quantity for FrenchFries.
                    orderItemQuantity[3] - Indicates quantity for OnionRings.
                   */
-                int quantity1=Integer.parseInt(quantityText_1.getText().toString());
-                int quantity2=Integer.parseInt(quantityText_2.getText().toString());
-                int quantity3=Integer.parseInt(quantityText_3.getText().toString());
-                int quantity4=Integer.parseInt(quantityText_4.getText().toString());
-                int [] foodquantity=new int[]{quantity1,quantity2,quantity3,quantity4};
-                order.setOrderItemQuantity(foodquantity);
-                order.setOrderTotal(totalPrice);
-//                private String actionTodo;
-//                private String orderPlacedTime;
-//                private String userName;
-//                private static int orderID=0;
-                order.setActionTodo("PlaceOder");
-                order.setUserName("VJ");
-
-                Log.d(TAG, "Just before intent sending");
-                Log.d(TAG, "totalPrice"+totalPrice);
-                Log.d(TAG, "foodquantity"+foodquantity[1]);
-                Log.d(TAG, order.getUserName());
-
-
-                Intent intent = new Intent(MenuActivity.this, FoodOrderServer.class);
-                intent.putExtra(FoodOrderServer.actiontodo, "OrderPlacement");
-                intent.putExtra("OrderObject", order);
-                intent.putExtra("TestString", str);
-                Log.d(TAG, "Just after intent sending"+order);
-                startService(intent);
-
             }
         });
 
