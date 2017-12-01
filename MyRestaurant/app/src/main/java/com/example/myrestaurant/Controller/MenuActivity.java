@@ -1,6 +1,9 @@
 package com.example.myrestaurant.Controller;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -18,6 +21,8 @@ import android.widget.Toast;
 import com.example.myrestaurant.Model.Order;
 import com.example.myrestaurant.R;
 
+import java.util.ArrayList;
+
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -28,12 +33,19 @@ public class MenuActivity extends AppCompatActivity {
     private double price_1 =5.5, price_2 = 6.00, price_3= 2.00, price_4=2.5,totalPrice=0;  //
     TextView priceText_1, priceText_2,priceText_3,priceText_4, totalPriceText, totalItemsText;
     private static final String TAG = "MenuActivity";
+    private static String userName = "";
+    private MenuActivity.MyReceiver receiver = null;
+
     Button placeOrderbutton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        userName = getIntent().getStringExtra("username");
+
+        Log.d(TAG, "Received username at MenuActivity from LoginActivity " + userName);
 
         priceText_1 = (TextView) findViewById(R.id.item_price_1);
         priceText_2 = (TextView) findViewById(R.id.item_price_2);
@@ -244,6 +256,14 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "placeOrderbutton,Just before intent sending");
 
+                 /*
+                   orderItemQuantity[0] - Indicates quantity for Burger.
+                   orderItemQuantity[1] - Indicates quantity for Chicken.
+                   orderItemQuantity[2] - Indicates quantity for FrenchFries.
+                   orderItemQuantity[3] - Indicates quantity for OnionRings.
+                  */
+
+                 /* ToDO This code below crashes if all 4 items are not updated in Menu UI */
                 int quantity1=Integer.parseInt(quantityText_1.getText().toString());
                 Log.d(TAG, "Here after quantity 1");
                 int quantity2=Integer.parseInt(quantityText_2.getText().toString());
@@ -253,24 +273,37 @@ public class MenuActivity extends AppCompatActivity {
                 int quantity4=Integer.parseInt(quantityText_4.getText().toString());
                 Log.d(TAG, "Here after quantity 4");
                 Log.d(TAG, "Here after quantity declared");
-                int [] foodquantity=new int[]{quantity1,quantity2,quantity3,quantity4};
+                //int [] foodquantity=new int[]{quantity1,quantity2,quantity3,quantity4};
+                ArrayList<Integer> foodquantity = new ArrayList<Integer>();
+                foodquantity.add(quantity1);
+                foodquantity.add(quantity2);
+                foodquantity.add(quantity3);
+                foodquantity.add(quantity4);
+
+                int count = 0;
+                for(int temp: foodquantity){
+                    if (count == 10){
+                        break;
+                    }
+                    Log.d(TAG, "Food quantity = " + temp);
+                    count ++;
+                }
 
                 Intent intent = new Intent(MenuActivity.this, FoodOrderServer.class);
                 Log.d(TAG, "Just before intent sending");
                 Log.d(TAG, "Just before intent sending");
                 Log.d(TAG, "totalPrice"+totalPrice);
-                Log.d(TAG, "foodquantity"+foodquantity[1]);
 
                 intent.putExtra(FoodOrderServer.actiontodo, "OrderPlacement");
-                intent.putExtra("OrderObject", new Order("vj",foodquantity));
+                Log.d(TAG, "Passing username now to Food order server with Order, userName" + userName);
+                intent.putExtra("OrderObject", new Order(userName, foodquantity));
                 startService(intent);
 
-                 /*
-                   orderItemQuantity[0] - Indicates quantity for Burger.
-                   orderItemQuantity[1] - Indicates quantity for Chicken.
-                   orderItemQuantity[2] - Indicates quantity for FrenchFries.
-                   orderItemQuantity[3] - Indicates quantity for OnionRings.
-                  */
+                receiver = new MenuActivity.MyReceiver();
+                IntentFilter filter = new IntentFilter();
+
+                filter.addAction(".FoodOrderServer");
+                MenuActivity.this.registerReceiver(receiver,filter);
             }
         });
 
@@ -301,5 +334,30 @@ public class MenuActivity extends AppCompatActivity {
 
         }
         return  true;
+    }
+
+    public class MyReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle=intent.getExtras();
+            Boolean orderplaced = bundle.getBoolean("isorderplaced");
+            int estimatedtime = bundle.getInt("estimatedtime");
+            Log.d(TAG, "In BroadcastReceiver : orderplaced: "+ orderplaced + " and estimatedtime " + estimatedtime);
+            if(orderplaced == true)
+            {
+
+                Toast toast=Toast.makeText(getApplicationContext(), "Order Successful! Estimated time = " + estimatedtime, Toast.LENGTH_SHORT);
+                toast.show();
+                //Intent signtoMenu = new Intent(LoginActivity.this,MenuActivity.class);
+                //signtoMenu.putExtra("username", username);
+                //Log.d(TAG, "Added username to intent and sending to Menu page");
+                //startActivity(signtoMenu);
+            }
+            else
+            {
+                Toast toast=Toast.makeText(getApplicationContext(), "Order Fail!", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
     }
 }
