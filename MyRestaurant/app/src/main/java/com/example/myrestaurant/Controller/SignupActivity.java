@@ -65,7 +65,7 @@ public class SignupActivity extends AppCompatActivity {
                 receiver=new MyReceiver();
                 IntentFilter filter=new IntentFilter();
 
-                filter.addAction(".FoodOrderServer");
+                filter.addAction(".SignUpStatus");
                 SignupActivity.this.registerReceiver(receiver,filter);
 
             }
@@ -88,6 +88,7 @@ public class MyReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Bundle bundle=intent.getExtras();
         String result= bundle.getString("SignUpStatus");
+        String username = bundle.getString("username");
         Log.d(TAG, "In BroadcastReceiver : onReceive: "+ result);
         if(result.equals("signUpSuccess"))
         {
@@ -95,6 +96,7 @@ public class MyReceiver extends BroadcastReceiver {
             Toast toast=Toast.makeText(getApplicationContext(), "Sign Up Successful!", Toast.LENGTH_SHORT);
             toast.show();
             Intent signtoMenu =new Intent(SignupActivity.this,MenuActivity.class);
+            signtoMenu.putExtra("username", username);
             startActivity(signtoMenu);
         }
         else if(result.equals("userNameExists"))
