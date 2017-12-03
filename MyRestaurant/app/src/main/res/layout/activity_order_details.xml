@@ -1,6 +1,253 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/total_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="0dp"
+        android:text="0"
+        app:layout_constraintLeft_toRightOf="@+id/text_view"
+        app:layout_constraintTop_toTopOf="@+id/text_view" />
+
+    <TextView
+        android:id="@+id/total_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        app:layout_constraintLeft_toRightOf="@+id/textView5"
+        android:layout_marginLeft="5dp"
+        app:layout_constraintTop_toTopOf="@+id/textView5"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:id="@+id/text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Price:"
+        tools:layout_editor_absoluteY="412dp"
+        tools:layout_editor_absoluteX="140dp" />
+
+    <ImageView
+        android:id="@+id/item_img_1"
+        android:layout_width="73dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/burger"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/item_img_2"
+        android:layout_width="73dp"
+        android:layout_height="66dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="11dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_img_1"
+        app:srcCompat="@drawable/fries" />
+
+    <ImageView
+        android:id="@+id/item_img_3"
+        android:layout_width="73dp"
+        android:layout_height="66dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_img_2"
+        app:srcCompat="@drawable/chickens1" />
+
+    <ImageView
+        android:id="@+id/item_img_4"
+        android:layout_width="73dp"
+        android:layout_height="66dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_img_3"
+        app:srcCompat="@drawable/rings" />
+
+    <TextView
+        android:id="@+id/item_price_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:paddingLeft="25dp"
+        android:text="price"
+        app:layout_constraintLeft_toLeftOf="@+id/food_name_1"
+        app:layout_constraintTop_toBottomOf="@+id/food_name_1" />
+
+    <TextView
+        android:id="@+id/item_price_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:paddingLeft="25dp"
+        android:text="price"
+        app:layout_constraintLeft_toLeftOf="@+id/food_name_2"
+        app:layout_constraintTop_toBottomOf="@+id/food_name_2" />
+
+    <TextView
+        android:id="@+id/item_price_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="25dp"
+        android:text="price"
+        android:layout_marginTop="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/food_name_3"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="@+id/food_name_3" />
+
+    <TextView
+        android:id="@+id/item_price_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:paddingLeft="25dp"
+        android:text="price"
+        app:layout_constraintLeft_toLeftOf="@+id/food_name_4"
+        app:layout_constraintTop_toBottomOf="@+id/food_name_4" />
+
+    <TextView
+        android:id="@+id/food_name_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:text="Burgers"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@+id/item_img_1"
+        android:layout_marginTop="0dp"
+        app:layout_constraintLeft_toRightOf="@+id/item_img_1"
+        android:layout_marginLeft="0dp" />
+
+
+    <TextView
+        android:id="@+id/food_name_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:text="French Fries"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/item_img_2"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintTop_toTopOf="@+id/item_img_2"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:id="@+id/food_name_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:text="Chickens"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@+id/item_img_3"
+        android:layout_marginTop="0dp"
+        app:layout_constraintLeft_toRightOf="@+id/item_img_3"
+        android:layout_marginLeft="0dp" />
+
+    <TextView
+        android:id="@+id/food_name_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:text="Onion Rings"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/item_img_4"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintTop_toTopOf="@+id/item_img_4"
+        android:layout_marginTop="0dp" />
+
+
+    <EditText
+        android:id="@+id/quantity_1"
+        android:layout_width="55dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:background="@android:color/background_light"
+        android:fontFamily="monospace"
+        android:hint="0"
+        android:inputType="number"
+        android:padding="10dp"
+        android:typeface="serif"
+        tools:layout_editor_absoluteY="25dp"
+        tools:layout_editor_absoluteX="265dp" />
+
+
+
+    <EditText
+        android:id="@+id/quantity_2"
+        android:layout_width="55dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:background="@android:color/background_light"
+        android:fontFamily="monospace"
+        android:hint="0"
+        android:inputType="number"
+        android:padding="10dp"
+        android:typeface="serif"
+        tools:layout_editor_absoluteY="102dp"
+        tools:layout_editor_absoluteX="265dp" />
+
+    <EditText
+        android:id="@+id/quantity_3"
+        android:layout_width="55dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:background="@android:color/background_light"
+        android:fontFamily="monospace"
+        android:hint="0"
+        android:inputType="number"
+        android:padding="10dp"
+        android:typeface="serif"
+        tools:layout_editor_absoluteY="184dp"
+        tools:layout_editor_absoluteX="265dp" />
+
+    <EditText
+        android:id="@+id/quantity_4"
+        android:layout_width="55dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:background="@android:color/background_light"
+        android:fontFamily="monospace"
+        android:hint="0"
+        android:inputType="number"
+        android:padding="10dp"
+        android:typeface="serif"
+        tools:layout_editor_absoluteY="266dp"
+        tools:layout_editor_absoluteX="265dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="-4dp"
+        android:text="Total Items:"
+        app:layout_constraintBottom_toTopOf="@+id/text_view"
+        app:layout_constraintLeft_toLeftOf="@+id/text_view" />
+
+</android.support.constraint.ConstraintLayout>

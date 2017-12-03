@@ -100,31 +100,31 @@
         android:typeface="serif" />
 
     <TextView
-        android:text="Click Here to Sign Up"
+        android:id="@+id/SignupText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/SignupText"
         android:layout_alignBaseline="@+id/textView9"
         android:layout_alignBottom="@+id/textView9"
-        android:layout_toEndOf="@+id/textView9"
-        android:textStyle="normal|bold"
-        android:layout_toRightOf="@+id/textView9"
         android:layout_margin="5dp"
-        android:textColor="@color/colorAccent" />
+        android:layout_toEndOf="@+id/textView9"
+        android:layout_toRightOf="@+id/textView9"
+        android:text="Click Here to Sign Up"
+        android:textColor="@android:color/white"
+        android:textStyle="normal|bold" />
 
     <TextView
-        android:text="Dont have an Account?"
+        android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
-        android:id="@+id/textView9"
-        android:textStyle="normal|bold"
-        android:layout_below="@+id/buttonLogin"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/buttonLogin"
         android:layout_marginLeft="30dp"
         android:layout_marginStart="30dp"
-        android:textColor="@color/colorAccent" />
+        android:layout_marginTop="17dp"
+        android:text="Dont have an Account?"
+        android:textColor="@android:color/white"
+        android:textStyle="normal|bold" />
 
 </RelativeLayout>
 

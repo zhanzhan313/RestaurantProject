@@ -1,6 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/textViewOrderStatus_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OrderStatus_4"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/textViewOrderDate_4"
+        android:layout_marginLeft="27dp"
+        app:layout_constraintTop_toTopOf="@+id/textViewOrderDate_4"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:id="@+id/textViewOrderDate_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OrderDate_4"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/textViewOrderID_4"
+        android:layout_marginLeft="42dp"
+        app:layout_constraintTop_toTopOf="@+id/textViewOrderID_4"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:id="@+id/textViewOrderID_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OrderID_4"
+        android:textSize="18sp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOrderID_3"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewOrderID_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OrderID_3"
+        android:textSize="18sp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOrderID_2" />
+
+    <TextView
+        android:id="@+id/textViewOrderStatus_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OrderStatus_3"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/textViewOrderDate_3"
+        android:layout_marginLeft="25dp"
+        app:layout_constraintTop_toTopOf="@+id/textViewOrderDate_3"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:id="@+id/textViewOrderDate_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OrderDate_3"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/textViewOrderID_3"
+        android:layout_marginLeft="41dp"
+        app:layout_constraintTop_toTopOf="@+id/textViewOrderID_3"
+        android:layout_marginTop="-6dp" />
+
+    <TextView
+        android:id="@+id/textViewOrderStatus_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OrderStatus_2"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/textViewOrderDate_2"
+        android:layout_marginLeft="32dp"
+        app:layout_constraintTop_toTopOf="@+id/textViewOrderDate_2"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:id="@+id/textViewOrderDate_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OrderDate_2"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/textViewOrderID_2"
+        android:layout_marginLeft="34dp"
+        app:layout_constraintTop_toTopOf="@+id/textViewOrderID_2"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:id="@+id/textViewOrderID_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="31dp"
+        android:text="OrderID_1"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewOrderDate_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="34dp"
+        android:layout_marginTop="0dp"
+        android:text="OrderDate_1"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/textViewOrderID_1"
+        app:layout_constraintTop_toTopOf="@+id/textViewOrderID_1" />
+
+    <TextView
+        android:id="@+id/textViewOrderStatus_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="31dp"
+        android:layout_marginTop="0dp"
+        android:text="OrderStatus_1"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/textViewOrderDate_1"
+        app:layout_constraintTop_toTopOf="@+id/textViewOrderDate_1" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="OrderID"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OrderDate"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="@+id/textView7"
+        android:layout_marginTop="-8dp"
+        app:layout_constraintLeft_toRightOf="@+id/textView7"
+        android:layout_marginLeft="61dp" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OrderStatus"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/textView10"
+        android:layout_marginLeft="46dp"
+        app:layout_constraintTop_toTopOf="@+id/textView10"
+        android:layout_marginTop="-9dp" />
+
+    <TextView
+        android:id="@+id/textViewOrderID_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OrderID_2"
+        android:textSize="18sp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewOrderID_1" />
+</android.support.constraint.ConstraintLayout>

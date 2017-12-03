@@ -262,23 +262,33 @@ public class MenuActivity extends AppCompatActivity {
                    orderItemQuantity[2] - Indicates quantity for FrenchFries.
                    orderItemQuantity[3] - Indicates quantity for OnionRings.
                   */
-
-                 /* ToDO This code below crashes if all 4 items are not updated in Menu UI */
-                int quantity1=Integer.parseInt(quantityText_1.getText().toString());
-                Log.d(TAG, "Here after quantity 1");
-                int quantity2=Integer.parseInt(quantityText_2.getText().toString());
-                Log.d(TAG, "Here after quantity 2");
-                int quantity3=Integer.parseInt(quantityText_3.getText().toString());
-                Log.d(TAG, "Here after quantity 3");
-                int quantity4=Integer.parseInt(quantityText_4.getText().toString());
-                Log.d(TAG, "Here after quantity 4");
-                Log.d(TAG, "Here after quantity declared");
                 //int [] foodquantity=new int[]{quantity1,quantity2,quantity3,quantity4};
                 ArrayList<Integer> foodquantity = new ArrayList<Integer>();
-                foodquantity.add(quantity1);
-                foodquantity.add(quantity2);
-                foodquantity.add(quantity3);
-                foodquantity.add(quantity4);
+
+                 /* ToDO This code below crashes if all 4 items are not updated in Menu UI */
+
+                 if( !quantityText_1.getText().toString().equals("") ) {
+                     int quantity1 = Integer.parseInt(quantityText_1.getText().toString());
+                     foodquantity.add(quantity1);
+                     Log.d(TAG, "Here after quantity 1");
+                 }
+                if( !quantityText_2.getText().toString().equals("") ) {
+                    int quantity2 = Integer.parseInt(quantityText_2.getText().toString());
+                    foodquantity.add(quantity2);
+                    Log.d(TAG, "Here after quantity 2");
+                }
+
+                if( !quantityText_3.getText().toString().equals("") ) {
+                    int quantity3 = Integer.parseInt(quantityText_3.getText().toString());
+                    foodquantity.add(quantity3);
+                    Log.d(TAG, "Here after quantity 3");
+                }
+                if( !quantityText_4.getText().toString().equals("") ) {
+                    int quantity4 = Integer.parseInt(quantityText_4.getText().toString());
+                    foodquantity.add(quantity4);
+                    Log.d(TAG, "Here after quantity 4");
+                }
+                Log.d(TAG, "Here after quantity declared");
 
                 int count = 0;
                 for(int temp: foodquantity){
@@ -324,14 +334,16 @@ public class MenuActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
-            case R.id.orderhistory:
+            case R.id.orderfood:
                 Toast.makeText(this,"Navigate to order page",Toast.LENGTH_SHORT).show();
 //                Intent intent= new Intent(Intent.ACTION_VIEW);
 //                intent.setData(Uri.parse("http://www.baidu.com"));
 //                startActivity(intent);
                 break;
-            case R.id.orderfood:
+            case R.id.orderhistory:
                 Toast.makeText(this,"Navigate to order history page",Toast.LENGTH_SHORT).show();
+                Intent Intent_OrderHistory = new Intent(MenuActivity.this, OrderHistoryActivity.class);
+                startActivity(Intent_OrderHistory);
 
         }
         return  true;
@@ -349,8 +361,12 @@ public class MenuActivity extends AppCompatActivity {
             Log.d(TAG, "In BroadcastReceiver : orderplaced: "+ orderplaced + " and estimatedtime " + estimatedtime);
             if(orderplaced == true)
             {
-                Toast toast=Toast.makeText(getApplicationContext(), "Order Successful! Estimated time = " + estimatedtime + " mins", Toast.LENGTH_SHORT);
-                toast.show();
+                Intent Intent_OrderStatus = new Intent(MenuActivity.this, OrderStatusActivity.class);
+                Intent_OrderStatus.putExtra("estimatedtime", estimatedtime);
+                Intent_OrderStatus.putExtra("orderStatus", "Submitted");
+                startActivity(Intent_OrderStatus);
+//                Toast toast=Toast.makeText(getApplicationContext(), "Order Successful! Estimated time = " + estimatedtime + " mins", Toast.LENGTH_SHORT);
+//                toast.show();
             }
             else
             {
