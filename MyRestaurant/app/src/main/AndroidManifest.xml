@@ -25,54 +25,25 @@
         </activity>
         <activity
             android:name=".Controller.LoginActivity"
-            android:label="@string/app_name">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+            android:label="@string/app_name"></activity>
         <activity
             android:name=".Controller.SignupActivity"
-            android:label="@string/app_name">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+            android:label="@string/app_name"></activity>
         <activity
             android:name=".Controller.MenuActivity"
-            android:label="@string/app_name">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
-
-        <activity
-            android:name=".Controller.OrderStatusActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+            android:label="@string/app_name"></activity>
 
         <service android:name=".Controller.FoodOrderServer" />
         <service
-            android:name=".Controller.SignUpService"
+            android:name=".Controller.BackgroundService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.EDIT" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".Controller.OrderHistory"></activity>
     </application>
 
 </manifest>

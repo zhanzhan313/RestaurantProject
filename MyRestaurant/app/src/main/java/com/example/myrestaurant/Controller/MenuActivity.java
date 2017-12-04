@@ -22,6 +22,7 @@ import com.example.myrestaurant.Model.Order;
 import com.example.myrestaurant.R;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class MenuActivity extends AppCompatActivity {
@@ -30,15 +31,16 @@ public class MenuActivity extends AppCompatActivity {
     ImageView buttonAdd_1, buttonAdd_2, buttonAdd_3,buttonAdd_4;
     ImageView buttonRemove_1,buttonRemove_2,buttonRemove_3,buttonRemove_4;
     private int quantity_1 = 0, quantity_2 = 0,quantity_3 =0,quantity_4 =0, totalItems=0;
-    private double price_1 =5.5, price_2 = 6.00, price_3= 2.00, price_4=2.5,totalPrice=0;  //
+    public static double price_1 =5.5, price_2 = 6.00, price_3= 2.00, price_4=2.5,totalPrice=0;  //
     TextView priceText_1, priceText_2,priceText_3,priceText_4, totalPriceText, totalItemsText;
     private static final String TAG = "MenuActivity";
     private static String userName = "";
     private MenuActivity.MyOrderReceiver receiver = null;
-
     Button placeOrderbutton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SignupActivity.instance.finish();
+        LoginActivity.instance.finish();
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
@@ -64,6 +66,11 @@ public class MenuActivity extends AppCompatActivity {
         priceText_2.setText("$"+ price_2);
         priceText_3.setText("$"+ price_3);
         priceText_4.setText("$"+ price_4);
+
+        quantityText_1.setText(""+0);
+        quantityText_2.setText(""+0);
+        quantityText_3.setText(""+0);
+        quantityText_4.setText(""+0);
 
 
         quantityText_1.addTextChangedListener(new TextWatcher(){
@@ -262,51 +269,61 @@ public class MenuActivity extends AppCompatActivity {
                    orderItemQuantity[2] - Indicates quantity for FrenchFries.
                    orderItemQuantity[3] - Indicates quantity for OnionRings.
                   */
-                //int [] foodquantity=new int[]{quantity1,quantity2,quantity3,quantity4};
-                ArrayList<Integer> foodquantity = new ArrayList<Integer>();
 
                  /* ToDO This code below crashes if all 4 items are not updated in Menu UI */
-
-                 if( !quantityText_1.getText().toString().equals("") ) {
-                     int quantity1 = Integer.parseInt(quantityText_1.getText().toString());
-                     foodquantity.add(quantity1);
-                     Log.d(TAG, "Here after quantity 1");
-                 }
-                if( !quantityText_2.getText().toString().equals("") ) {
-                    int quantity2 = Integer.parseInt(quantityText_2.getText().toString());
-                    foodquantity.add(quantity2);
-                    Log.d(TAG, "Here after quantity 2");
-                }
-
-                if( !quantityText_3.getText().toString().equals("") ) {
-                    int quantity3 = Integer.parseInt(quantityText_3.getText().toString());
-                    foodquantity.add(quantity3);
-                    Log.d(TAG, "Here after quantity 3");
-                }
-                if( !quantityText_4.getText().toString().equals("") ) {
-                    int quantity4 = Integer.parseInt(quantityText_4.getText().toString());
-                    foodquantity.add(quantity4);
-                    Log.d(TAG, "Here after quantity 4");
-                }
+                int quantity1=Integer.parseInt(quantityText_1.getText().toString());
+                Log.d(TAG, "Here after quantity 1"+quantity1);
+                int quantity2=Integer.parseInt(quantityText_2.getText().toString());
+                Log.d(TAG, "Here after quantity 2");
+                int quantity3=Integer.parseInt(quantityText_3.getText().toString());
+                Log.d(TAG, "Here after quantity 3");
+                int quantity4=Integer.parseInt(quantityText_4.getText().toString());
+                Log.d(TAG, "Here after quantity 4");
                 Log.d(TAG, "Here after quantity declared");
-
-                int count = 0;
-                for(int temp: foodquantity){
-                    if (count == 10){
-                        break;
-                    }
-                    Log.d(TAG, "Food quantity = " + temp);
-                    count ++;
+                if(quantity1==0&&quantity2==0&&quantity3==0&&quantity4==0)
+                {
+                    Toast.makeText(getApplicationContext(), "Nothing in Chart!", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                //int [] foodquantity=new int[]{quantity1,quantity2,quantity3,quantity4};
+                Order order=new Order();
+                order.setActionTodo("");
+//                order.setStatus(Order.OrderStatus.Submitted.getValue());
+                Log.d(TAG, "setStatus"+"Sending");
+                ArrayList<Integer> foodquantity = new ArrayList<Integer>();
+                foodquantity.add(quantity1);
+                foodquantity.add(quantity2);
+                foodquantity.add(quantity3);
+                foodquantity.add(quantity4);
+                order.setOrderItemQuantity(foodquantity);
+                Log.d(TAG, "foodquantity"+foodquantity);
+//                order.setOrderPlacedTime((Double.valueOf( String.valueOf(new Date()))));
+//                Log.d(TAG, "setOrderPlacedTime"+(Double.valueOf( String.valueOf(new Date()))));
+                order.setUserName("");
+                order.setOrderTotal(totalPrice);
+                Log.d(TAG, "setOrderTotal"+totalPrice);
+//
+//                int count = 0;
+//                for(int temp: foodquantity){
+//                    if (count == 10){
+//                        break;
+//                    }
+//                    Log.d(TAG, "Food quantity = " + temp);
+//                    count ++;
+//                }
 
-                Intent intent = new Intent(MenuActivity.this, FoodOrderServer.class);
-                Log.d(TAG, "Just before intent sending");
+                Intent intent = new Intent(MenuActivity.this, BackgroundService.class);
                 Log.d(TAG, "Just before intent sending");
                 Log.d(TAG, "totalPrice"+totalPrice);
+//                quantityText_1.setText("");
+//                quantityText_2.setText("");
+//                quantityText_3.setText("");
+//                quantityText_4.setText("");
 
-                intent.putExtra(FoodOrderServer.actiontodo, "OrderPlacement");
-                Log.d(TAG, "Passing username now to Food order server with Order, userName " + userName);
-                intent.putExtra("OrderObject", new Order(userName, foodquantity));
+                intent.putExtra(BackgroundService.actiontodo, "OrderPlacement");
+                Log.d(TAG, "Passing username now to Food order server with Order, order: " + order);
+//                intent.putExtra("OrderObject", new Order(foodquantity));
+                intent.putExtra("OrderObject", order);
                 startService(intent);
 
                 receiver = new MenuActivity.MyOrderReceiver();
@@ -314,6 +331,7 @@ public class MenuActivity extends AppCompatActivity {
 
                 filter.addAction(".OrderStatus");
                 MenuActivity.this.registerReceiver(receiver,filter);
+
 
             }
         });
@@ -334,17 +352,16 @@ public class MenuActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
-            case R.id.orderfood:
-                Toast.makeText(this,"Navigate to order page",Toast.LENGTH_SHORT).show();
-//                Intent intent= new Intent(Intent.ACTION_VIEW);
-//                intent.setData(Uri.parse("http://www.baidu.com"));
-//                startActivity(intent);
-                break;
             case R.id.orderhistory:
                 Toast.makeText(this,"Navigate to order history page",Toast.LENGTH_SHORT).show();
-                Intent Intent_OrderHistory = new Intent(MenuActivity.this, OrderHistoryActivity.class);
-                startActivity(Intent_OrderHistory);
-
+                Intent intent1=new Intent(MenuActivity.this,OrderHistory.class);
+                startActivity(intent1);
+                break;
+            case R.id.SignOut:
+                Toast.makeText(this,"Signing Out...",Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(MenuActivity.this,LoginActivity.class);
+                startActivity(intent);
+                break;
         }
         return  true;
     }
@@ -361,12 +378,8 @@ public class MenuActivity extends AppCompatActivity {
             Log.d(TAG, "In BroadcastReceiver : orderplaced: "+ orderplaced + " and estimatedtime " + estimatedtime);
             if(orderplaced == true)
             {
-                Intent Intent_OrderStatus = new Intent(MenuActivity.this, OrderStatusActivity.class);
-                Intent_OrderStatus.putExtra("estimatedtime", estimatedtime);
-                Intent_OrderStatus.putExtra("orderStatus", "Submitted");
-                startActivity(Intent_OrderStatus);
-//                Toast toast=Toast.makeText(getApplicationContext(), "Order Successful! Estimated time = " + estimatedtime + " mins", Toast.LENGTH_SHORT);
-//                toast.show();
+                Toast toast=Toast.makeText(getApplicationContext(), "Order Successful! Estimated time = " + estimatedtime + " mins", Toast.LENGTH_SHORT);
+                toast.show();
             }
             else
             {

@@ -3,51 +3,49 @@ package com.example.myrestaurant.Model;
 /**
  * Created by vj on 11/25/17.
  */
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.*;
 
-public class OrderList {
+public class OrderList implements Parcelable{
 
-    // In this class actionTodo = Orderplacement
-    int actionTodo;
-    float orderPlacedTime;
-    String customerId;
+    private ArrayList<Order> orderArrayList;
 
-    /* By default we shall assume that
-    orderItemQuantity[0] - Indicates quantity for Burger.
-    orderItemQuantity[1] - Indicates quantity for Chicken.
-    orderItemQuantity[2] - Indicates quantity for FrenchFries.
-    orderItemQuantity[3] - Indicates quantity for OnionRings. */
-    ArrayList<Integer> orderItemQuantity = new ArrayList<Integer>();
-
-    public int getActionTodo() {
-        return actionTodo;
+    public OrderList() {
+        this.orderArrayList = new ArrayList<>();
     }
 
-    public float getOrderPlacedTime() {
-        return orderPlacedTime;
+
+    public ArrayList<Order> getOrderArrayList() {
+        return orderArrayList;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public void setOrderArrayList(ArrayList<Order> orderArrayList) {
+        this.orderArrayList = orderArrayList;
     }
 
-    public ArrayList<Integer> getOrderItemQuantity() {
-        return orderItemQuantity;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setActionTodo(int actionTodo) {
-        this.actionTodo = actionTodo;
-    }
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeList(orderArrayList);
 
-    public void setOrderPlacedTime(float orderPlacedTime) {
-        this.orderPlacedTime = orderPlacedTime;
     }
+    public static final Creator<OrderList> CREATOR = new Creator<OrderList>() {
+        @Override
+        public OrderList createFromParcel(Parcel in) {
+            OrderList orderList=new OrderList();
+            orderList.setOrderArrayList(in.readArrayList(null));
+            return orderList;
+        }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
-
-    public void setOrderItemQuantity(ArrayList<Integer> orderItemQuantity) {
-        this.orderItemQuantity = orderItemQuantity;
-    }
+        @Override
+        public OrderList[] newArray(int size) {
+            return new OrderList[size];
+        }
+    };
 }

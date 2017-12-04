@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myrestaurant.Model.SignupLogin;
 import com.example.myrestaurant.R;
 
 /**
@@ -29,14 +30,16 @@ public class LoginActivity extends AppCompatActivity {
     public static final String USER_NAME = "USERNAME";
     private static final String TAG = "LoginActivity";
     private LoginActivity.MyReceiver receiver = null;
-    String username;
+    private String username;
     String password;
+    static LoginActivity instance;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        instance=this;
 
         editTextUserName = (EditText) findViewById(R.id.TextUsername);
         editTextPassword = (EditText) findViewById(R.id.TextPassword);
@@ -67,14 +70,15 @@ public class LoginActivity extends AppCompatActivity {
             }
                 Log.d(TAG, "In Login activity : Username: "+username);
                 Log.d(TAG, "In Login activity : Password: "+password);
-                Intent intent = new Intent(LoginActivity.this, FoodOrderServer.class);
 
+                Intent intent = new Intent(LoginActivity.this, BackgroundService.class);
                 Log.d(TAG, "Just before intent sending");
-                intent.putExtra(FoodOrderServer.actiontodo, "Login");
-                intent.putExtra("ServerObject", new SignupLogin(username,password,"Login"));
+                intent.putExtra(BackgroundService.actiontodo, "Login");
+                intent.putExtra("LoginUsername", username);
+                intent.putExtra("LoginPassword", password);
                 startService(intent);
 
-                receiver = new MyReceiver();
+                receiver=new LoginActivity.MyReceiver();
                 IntentFilter filter=new IntentFilter();
 
                 filter.addAction(".LoginStatus");
@@ -84,84 +88,25 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
-    }
-
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            return true;
-        }
-    }
-
     public class MyReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Bundle bundle=intent.getExtras();
-            String result= bundle.getString("LoginStatus");
-            String username = bundle.getString("username");
+            String result= intent.getStringExtra("LoginStatus");
             Log.d(TAG, "In BroadcastReceiver : result: "+ result + " and username " + username);
-            if(result.equals("LoginSucessful"))
+            if(result.equals("LoginSuccess"))
             {
-
-                Toast toast=Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT);
-                toast.show();
+                Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
                 Intent signtoMenu = new Intent(LoginActivity.this,MenuActivity.class);
-                signtoMenu.putExtra("username", username);
                 Log.d(TAG, "Added username to intent and sending to Menu page");
                 startActivity(signtoMenu);
             }
-            else if(result.equals("WrongPassword"))
+            else if(result.equals("LoginFailed"))
             {
-                Toast toast=Toast.makeText(getApplicationContext(), "Login Fail! Please enter right password!", Toast.LENGTH_SHORT);
-                toast.show();
+                Toast.makeText(getApplicationContext(), "Login Fail! Please enter right password!", Toast.LENGTH_SHORT).show();
             }
             else if(result.equals("NorecordFound"))
             {
-                Toast toast=Toast.makeText(getApplicationContext(), "Login Fail! No username found, please sign up first", Toast.LENGTH_SHORT);
-                toast.show();
+               Toast.makeText(getApplicationContext(), "Login Fail! No username found, please sign up first", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -2,37 +2,79 @@ package com.example.myrestaurant.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.view.Menu;
 
+import com.example.myrestaurant.Controller.MenuActivity;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Order implements Parcelable {
-    // In this class actionTodo = Orderplacement
-    private String actionTodo;
-    private double orderPlacedTime;
+    private String status;
+    private String orderPlacedTime;
     private String userName;
-    private static int orderID = 0;
-
-    //private int[] orderItemQuantity = new int[4];
-    private ArrayList<Integer>  orderItemQuantity = new ArrayList<Integer>();
+    private ArrayList<Integer>  orderItemQuantity;
     private double orderTotal;
+    private static  int orderIdCount=0;
+    private  int orderId;
 
-    public Order(String userName, ArrayList<Integer> orderItemQuantity) {
-        this.userName = userName;
-        this.orderItemQuantity = orderItemQuantity;
-    }
+//    public enum OrderStatus{
+//        Submitted("Submitted"),
+//        NotAvailable("Not Available"),
+//        PartiallyAvailable("Partially Available"),
+//        Preparing("Preparing"),
+//        Packaging("Packaging"),
+//        FoodReady("Food Ready");
+//
+//        private String value;
+//        private OrderStatus(String value){
+//            this.value = value;
+//        }
+//
+//        public String getValue() {
+//            return value;
+//        }
+//
+//        @Override
+//        public String toString() {
+//            return value;
+//        }
+//    }
+//public Order( ArrayList<Integer> orderItemQuantity) {
+//    this.orderItemQuantity = orderItemQuantity;
+//}
+public Order()
+{orderPlacedTime=getStringToday();
+    orderIdCount++;
+    orderId=orderIdCount;
 
-    protected Order(Parcel in) {
-        actionTodo = in.readString();
-        orderPlacedTime = in.readDouble();
-        userName = in.readString();
-        orderTotal = in.readDouble();
-        orderItemQuantity = in.readArrayList(null);
+}
+    public static String getStringToday() {
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd HHmmss");
+        String dateString = formatter.format(currentTime);
+        return dateString;
     }
+//    protected Order(Parcel in) {
+//        status=in.readString();
+//        orderPlacedTime = in.readDouble();
+//        userName = in.readString();
+//        orderTotal = in.readDouble();
+//        orderItemQuantity = in.readArrayList(null);
+//
+//    }
 
     public static final Creator<Order> CREATOR = new Creator<Order>() {
         @Override
         public Order createFromParcel(Parcel in) {
-            return new Order(in);
+            Order order=new Order();
+            order.setStatus(in.readString());
+            order.setOrderPlacedTime(in.readString());
+            order.setUserName(in.readString());
+            order.setOrderItemQuantity(in.readArrayList(null));
+            order.setOrderTotal(in.readDouble());
+            return order;
         }
 
         @Override
@@ -48,26 +90,27 @@ public class Order implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(actionTodo);
-        parcel.writeDouble(orderPlacedTime);
+        parcel.writeString(status);
+        parcel.writeString(orderPlacedTime);
         parcel.writeString(userName);
-        parcel.writeDouble(orderTotal);
         parcel.writeList(orderItemQuantity);
+        parcel.writeDouble(orderTotal);
+
     }
 
     public String getActionTodo() {
-        return actionTodo;
+        return status;
     }
 
     public void setActionTodo(String actionTodo) {
-        this.actionTodo = actionTodo;
+        this.status = actionTodo;
     }
 
-    public double getOrderPlacedTime() {
+    public String getOrderPlacedTime() {
         return orderPlacedTime;
     }
 
-    public void setOrderPlacedTime(double orderPlacedTime) {
+    public void setOrderPlacedTime(String orderPlacedTime) {
         this.orderPlacedTime = orderPlacedTime;
     }
 
@@ -79,14 +122,6 @@ public class Order implements Parcelable {
         this.userName = userName;
     }
 
-    public static int getOrderID() {
-        return orderID;
-    }
-
-    public static void setOrderID(int orderID) {
-        Order.orderID = orderID;
-    }
-
     public ArrayList<Integer> getOrderItemQuantity() {
         return orderItemQuantity;
     }
@@ -96,10 +131,36 @@ public class Order implements Parcelable {
     }
 
     public double getOrderTotal() {
+        calculateOrderTotal();
         return orderTotal;
+    }
+public double calculateOrderTotal()
+{
+    orderTotal=orderItemQuantity.get(0)* MenuActivity.price_1+orderItemQuantity.get(1)* MenuActivity.price_2
+            +orderItemQuantity.get(2)* MenuActivity.price_3+orderItemQuantity.get(3)* MenuActivity.price_4;
+return orderTotal;
+}
+private void calculatime()
+{
+
+}
+    public String getStatus() {
+        return status;
     }
 
     public void setOrderTotal(double orderTotal) {
         this.orderTotal = orderTotal;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 }

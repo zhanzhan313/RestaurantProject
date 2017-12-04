@@ -1,26 +1,57 @@
 package com.example.myrestaurant.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 /**
  * Created by vj on 11/25/17.
  */
 
-public class Customer{
+public class Customer implements Parcelable{
     private   String userName;
     private   String passWord;
-    double    timeAtCurrentOrder;
+    private OrderList orderList;
 
-    ArrayList<Integer> customerActiveOrder = new ArrayList<Integer>();
+//    protected Customer(Parcel in) {
+//        userName=in.readString();
+//        passWord = in.readString();
+//
+//
+//    }
+    public Customer()
+    {
+        orderList=new OrderList();
+    }
+    public OrderList getOrderList() {
+        return orderList;
+    }
 
-    /* Indicates the list of orders made by the customer (history of orders).
-     * Does not include the current ongoing customer */
-    ArrayList<int[]> customerCompletedOrderList = new ArrayList<int[]>();
+    public void setOrderList(OrderList orderList) {
+        this.orderList = orderList;
+    }
+
 
     public Customer(String userName, String passWord) {
         this.userName = userName;
         this.passWord = passWord;
     }
+    public static final Creator<Customer> CREATOR = new Creator<Customer>() {
+        @Override
+        public Customer createFromParcel(Parcel in) {
+            Customer customer=new Customer();
+            customer.setUserName(in.readString());
+            customer.setPassWord(in.readString());
+            customer.setOrderList(in.<OrderList>readParcelable(OrderList.class.getClassLoader()));
+            return customer;
+        }
+
+        @Override
+        public Customer[] newArray(int size) {
+            return new Customer[size];
+        }
+    };
 
     public String getUserName() {
         return userName;
@@ -38,27 +69,20 @@ public class Customer{
         this.passWord = passWord;
     }
 
-    public double getTimeAtCurrentOrder() {
-        return timeAtCurrentOrder;
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setTimeAtCurrentOrder(double timeAtCurrentOrder) {
-        this.timeAtCurrentOrder = timeAtCurrentOrder;
-    }
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
 
-    public ArrayList<Integer> getCustomerActiveOrder() {
-        return customerActiveOrder;
-    }
-
-    public void setCustomerActiveOrder(ArrayList<Integer> customerActiveOrder) {
-        this.customerActiveOrder = customerActiveOrder;
-    }
-
-    public ArrayList<int[]> getCustomerCompletedOrderList() {
-        return customerCompletedOrderList;
-    }
-
-    public void setCustomerCompletedOrderList(ArrayList<int[]> customerCompletedOrderList) {
-        this.customerCompletedOrderList = customerCompletedOrderList;
+//        private   String userName;
+//        private   String passWord;
+//        private OrderList orderList;
+        dest.writeString(userName);
+        dest.writeString(passWord);
+        dest.writeParcelable(orderList,flags);
     }
 }

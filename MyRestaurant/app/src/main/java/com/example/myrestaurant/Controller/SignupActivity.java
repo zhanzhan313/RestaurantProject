@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myrestaurant.Model.SignupLogin;
 import com.example.myrestaurant.R;
 
 /**
@@ -20,10 +21,10 @@ import com.example.myrestaurant.R;
  */
 
 public class SignupActivity extends AppCompatActivity {
-
+    static SignupActivity instance;
     EditText editTextUsername, editTextPassword;
     private TextView signintext;
-    String GetUsername, GetPassword;
+    String getUsername, getPassword;
     private MyReceiver receiver=null;
 
     Button buttonSubmit;
@@ -32,6 +33,7 @@ public class SignupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        instance=this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
@@ -44,29 +46,37 @@ public class SignupActivity extends AppCompatActivity {
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
+                new  Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getUsername = editTextUsername.getText().toString();
+                        getPassword = editTextPassword.getText().toString();
+                        if(getUsername.equals("")||getPassword.equals(""))
+                        {
+                            Toast.makeText(getApplicationContext(), "Login Fail! Please input Something", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Log.d(TAG, "GetUsername: "+getUsername);
+                        Log.d(TAG, "GetPassword: "+getPassword);
+                        Intent intent = new Intent(SignupActivity.this, BackgroundService.class);
+                        Log.d(TAG, "Just before intent sending");
+                        intent.putExtra(BackgroundService.actiontodo, "SignUp");
+                        intent.putExtra("Username", getUsername);
+                        intent.putExtra("Password", getPassword);
+                        startService(intent);
+
+                        receiver=new MyReceiver();
+                        IntentFilter filter=new IntentFilter();
+
+                        filter.addAction(".SignUpStatus");
+                        SignupActivity.this.registerReceiver(receiver,filter);
+
+                    }
+                }).start();
                 // TODO Auto-generated method stub
 
-                GetUsername = editTextUsername.getText().toString();
-                GetPassword = editTextPassword.getText().toString();
-                if(GetUsername.equals("")||GetPassword.equals(""))
-                {
-                    Toast.makeText(getApplicationContext(), "Login Fail! Please input Something", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Log.d(TAG, "GetUsername: "+GetUsername);
-                Log.d(TAG, "GetPassword: "+GetPassword);
-                Intent intent = new Intent(SignupActivity.this, FoodOrderServer.class);
-                Log.d(TAG, "Just before intent sending");
-                intent.putExtra(FoodOrderServer.actiontodo, "SignUp");
-                intent.putExtra("ServerObject", new SignupLogin(GetUsername,GetPassword,"SignUp"));
-                startService(intent);
-
-                receiver=new MyReceiver();
-                IntentFilter filter=new IntentFilter();
-
-                filter.addAction(".SignUpStatus");
-                SignupActivity.this.registerReceiver(receiver,filter);
 
             }
         });
@@ -90,7 +100,7 @@ public class MyReceiver extends BroadcastReceiver {
         String result= bundle.getString("SignUpStatus");
         String username = bundle.getString("username");
         Log.d(TAG, "In BroadcastReceiver : onReceive: "+ result);
-        if(result.equals("signUpSuccess"))
+        if(result.equals("SignUpSuccess"))
         {
 
             Toast toast=Toast.makeText(getApplicationContext(), "Sign Up Successful!", Toast.LENGTH_SHORT);
@@ -98,8 +108,9 @@ public class MyReceiver extends BroadcastReceiver {
             Intent signtoMenu =new Intent(SignupActivity.this,MenuActivity.class);
             signtoMenu.putExtra("username", username);
             startActivity(signtoMenu);
+
         }
-        else if(result.equals("userNameExists"))
+        else if(result.equals("SignUpFailed"))
         {
             Toast toast=Toast.makeText(getApplicationContext(), "Sign Up Fail! User name already exists! Pick another one!", Toast.LENGTH_SHORT);
             toast.show();

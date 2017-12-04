@@ -12,7 +12,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.myrestaurant.Model.Customer;
+import com.example.myrestaurant.Model.CustomerList;
 import com.example.myrestaurant.Model.Order;
+import com.example.myrestaurant.Model.SignupLogin;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -36,11 +38,12 @@ import java.util.TimerTask;
  */
 
 public class FoodOrderServer extends Service{
-
+    private CustomerList customerList;
     final String FILE = "/Users/vj/Desktop/Inventory.txt";
     final String databasefile = "/Users/vj/Desktop/CustomerDatabase.txt";
     public static final String NOTIFICATION = "com.example.vj.foodorderserver";
     private static final String TAG = "FoodOrderServer";
+    private String currentUserAccount;
     static final String userNameExists = "4";
     static final String loginSuccess = "3";
     static final String passcodeWrong = "2";
@@ -71,6 +74,14 @@ public class FoodOrderServer extends Service{
     final String passCode = "passcode";
     final Boolean isSignUp = false;
     ArrayList<String> ServerSideOrderList = new ArrayList<String>();
+
+    public String getCurrentUserAccount() {
+        return currentUserAccount;
+    }
+
+    public void setCurrentUserAccount(String currentUserAccount) {
+        this.currentUserAccount = currentUserAccount;
+    }
 
     /* Singleton Class : Only a single instance of InventoryList needs to be maintained at the kitchen */
     static class InventoryList {
@@ -184,7 +195,7 @@ public class FoodOrderServer extends Service{
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onCreate() {
-
+customerList =CustomerList.getInstance();
         Log.d(TAG, "onCreate");
 
         InventoryList kitchenInventory = InventoryList.getInstance();
@@ -271,6 +282,7 @@ public class FoodOrderServer extends Service{
             if (Objects.equals(customer.getPassWord(), password)){
                 Log.d(TAG, "Password matched!");
                 /* Send a status code indicating successful login */
+                currentUserAccount=username;
                 sendBroadcastActivity("LoginStatus", "LoginSucessful", username);
             }
             else{
@@ -302,6 +314,7 @@ public class FoodOrderServer extends Service{
             customerHashMap.put(username, newCustomer);
             Log.d(TAG, "Added new new customer");
             /* Send a status code indicating successful signup */
+            currentUserAccount=username;//set current user
             sendBroadcastActivity("SignUpStatus", "signUpSuccess", username);
         }
     }
@@ -344,107 +357,108 @@ public class FoodOrderServer extends Service{
 
         }
         else if (Objects.equals(actionreceived, "OrderPlacement")){
-            /* TODO : Need to sync with Client code for this intent */
-            /* TODO : Need to have a separate class for OrderList (and OrderItem) recognised by both client and server */
-            /* TODO : Also Client code to have object for type Order and put it intent and send it through Parcelable */
-            Log.d(TAG, "Order is placed");
-
-            Order currentorder = b.getParcelable("OrderObject");
-            InventoryList kitchenInventory = InventoryList.getInstance();
-            //double time = currentorder.getOrderPlacedTime();
-            String username=currentorder.getUserName();
-            Log.d(TAG, "AT foodorderserver received username " + username);
-
-            /* Get the customer object using the username as key */
-            Customer customer = customerHashMap.get(username);
-            if (customer == null){
-                Log.e(TAG, "Trying to place order for non-member " + username);
-            }
-            else {
-
-                ArrayList<Integer> checkingquant = currentorder.getOrderItemQuantity();
-
-                if (checkingquant.size() == 0){
-                    Log.d(TAG, "Error: ArrayList size received 0");
-
-                }
-                for(int temp: checkingquant){
-                    Log.d(TAG, "Food quantity = " + temp);
-                }
-
-                customer.setCustomerActiveOrder(currentorder.getOrderItemQuantity());
-                Log.d(TAG, "Moving ahead : we just assigned customer object with order arraylist");
-
-                Iterator<Integer> it2 = customer.getCustomerActiveOrder().iterator();
-                int count = 0;
-                int estimatedTime = 15;
-                //getEstimatedTimeFood();
-                ArrayList<Integer> remainingFoodCount = new ArrayList<Integer>();
-
-                while (it2.hasNext()) {
-                    int fooditemcount = it2.next();
-                    if (fooditemcount == 0) {
-                        continue;
-                    } else if (fooditemcount > kitchenInventory.fooditemCount.get(count)) {
-                        // The item requested exceed what we have in kitchen, have to make an emergency request to Inventory
-                    } else {
-                        // We can honor this request right away
-                        Log.d(TAG, "inside we can honor this request");
-                        isOrderPlaced = true;
-                        remainingFoodCount.add(kitchenInventory.fooditemCount.get(count) - fooditemcount);
-                    }
-                    count++;
-                }
-
-                if(isOrderPlaced == true){
-                    customer.setTimeAtCurrentOrder(new Date().getTime() / 1000);
-                    sendBroadcastOrderActivity(isOrderPlaced, estimatedTime);
-
-                    /* The order will be complete in 15 mins */
-                    Timer timer = new Timer();
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            sendBroadcastStatusActivity(orderReady);
-                        }
-                    }, 15 * 60 * 1000);
-                }
-
-                for(int temp: remainingFoodCount){
-                    Log.d(TAG, "Remaining quantity in inventory = " + temp);
-                }
-
-                // Update kitchen inventory with the food item count remaining
-                kitchenInventory.setFooditemCount(remainingFoodCount);
-
-            /* We could do this for multi threads -> multi customers */
-                //updateServerSideOrderList(order);
-            }
+//            /* TODO : Need to sync with Client code for this intent */
+//            /* TODO : Need to have a separate class for OrderList (and OrderItem) recognised by both client and server */
+//            /* TODO : Also Client code to have object for type Order and put it intent and send it through Parcelable */
+//            Log.d(TAG, "Order is placed");
+//
+//            Order currentorder = b.getParcelable("OrderObject");
+//            InventoryList kitchenInventory = InventoryList.getInstance();
+//            //double time = currentorder.getOrderPlacedTime();
+//            String username=currentorder.getUserName();
+//            Log.d(TAG, "AT foodorderserver received username " + currentUserAccount);
+//
+//            /* Get the customer object using the username as key */
+//            Customer customer = customerHashMap.get(username);
+//            if (customer == null){
+//                Log.e(TAG, "Trying to place order for non-member " + username);
+//            }
+//            else {
+//
+//                ArrayList<Integer> checkingquant = currentorder.getOrderItemQuantity();
+//
+//                if (checkingquant.size() == 0){
+//                    Log.d(TAG, "Error: ArrayList size received 0");
+//
+//                }
+//                for(int temp: checkingquant){
+//                    Log.d(TAG, "Food quantity = " + temp);
+//                }
+//
+//                customer.setCustomerActiveOrder(currentorder.getOrderItemQuantity());
+//                Log.d(TAG, "Moving ahead : we just assigned customer object with order arraylist");
+//
+//                Iterator<Integer> it2 = customer.getCustomerActiveOrder().iterator();
+//                int count = 0;
+//                int estimatedTime = 15;
+//                //getEstimatedTimeFood();
+//                ArrayList<Integer> remainingFoodCount = new ArrayList<Integer>();
+//
+//                while (it2.hasNext()) {
+//                    int fooditemcount = it2.next();
+//                    if (fooditemcount == 0) {
+//                        continue;
+//                    } else if (fooditemcount > kitchenInventory.fooditemCount.get(count)) {
+//                        // The item requested exceed what we have in kitchen, have to make an emergency request to Inventory
+//                    } else {
+//                        // We can honor this request right away
+//                        Log.d(TAG, "inside we can honor this request");
+//                        isOrderPlaced = true;
+//                        remainingFoodCount.add(kitchenInventory.fooditemCount.get(count) - fooditemcount);
+//                    }
+//                    count++;
+//                }
+//
+//                if(isOrderPlaced == true){
+//                    customer.setTimeAtCurrentOrder(new Date().getTime() / 1000);
+//                    sendBroadcastOrderActivity(isOrderPlaced, estimatedTime);
+//
+//                    /* The order will be complete in 15 mins */
+//                    Timer timer = new Timer();
+//                    timer.schedule(new TimerTask() {
+//                        @Override
+//                        public void run() {
+//                            sendBroadcastStatusActivity(orderReady);
+//                        }
+//                    }, 15 * 60 * 1000);
+//                }
+//
+//                for(int temp: remainingFoodCount){
+//                    Log.d(TAG, "Remaining quantity in inventory = " + temp);
+//                }
+//
+//                // Update kitchen inventory with the food item count remaining
+//                kitchenInventory.setFooditemCount(remainingFoodCount);
+//
+//            /* We could do this for multi threads -> multi customers */
+//                //updateServerSideOrderList(order);
+//            }
         }
         else if (Objects.equals(actionreceived, "OrderStatusCheck")) {
-            /* Handle track order status message from client */
-            String username = intent.getStringExtra(userName);
-            int preparationTime = 13;
-            int packagingTime = 2;
-            double currentTime = new Date().getTime() / 1000;
-            Customer customer = customerHashMap.get(username);
-
-
-            if (currentTime > customer.getTimeAtCurrentOrder()) {
-                double diff = currentTime - customer.getTimeAtCurrentOrder();
-
-                if (diff <= preparationTime) {
-                    sendBroadcastStatusActivity(preparingPhase);
-                }
-                else if (diff >= preparationTime && diff <= (packagingTime + preparationTime) ){
-                    sendBroadcastStatusActivity(packagingPhase);
-                }
-                else if(diff >= (packagingTime + preparationTime)){
-                    sendBroadcastStatusActivity(orderReady);
-                }
-            } else {
-                // error : track order msg received before order placement?
-            }
+//            /* Handle track order status message from client */
+//            String username = intent.getStringExtra(userName);
+//            int preparationTime = 13;
+//            int packagingTime = 2;
+//            double currentTime = new Date().getTime() / 1000;
+//            Customer customer = customerHashMap.get(username);
+//
+//
+//            if (currentTime > customer.getTimeAtCurrentOrder()) {
+//                double diff = currentTime - customer.getTimeAtCurrentOrder();
+//
+//                if (diff <= preparationTime) {
+//                    sendBroadcastStatusActivity(preparingPhase);
+//                }
+//                else if (diff >= preparationTime && diff <= (packagingTime + preparationTime) ){
+//                    sendBroadcastStatusActivity(packagingPhase);
+//                }
+//                else if(diff >= (packagingTime + preparationTime)){
+//                    sendBroadcastStatusActivity(orderReady);
+//                }
+//            }
+//            else {
+//                // error : track order msg received before order placement?
+//            }
         }
         Log.d(TAG, "Reached last part return START_STICKY");
         return START_STICKY;

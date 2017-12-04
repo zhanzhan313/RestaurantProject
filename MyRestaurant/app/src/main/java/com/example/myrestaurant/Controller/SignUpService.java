@@ -9,6 +9,7 @@ import android.support.annotation.IntDef;
 import android.util.Log;
 
 import com.example.myrestaurant.Model.Customer;
+import com.example.myrestaurant.Model.SignupLogin;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class SignUpService extends Service {
+
     public static String actionTodo="1";
 //    public static String USERNAME;
 //    public static String USERPASS;
@@ -27,6 +29,7 @@ public class SignUpService extends Service {
 //    public static final String NOTIFICATION = "com.example.vj.foodorderserver";
 
     public SignUpService() {
+
     }
 
     private static final String TAG = "SignUpService";
@@ -41,6 +44,7 @@ public class SignUpService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate: ");
+
         readFile();
     }
 
