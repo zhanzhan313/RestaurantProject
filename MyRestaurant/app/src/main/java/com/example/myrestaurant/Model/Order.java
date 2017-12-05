@@ -9,8 +9,9 @@ import com.example.myrestaurant.Controller.MenuActivity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
-public class Order implements Parcelable {
+public class Order implements Parcelable,Runnable{
     private String status;
     private String orderPlacedTime;
     private String userName;
@@ -172,5 +173,21 @@ private void calculatime()
 
     public void setOrderId(int orderId) {
         this.orderId = orderId;
+    }
+
+    @Override
+    public void run() {
+        String[] order_status = {"Submitting","Receiving","Preparing","Packaging","Food Ready"};
+        Random rn = new Random();
+        int sleepTime = rn.nextInt(60 - 20 + 1) + 20 ; //Sleep Time for thread between 20 to 60 seconds.
+        for (int i=0; i<order_status.length; i++) {
+            try {
+                status = order_status[i];
+                Thread.sleep(sleepTime * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

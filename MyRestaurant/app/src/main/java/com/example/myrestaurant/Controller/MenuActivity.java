@@ -296,10 +296,8 @@ public class MenuActivity extends AppCompatActivity {
                 quantityText_2.setText(""+0);
                 quantityText_3.setText(""+0);
                 quantityText_4.setText(""+0);
-                Toast.makeText(getApplicationContext(), "Order Successful! Estimated time = 15 mins", Toast.LENGTH_SHORT).show();
                 order=new Order();
                 order.setActionTodo("");
-                order.setStatus(Order.OrderStatus.Submitted.getValue());
                 Log.d(TAG, "setStatus"+"Sending");
                 ArrayList<Integer> foodquantity = new ArrayList<Integer>();
                 foodquantity.add(quantity1);
@@ -308,20 +306,10 @@ public class MenuActivity extends AppCompatActivity {
                 foodquantity.add(quantity4);
                 order.setOrderItemQuantity(foodquantity);
                 Log.d(TAG, "foodquantity"+foodquantity);
-//                order.setOrderPlacedTime((Double.valueOf( String.valueOf(new Date()))));
-//                Log.d(TAG, "setOrderPlacedTime"+(Double.valueOf( String.valueOf(new Date()))));
+
                 order.setUserName("");
                 order.setOrderTotal(totalPrice);
                 Log.d(TAG, "setOrderTotal"+totalPrice);
-//
-//                int count = 0;
-//                for(int temp: foodquantity){
-//                    if (count == 10){
-//                        break;
-//                    }
-//                    Log.d(TAG, "Food quantity = " + temp);
-//                    count ++;
-//                }
 
                 Intent intent = new Intent(MenuActivity.this, BackgroundService.class);
                 Log.d(TAG, "Just before intent sending");
@@ -330,7 +318,6 @@ public class MenuActivity extends AppCompatActivity {
 
                 intent.putExtra(BackgroundService.actiontodo, "OrderPlacement");
                 Log.d(TAG, "Passing username now to Food order server with Order, order: " + order);
-//                intent.putExtra("OrderObject", new Order(foodquantity));
                 intent.putExtra("OrderObject", order);
                 startService(intent);
 
@@ -382,19 +369,19 @@ public class MenuActivity extends AppCompatActivity {
             String test = bundle.getString("OrderStatus");
 
             Log.d(TAG, "In BroadcastReceiver : orderplaced: "+ test + " and estimatedtime " );
-            if(test .equals("avaliable"))
+            if(test.equals("avaliable"))
             {
                Toast.makeText(getApplicationContext(), "Order Successful!  " , Toast.LENGTH_SHORT).show();
 
             }
-            else if(test .equals("PartlyAvaliable"))
+            else if(test.equals("PartlyAvaliable"))
             {
                 showDialog();
 
          }
-            else if(test .equals("OrderFail"))
+            else if(test.equals("OrderFail"))
             {
-                Toast.makeText(getApplicationContext(), "Order fail, partially order Contains onthing!  " , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Order fail, partially order Contains Nothing!  " , Toast.LENGTH_SHORT).show();
             }
         }
     }

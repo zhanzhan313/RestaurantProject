@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class OrderHistory extends AppCompatActivity {
 private  ArrayList<String> data=new ArrayList<>();
     private ArrayList<Order> orders;
     CustomerList customerlist=CustomerList.getInstance();
+    private Button refreshBut;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -37,7 +39,12 @@ private  ArrayList<String> data=new ArrayList<>();
         setContentView(R.layout.orderhistory);
 
 
+        refreshBut=(Button)findViewById(R.id.refreshBut);
+        refreshBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }});
         Intent intent = new Intent(OrderHistory.this, BackgroundService.class);
         Log.d(TAG, "Just before intent sending");
         intent.putExtra(BackgroundService.actiontodo, "ViewOrderHistory");

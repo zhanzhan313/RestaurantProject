@@ -44,7 +44,8 @@
         </service>
 
         <activity android:name=".Controller.OrderHistory" />
-        <activity android:name=".Controller.OrderDetails"></activity>
+        <activity android:name=".Controller.OrderDetails" />
+        <activity android:name=".Controller.ClosedActivity"></activity>
     </application>
 
 </manifest>

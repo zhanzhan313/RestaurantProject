@@ -10,5 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </ListView>
-
+<Button
+    android:id="@+id/refreshBut"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Refresh Status"
+    android:textColor="@android:color/background_light"
+    android:textSize="18sp"
+    android:typeface="serif"/>
 </LinearLayout>

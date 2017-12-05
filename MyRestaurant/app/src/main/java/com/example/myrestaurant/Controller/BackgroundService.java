@@ -61,130 +61,52 @@ public class BackgroundService extends Service {
             Log.d(TAG, "LoginUsername = "+userName);
             Log.d(TAG, "LoginPassword = "+userPass);
 
-        }else if (Objects.equals(actionreceived, "ParticallyOrderPlacement")){
-            Log.d(TAG, "ParticallyOrderPlacement---avaliable");
-            Bundle b = intent.getExtras();
-            Order currentorder = (Order) b.get("ParticallyOrderObject");
-            Log.d(TAG, "ParticallyOrderPlacement---CurrentOrder"+currentorder.getOrderItemQuantity());
-            Log.d(TAG, "CurrentInventory"+inventory.getInventory());
-            setParticialOrder(currentorder);
-            if(partialOrder.getOrderItemQuantity().get(0)==0&&partialOrder.getOrderItemQuantity().get(1)==0
-                    &&partialOrder.getOrderItemQuantity().get(2)==0&&
-                    partialOrder.getOrderItemQuantity().get(3)==0)//making sure the partial sure contains ar least one item
-            {
-                Intent broadcastIntent = new Intent();
-                broadcastIntent.putExtra("OrderStatus", "ParticallyOrderFail");
-                broadcastIntent.setAction(".OrderStatus");
-                sendBroadcast(broadcastIntent);
-            }
-            partialOrder.setUserName(currentCustomer.getUserName());
-            currentCustomer.getOrderList().getOrderArrayList().add(partialOrder);
-            orderFromInventory(partialOrder);
-            Log.d(TAG, "ParticallyOrderPlacement: partialOrder"+partialOrder);
         }
-        else if (Objects.equals(actionreceived, "OrderPlacement")){
+        else if (Objects.equals(actionreceived, "OrderPlacement")) {
             Log.d(TAG, "Order is placed");
             Bundle b = intent.getExtras();
             Order currentorder = (Order) b.get("OrderObject");
             Intent broadcastIntent = new Intent();
 
-            if(checkOrderStatus(currentorder))
-            {
+            if (checkOrderStatus(currentorder)) {
                 Log.d(TAG, "OrderStatus---avaliable");
                 currentorder.setUserName(currentCustomer.getUserName());
+                currentorder.setStatus(Order.OrderStatus.Submitted.getValue());
                 currentCustomer.getOrderList().getOrderArrayList().add(currentorder);
+                Thread d=new Thread(currentorder);
+                d.start();
                 orderFromInventory(currentorder);
                 broadcastIntent.putExtra("OrderStatus", "avaliable");
                 broadcastIntent.setAction(".OrderStatus");
                 sendBroadcast(broadcastIntent);
-            }
-            else{
+            } else {
                 setParticialOrder(currentorder);
-                if(partialOrder.getOrderItemQuantity().get(0)==0&&partialOrder.getOrderItemQuantity().get(1)==0
-                        &&partialOrder.getOrderItemQuantity().get(2)==0&&
-                        partialOrder.getOrderItemQuantity().get(3)==0)//making sure the partial sure contains ar least one item
+                if (partialOrder.getOrderItemQuantity().get(0) >0 || partialOrder.getOrderItemQuantity().get(1) > 0
+                        ||partialOrder.getOrderItemQuantity().get(2) > 0 ||
+                        partialOrder.getOrderItemQuantity().get(3) > 0)//making sure the partial sure contains ar least one item
                 {
-                    broadcastIntent.putExtra("OrderStatus", "OrderFail");
+                    broadcastIntent.putExtra("OrderStatus", "PartlyAvaliable");
                     broadcastIntent.setAction(".OrderStatus");
                     sendBroadcast(broadcastIntent);
-                }else{
-                    broadcastIntent.putExtra("OrderStatus", "PartlyAvaliable");
+
+                } else {
+
+                    broadcastIntent.putExtra("OrderStatus", "OrderFail");
                     broadcastIntent.setAction(".OrderStatus");
                     sendBroadcast(broadcastIntent);
                 }
 
             }
-            Log.d(TAG, "currentorder " + currentorder);
-            Log.d(TAG, "currentCustomer " + currentCustomer);
+        }
+        else if (Objects.equals(actionreceived, "ParticallyOrderPlacement")){
+            Log.d(TAG, "ParticallyOrderPlacement---avaliable");
+            Log.d(TAG, "ParticallyOrderPlacement---CurrentOrder"+partialOrder.getOrderItemQuantity());
+            Log.d(TAG, "CurrentInventory"+inventory.getInventory());
 
-
-//            InventoryList kitchenInventory = InventoryList.getInstance();
-
-
-//            Log.d(TAG, "AT foodorderserver received username " + currentCustomer.getUserName());
-//            Log.d(TAG, "AT foodorderserver received username " + currentCustomer.getPassWord());
-//            Log.d(TAG, "AT foodorderserver received username " + currentCustomer.getOrderList().getOrderArrayList().get(0).getOrderItemQuantity());
-
-
-
-//                ArrayList<Integer> checkingquant = currentorder.getOrderItemQuantity();
-//
-//                if (checkingquant.size() == 0){
-//                    Log.d(TAG, "Error: ArrayList size received 0");
-//
-//                }
-//                for(int temp: checkingquant){
-//                    Log.d(TAG, "Food quantity = " + temp);
-//                }
-//
-//                customer.setCustomerActiveOrder(currentorder.getOrderItemQuantity());
-//                Log.d(TAG, "Moving ahead : we just assigned customer object with order arraylist");
-//
-//                Iterator<Integer> it2 = customer.getCustomerActiveOrder().iterator();
-//                int count = 0;
-//                int estimatedTime = 15;
-//                //getEstimatedTimeFood();
-//                ArrayList<Integer> remainingFoodCount = new ArrayList<Integer>();
-//
-//                while (it2.hasNext()) {
-//                    int fooditemcount = it2.next();
-//                    if (fooditemcount == 0) {
-//                        continue;
-//                    } else if (fooditemcount > kitchenInventory.fooditemCount.get(count)) {
-//                        // The item requested exceed what we have in kitchen, have to make an emergency request to Inventory
-//                    } else {
-//                        // We can honor this request right away
-//                        Log.d(TAG, "inside we can honor this request");
-//                        isOrderPlaced = true;
-//                        remainingFoodCount.add(kitchenInventory.fooditemCount.get(count) - fooditemcount);
-//                    }
-//                    count++;
-//                }
-//
-//                if(isOrderPlaced == true){
-//                    customer.setTimeAtCurrentOrder(new Date().getTime() / 1000);
-//                    sendBroadcastOrderActivity(isOrderPlaced, estimatedTime);
-//
-//                    /* The order will be complete in 15 mins */
-//                    Timer timer = new Timer();
-//                    timer.schedule(new TimerTask() {
-//                        @Override
-//                        public void run() {
-//                            sendBroadcastStatusActivity(orderReady);
-//                        }
-//                    }, 15 * 60 * 1000);
-//                }
-//
-//                for(int temp: remainingFoodCount){
-//                    Log.d(TAG, "Remaining quantity in inventory = " + temp);
-//                }
-//
-//                // Update kitchen inventory with the food item count remaining
-//                kitchenInventory.setFooditemCount(remainingFoodCount);
-//
-//            /* We could do this for multi threads -> multi customers */
-//                //updateServerSideOrderList(order);
-
+            partialOrder.setUserName(currentCustomer.getUserName());
+            currentCustomer.getOrderList().getOrderArrayList().add(partialOrder);
+            orderFromInventory(partialOrder);
+            Log.d(TAG, "ParticallyOrderPlacement: partialOrder"+partialOrder);
         }
         else if (Objects.equals(actionreceived, "ViewOrderHistory")) {
             Intent broadcastIntent = new Intent();
