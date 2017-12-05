@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -39,11 +41,19 @@ private  ArrayList<String> data=new ArrayList<>();
         setContentView(R.layout.orderhistory);
 
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         refreshBut=(Button)findViewById(R.id.refreshBut);
         refreshBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                finish();
+                Intent intent = new Intent(OrderHistory.this, OrderHistory.class);
+                startActivity(intent);
             }});
         Intent intent = new Intent(OrderHistory.this, BackgroundService.class);
         Log.d(TAG, "Just before intent sending");
@@ -56,10 +66,33 @@ private  ArrayList<String> data=new ArrayList<>();
 
         filter.addAction(".BackOrderHistory");
         this.registerReceiver(receiver,filter);
+        // The activity has become visible (it is now "resumed").
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.history_menu,menu);
+        return true;
+//        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.Historyorderhistory:
 
+                Intent intent1=new Intent(OrderHistory.this,MenuActivity.class);
+                startActivity(intent1);
+                break;
+            case R.id.HistorySignOut:
+                Toast.makeText(this,"Signing Out...",Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(OrderHistory.this,LoginActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return  true;
+    }
     public class MyReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

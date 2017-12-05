@@ -17,7 +17,7 @@ public class Order implements Parcelable,Runnable{
     private String userName;
     private ArrayList<Integer>  orderItemQuantity;
     private double orderTotal;
-    private static  int orderIdCount=0;
+    public static  int orderIdCount=0;
     private  int orderId;
 
     public enum OrderStatus{

@@ -41,8 +41,8 @@ public class BackgroundService extends Service {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onCreate"+inventory.getInventory());
-        Log.d(TAG, "onStartCommand: ");
+        Log.d(TAG, "onStartCommand"+inventory.getInventory());
+
         String actionreceived = intent.getStringExtra(actiontodo);
         Log.d(TAG, "actionreceived: " + actionreceived);
 
@@ -63,7 +63,7 @@ public class BackgroundService extends Service {
 
         }
         else if (Objects.equals(actionreceived, "OrderPlacement")) {
-            Log.d(TAG, "Order is placed");
+            Log.d(TAG, "Order is underChecking");
             Bundle b = intent.getExtras();
             Order currentorder = (Order) b.get("OrderObject");
             Intent broadcastIntent = new Intent();
@@ -84,13 +84,13 @@ public class BackgroundService extends Service {
                 if (partialOrder.getOrderItemQuantity().get(0) >0 || partialOrder.getOrderItemQuantity().get(1) > 0
                         ||partialOrder.getOrderItemQuantity().get(2) > 0 ||
                         partialOrder.getOrderItemQuantity().get(3) > 0)//making sure the partial sure contains ar least one item
-                {
+                {   Log.d(TAG, "OrderStatus---PartlyAvaliable");
                     broadcastIntent.putExtra("OrderStatus", "PartlyAvaliable");
                     broadcastIntent.setAction(".OrderStatus");
                     sendBroadcast(broadcastIntent);
 
                 } else {
-
+                    Log.d(TAG, "OrderStatus---OrderFail");
                     broadcastIntent.putExtra("OrderStatus", "OrderFail");
                     broadcastIntent.setAction(".OrderStatus");
                     sendBroadcast(broadcastIntent);
@@ -99,13 +99,22 @@ public class BackgroundService extends Service {
             }
         }
         else if (Objects.equals(actionreceived, "ParticallyOrderPlacement")){
-            Log.d(TAG, "ParticallyOrderPlacement---avaliable");
+            Log.d(TAG, "ParticallyOrderPlacement---ParticallyOrderPlacement");
             Log.d(TAG, "ParticallyOrderPlacement---CurrentOrder"+partialOrder.getOrderItemQuantity());
             Log.d(TAG, "CurrentInventory"+inventory.getInventory());
 
+            Intent broadcastIntent = new Intent();
             partialOrder.setUserName(currentCustomer.getUserName());
+            partialOrder.setStatus(Order.OrderStatus.Submitted.getValue());
             currentCustomer.getOrderList().getOrderArrayList().add(partialOrder);
+            partialOrder.setOrderId(Order.orderIdCount+1);
+            partialOrder.setOrderPlacedTime(Order.getStringToday());
+            Thread d=new Thread(partialOrder);
+            d.start();
             orderFromInventory(partialOrder);
+            broadcastIntent.putExtra("OrderStatus", "avaliable");
+            broadcastIntent.setAction(".OrderStatus");
+            sendBroadcast(broadcastIntent);
             Log.d(TAG, "ParticallyOrderPlacement: partialOrder"+partialOrder);
         }
         else if (Objects.equals(actionreceived, "ViewOrderHistory")) {
@@ -116,15 +125,6 @@ public class BackgroundService extends Service {
             Log.d(TAG, "ViewOrderHistory: "+currentCustomer.getUserName());
         }
         else if (Objects.equals(actionreceived, "ViewOrderDetail")) {
-            Log.d(TAG, "ViewOrderDetail");
-            Bundle b = intent.getExtras();
-            Order currentorder = (Order) b.get("DetailOrderObject");
-            Log.d(TAG, "currentorder " + currentorder);
-            Log.d(TAG, "currentCustomer " + currentCustomer);
-
-            Intent broadcastIntent = new Intent();
-            broadcastIntent.putExtra("SignUpStatus", "SignUpFailed");
-            broadcastIntent.setAction(".SignUpStatus");
         }
         Log.d(TAG, "Reached last part return START_STICKY");
         return START_STICKY;

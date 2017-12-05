@@ -47,7 +47,11 @@ public class MenuActivity extends AppCompatActivity {
             SignupActivity.instance.finish();
             LoginActivity.instance.finish();
         }
+        receiver = new MenuActivity.MyOrderReceiver();
+        IntentFilter filter = new IntentFilter();
 
+        filter.addAction(".OrderStatus");
+        MenuActivity.this.registerReceiver(receiver,filter);
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
@@ -268,7 +272,7 @@ public class MenuActivity extends AppCompatActivity {
         placeOrderbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "placeOrderbutton,Just before intent sending");
+                Log.d(TAG, "placeOrderbutton is pressed");
 
                  /*
                    orderItemQuantity[0] - Indicates quantity for Burger.
@@ -279,14 +283,10 @@ public class MenuActivity extends AppCompatActivity {
 
                  /* ToDO This code below crashes if all 4 items are not updated in Menu UI */
                 int quantity1=Integer.parseInt(quantityText_1.getText().toString());
-                Log.d(TAG, "Here after quantity 1"+quantity1);
                 int quantity2=Integer.parseInt(quantityText_2.getText().toString());
-                Log.d(TAG, "Here after quantity 2");
                 int quantity3=Integer.parseInt(quantityText_3.getText().toString());
-                Log.d(TAG, "Here after quantity 3");
                 int quantity4=Integer.parseInt(quantityText_4.getText().toString());
-                Log.d(TAG, "Here after quantity 4");
-                Log.d(TAG, "Here after quantity declared");
+
                 if(quantity1==0&&quantity2==0&&quantity3==0&&quantity4==0)
                 {
                     Toast.makeText(getApplicationContext(), "Nothing in Chart!", Toast.LENGTH_SHORT).show();
@@ -309,23 +309,15 @@ public class MenuActivity extends AppCompatActivity {
 
                 order.setUserName("");
                 order.setOrderTotal(totalPrice);
-                Log.d(TAG, "setOrderTotal"+totalPrice);
 
                 Intent intent = new Intent(MenuActivity.this, BackgroundService.class);
-                Log.d(TAG, "Just before intent sending");
-                Log.d(TAG, "totalPrice"+totalPrice);
-
-
+                Log.d(TAG, "Just before intent sending OrderPlacement");
                 intent.putExtra(BackgroundService.actiontodo, "OrderPlacement");
                 Log.d(TAG, "Passing username now to Food order server with Order, order: " + order);
                 intent.putExtra("OrderObject", order);
                 startService(intent);
 
-                receiver = new MenuActivity.MyOrderReceiver();
-                IntentFilter filter = new IntentFilter();
 
-                filter.addAction(".OrderStatus");
-                MenuActivity.this.registerReceiver(receiver,filter);
 
 
             }
@@ -334,6 +326,11 @@ public class MenuActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
     }
 
     @Override
@@ -348,7 +345,7 @@ public class MenuActivity extends AppCompatActivity {
         switch (item.getItemId())
         {
             case R.id.orderhistory:
-                Toast.makeText(this,"Navigate to order history page",Toast.LENGTH_SHORT).show();
+
                 Intent intent1=new Intent(MenuActivity.this,OrderHistory.class);
                 startActivity(intent1);
                 break;
@@ -370,14 +367,15 @@ public class MenuActivity extends AppCompatActivity {
 
             Log.d(TAG, "In BroadcastReceiver : orderplaced: "+ test + " and estimatedtime " );
             if(test.equals("avaliable"))
-            {
+            {  Log.d(TAG, "onReceive: avaliable");
                Toast.makeText(getApplicationContext(), "Order Successful!  " , Toast.LENGTH_SHORT).show();
 
             }
             else if(test.equals("PartlyAvaliable"))
             {
+                Log.d(TAG, "onReceive: PartlyAvaliable,before dialog");
                 showDialog();
-
+                Log.d(TAG, "onReceive: PartlyAvaliable,after dialog");
          }
             else if(test.equals("OrderFail"))
             {
@@ -386,20 +384,22 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
     private void showDialog() {
+
+        Log.d(TAG, "showDialog");
         Dialog dialog=new AlertDialog.Builder(this)
                 .setTitle("Order partially Available")//set title
-                .setMessage("You want this part of Order or cancel this order？")//inside
+                .setMessage("You want this part of Order or Cancel this order？")//inside
                 //want button
                 .setPositiveButton("I want this Order", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "Order Successfully!  " , Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "Order Successfully!  " , Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MenuActivity.this, BackgroundService.class);
                         Log.d(TAG, "Just before intent sending");
                         Log.d(TAG, "totalPrice"+totalPrice);
                         intent.putExtra(BackgroundService.actiontodo, "ParticallyOrderPlacement");
                         Log.d(TAG, "Passing username now to Food order server with Order, order: " + order);
-                        intent.putExtra("ParticallyOrderObject", order);
+//                        intent.putExtra("ParticallyOrderObject", order);
                         startService(intent);
                     }
                 })
