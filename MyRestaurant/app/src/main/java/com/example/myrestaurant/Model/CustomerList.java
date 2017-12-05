@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class CustomerList {
     private ArrayList<Customer> customers;
-    private static  CustomerList ourInstance = new CustomerList();
+    private static  CustomerList ourInstance =new CustomerList();
 
     public static CustomerList getInstance() {
         return ourInstance;
@@ -53,4 +53,5 @@ public class CustomerList {
         }
         return null;
     }
+
 }

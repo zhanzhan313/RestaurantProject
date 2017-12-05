@@ -25,13 +25,13 @@
         </activity>
         <activity
             android:name=".Controller.LoginActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
         <activity
             android:name=".Controller.SignupActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
         <activity
             android:name=".Controller.MenuActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
 
         <service android:name=".Controller.FoodOrderServer" />
         <service
@@ -43,7 +43,8 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".Controller.OrderHistory"></activity>
+        <activity android:name=".Controller.OrderHistory" />
+        <activity android:name=".Controller.OrderDetails"></activity>
     </application>
 
 </manifest>

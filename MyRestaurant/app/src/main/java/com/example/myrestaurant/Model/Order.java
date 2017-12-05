@@ -19,40 +19,50 @@ public class Order implements Parcelable {
     private static  int orderIdCount=0;
     private  int orderId;
 
-//    public enum OrderStatus{
-//        Submitted("Submitted"),
-//        NotAvailable("Not Available"),
-//        PartiallyAvailable("Partially Available"),
-//        Preparing("Preparing"),
-//        Packaging("Packaging"),
-//        FoodReady("Food Ready");
-//
-//        private String value;
-//        private OrderStatus(String value){
-//            this.value = value;
-//        }
-//
-//        public String getValue() {
-//            return value;
-//        }
-//
-//        @Override
-//        public String toString() {
-//            return value;
-//        }
-//    }
+    public enum OrderStatus{
+        Submitted("Submitting"),
+        Receiving("Receiving"),
+        Preparing("Preparing"),
+        Packaging("Packaging"),
+        FoodReady("Food Ready"),
+        NotAvailable("Not Available"),
+        PartiallyAvailable("Partially Available"),
+        PartiallyAvailableAccepted("Partially Available Accepted"),
+        PartiallyAvailableCancelled("Partially Available Cancelled");
+
+
+
+        private String value;
+        private OrderStatus(String value){
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
 //public Order( ArrayList<Integer> orderItemQuantity) {
 //    this.orderItemQuantity = orderItemQuantity;
 //}
 public Order()
-{orderPlacedTime=getStringToday();
+{   orderPlacedTime=getStringToday();
     orderIdCount++;
     orderId=orderIdCount;
+    orderItemQuantity=new ArrayList<>();
+    for(int i=0;i<4;i++)
+    {
+        orderItemQuantity.add(0);
+    }
 
 }
     public static String getStringToday() {
         Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd HHmmss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
         String dateString = formatter.format(currentTime);
         return dateString;
     }

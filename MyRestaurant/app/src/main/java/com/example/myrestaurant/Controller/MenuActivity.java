@@ -1,10 +1,13 @@
 package com.example.myrestaurant.Controller;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -22,7 +25,6 @@ import com.example.myrestaurant.Model.Order;
 import com.example.myrestaurant.R;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 
 public class MenuActivity extends AppCompatActivity {
@@ -37,10 +39,15 @@ public class MenuActivity extends AppCompatActivity {
     private static String userName = "";
     private MenuActivity.MyOrderReceiver receiver = null;
     Button placeOrderbutton;
+    Order order;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SignupActivity.instance.finish();
-        LoginActivity.instance.finish();
+        if(SignupActivity.instance!=null)
+        {
+            SignupActivity.instance.finish();
+            LoginActivity.instance.finish();
+        }
+
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
@@ -57,10 +64,10 @@ public class MenuActivity extends AppCompatActivity {
         totalPriceText = (TextView) findViewById(R.id.total_price);
         totalItemsText = (TextView) findViewById(R.id.total_item);
 
-        quantityText_1 = (EditText) findViewById(R.id.quantity_1);
-        quantityText_2 = (EditText) findViewById(R.id.quantity_2);
-        quantityText_3 = (EditText) findViewById(R.id.quantity_3);
-        quantityText_4 = (EditText) findViewById(R.id.quantity_4);
+        quantityText_1 = (EditText) findViewById(R.id.Viewquantity_1);
+        quantityText_2 = (EditText) findViewById(R.id.Viewquantity_2);
+        quantityText_3 = (EditText) findViewById(R.id.Viewquantity_3);
+        quantityText_4 = (EditText) findViewById(R.id.Viewquantity_4);
 
         priceText_1.setText("$"+ price_1);
         priceText_2.setText("$"+ price_2);
@@ -285,10 +292,14 @@ public class MenuActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Nothing in Chart!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                //int [] foodquantity=new int[]{quantity1,quantity2,quantity3,quantity4};
-                Order order=new Order();
+                quantityText_1.setText(""+0);
+                quantityText_2.setText(""+0);
+                quantityText_3.setText(""+0);
+                quantityText_4.setText(""+0);
+                Toast.makeText(getApplicationContext(), "Order Successful! Estimated time = 15 mins", Toast.LENGTH_SHORT).show();
+                order=new Order();
                 order.setActionTodo("");
-//                order.setStatus(Order.OrderStatus.Submitted.getValue());
+                order.setStatus(Order.OrderStatus.Submitted.getValue());
                 Log.d(TAG, "setStatus"+"Sending");
                 ArrayList<Integer> foodquantity = new ArrayList<Integer>();
                 foodquantity.add(quantity1);
@@ -315,10 +326,7 @@ public class MenuActivity extends AppCompatActivity {
                 Intent intent = new Intent(MenuActivity.this, BackgroundService.class);
                 Log.d(TAG, "Just before intent sending");
                 Log.d(TAG, "totalPrice"+totalPrice);
-//                quantityText_1.setText("");
-//                quantityText_2.setText("");
-//                quantityText_3.setText("");
-//                quantityText_4.setText("");
+
 
                 intent.putExtra(BackgroundService.actiontodo, "OrderPlacement");
                 Log.d(TAG, "Passing username now to Food order server with Order, order: " + order);
@@ -371,21 +379,51 @@ public class MenuActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "In BroadcastReceiver ");
             Bundle bundle=intent.getExtras();
-            String test = bundle.getString("teststring");
-            Boolean orderplaced = bundle.getBoolean("isorderplaced");
-            int estimatedtime = bundle.getInt("estimatedtime");
-            Log.d(TAG, "test = " + test);
-            Log.d(TAG, "In BroadcastReceiver : orderplaced: "+ orderplaced + " and estimatedtime " + estimatedtime);
-            if(orderplaced == true)
+            String test = bundle.getString("OrderStatus");
+
+            Log.d(TAG, "In BroadcastReceiver : orderplaced: "+ test + " and estimatedtime " );
+            if(test .equals("avaliable"))
             {
-                Toast toast=Toast.makeText(getApplicationContext(), "Order Successful! Estimated time = " + estimatedtime + " mins", Toast.LENGTH_SHORT);
-                toast.show();
+               Toast.makeText(getApplicationContext(), "Order Successful!  " , Toast.LENGTH_SHORT).show();
+
             }
-            else
+            else if(test .equals("PartlyAvaliable"))
             {
-                Toast toast=Toast.makeText(getApplicationContext(), "Order Fail!", Toast.LENGTH_SHORT);
-                toast.show();
+                showDialog();
+
+         }
+            else if(test .equals("OrderFail"))
+            {
+                Toast.makeText(getApplicationContext(), "Order fail, partially order Contains onthing!  " , Toast.LENGTH_SHORT).show();
             }
         }
+    }
+    private void showDialog() {
+        Dialog dialog=new AlertDialog.Builder(this)
+                .setTitle("Order partially Available")//set title
+                .setMessage("You want this part of Order or cancel this order？")//inside
+                //want button
+                .setPositiveButton("I want this Order", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "Order Successfully!  " , Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MenuActivity.this, BackgroundService.class);
+                        Log.d(TAG, "Just before intent sending");
+                        Log.d(TAG, "totalPrice"+totalPrice);
+                        intent.putExtra(BackgroundService.actiontodo, "ParticallyOrderPlacement");
+                        Log.d(TAG, "Passing username now to Food order server with Order, order: " + order);
+                        intent.putExtra("ParticallyOrderObject", order);
+                        startService(intent);
+                    }
+                })
+                //cancel
+                .setNegativeButton("Cancel this Order", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "Order Cancelled!  " , Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .create();//创建对话框
+        dialog.show();//显示对话框
     }
 }

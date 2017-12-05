@@ -129,7 +129,7 @@
         android:layout_height="30dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/add_1"
-        app:layout_constraintLeft_toRightOf="@+id/quantity_1"
+        app:layout_constraintLeft_toRightOf="@+id/Viewquantity_1"
         android:layout_marginLeft="7dp"
         app:layout_constraintTop_toTopOf="@+id/item_remove_1"
         android:layout_marginTop="0dp" />
@@ -142,7 +142,7 @@
         android:src="@drawable/add_1"
         app:layout_constraintTop_toTopOf="@+id/item_remove_2"
         android:layout_marginTop="0dp"
-        app:layout_constraintLeft_toRightOf="@+id/quantity_2"
+        app:layout_constraintLeft_toRightOf="@+id/Viewquantity_2"
         android:layout_marginLeft="7dp" />
 
     <ImageView
@@ -151,7 +151,7 @@
         android:layout_height="30dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/add_1"
-        app:layout_constraintLeft_toRightOf="@+id/quantity_3"
+        app:layout_constraintLeft_toRightOf="@+id/Viewquantity_3"
         android:layout_marginLeft="7dp"
         app:layout_constraintTop_toTopOf="@+id/item_remove_3"
         android:layout_marginTop="0dp" />
@@ -162,7 +162,7 @@
         android:layout_height="30dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/add_1"
-        app:layout_constraintLeft_toRightOf="@+id/quantity_4"
+        app:layout_constraintLeft_toRightOf="@+id/Viewquantity_4"
         android:layout_marginLeft="7dp"
         app:layout_constraintTop_toTopOf="@+id/item_remove_4"
         android:layout_marginTop="0dp" />
@@ -262,7 +262,7 @@
         android:layout_marginTop="17dp" />
 
     <EditText
-        android:id="@+id/quantity_1"
+        android:id="@+id/Viewquantity_1"
         android:layout_width="55dp"
         android:layout_height="40dp"
         android:layout_alignParentEnd="true"
@@ -285,7 +285,7 @@
 
 
     <EditText
-        android:id="@+id/quantity_2"
+        android:id="@+id/Viewquantity_2"
         android:layout_width="55dp"
         android:layout_height="40dp"
         android:layout_alignParentEnd="true"
@@ -306,7 +306,7 @@
         android:layout_marginBottom="1dp"/>
 
     <EditText
-        android:id="@+id/quantity_3"
+        android:id="@+id/Viewquantity_3"
         android:layout_width="55dp"
         android:layout_height="40dp"
         android:layout_alignParentEnd="true"
@@ -327,7 +327,7 @@
         android:layout_marginBottom="1dp" />
 
     <EditText
-        android:id="@+id/quantity_4"
+        android:id="@+id/Viewquantity_4"
         android:layout_width="55dp"
         android:layout_height="40dp"
         android:layout_alignParentEnd="true"

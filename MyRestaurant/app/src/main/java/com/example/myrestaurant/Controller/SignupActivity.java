@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myrestaurant.Model.SignupLogin;
 import com.example.myrestaurant.R;
 
 /**

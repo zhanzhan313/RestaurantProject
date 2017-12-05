@@ -6,7 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -57,7 +61,7 @@ private  ArrayList<String> data=new ArrayList<>();
             Log.d(TAG, "In BroadcastReceiver : customer: "+ name);
 //            orders.clear();
             Customer customer=customerlist.getCustomer(name);
-
+            Log.d(TAG, "In BroadcastReceiver : customer: "+ customer);
             orders=customer.getOrderList().getOrderArrayList();
             Log.d(TAG, "In BroadcastReceiver : orders: "+ orders);
 //            adapter.notifyDataSetChanged();
@@ -65,18 +69,36 @@ private  ArrayList<String> data=new ArrayList<>();
 
                     for(Order order:orders)
                     {
-                        data.add(String.valueOf( order.getOrderPlacedTime() +"\n"+
-                                order.getOrderId() +"\n"+
-                                "Burgers "+order.getOrderItemQuantity().get(0)+"\n"+
-                                "French Fries "+order.getOrderItemQuantity().get(1)+
-                                "Chickens "+order.getOrderItemQuantity().get(2)+
-                                "Onion Rings "+order.getOrderItemQuantity().get(3)
+                        data.add(String.valueOf( order.getOrderPlacedTime() +"        "+
+                                "Order ID : "+order.getOrderId() +"\n"+
+                                "Burgers :                                             "+order.getOrderItemQuantity().get(0)+"\n"+
+                                "French Fries :                                     "+order.getOrderItemQuantity().get(1)+"\n"+
+                                "Chickens :                                          "+order.getOrderItemQuantity().get(2)+"\n"+
+                                "Onion Rings :                                     "+order.getOrderItemQuantity().get(3)+"\n"+
+                                "----------"+order.getStatus()+"......"
 
                         ));
                         i++;
                     }
             ListView listview=(ListView)findViewById(R.id.list_item);
             listview.setAdapter(adapter);
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Order order=orders.get(position);
+//                    Intent intent=new Intent(OrderHistory.this,BackgroundService.class);
+//                    intent.putExtra(BackgroundService.actiontodo, "ViewOrderDetail");
+//                    Log.d(TAG, "ViewOrderDetail " + order);
+//                    intent.putExtra("DetailOrderObject", order);
+//                    startService(intent);
+                    Intent intent=new Intent(OrderHistory.this,OrderDetails.class);
+
+                    Log.d(TAG, "ViewOrderDetail " + order);
+                    intent.putExtra("DetailOrderObject", order);
+                    startActivity(intent);
+                }
+            });
         }
     }
 }
