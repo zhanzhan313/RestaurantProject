@@ -8,7 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.myrestaurant.Controller.SignupActivity">
+    tools:context="com.example.myrestaurant.Controller.SignupActivity"
+    android:background="@drawable/d9">
 
     <TextView
         android:id="@+id/textView3"
@@ -102,28 +103,12 @@
         android:id="@+id/SignupText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView9"
-        android:layout_alignBottom="@+id/textView9"
-        android:layout_margin="5dp"
-        android:layout_toEndOf="@+id/textView9"
-        android:layout_toRightOf="@+id/textView9"
-        android:text="Click Here to Login"
-        android:textColor="@color/colorAccent"
-        android:textStyle="normal|bold" />
-
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
-        android:text="Already have an Account?"
+        android:text="Have a Account?   Click Here to Login"
         android:textColor="@color/colorAccent"
         android:textStyle="normal|bold"
-        android:layout_marginLeft="47dp"
-        android:layout_marginStart="47dp"
+        android:layout_marginTop="16dp"
         android:layout_below="@+id/buttonSubmit"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
 

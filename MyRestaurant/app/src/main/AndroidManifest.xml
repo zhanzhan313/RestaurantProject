@@ -33,7 +33,6 @@
             android:name=".Controller.MenuActivity"
             android:label="@string/app_name" />
 
-        <service android:name=".Controller.FoodOrderServer" />
         <service
             android:name=".Controller.BackgroundService"
             android:enabled="true"

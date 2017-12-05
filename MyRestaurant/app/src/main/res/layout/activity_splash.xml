@@ -9,17 +9,16 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.myrestaurant.Controller.SplashActivity"
-    android:background="@drawable/w2">
+    android:background="@drawable/b1">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="153dp"
-        android:text="Online Ordering "
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="Welcome"
         android:textColor="@android:color/white"
         android:textSize="36sp"
-        android:textStyle="bold"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:textStyle="bold" />
 </RelativeLayout>
