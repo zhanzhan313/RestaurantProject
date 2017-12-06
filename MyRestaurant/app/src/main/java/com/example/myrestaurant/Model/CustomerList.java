@@ -2,10 +2,6 @@ package com.example.myrestaurant.Model;
 
 import java.util.ArrayList;
 
-/**
- * Created by 站站 on 2017/12/2.
- */
-
 public class CustomerList {
     private ArrayList<Customer> customers;
     private static  CustomerList ourInstance =new CustomerList();
