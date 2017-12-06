@@ -71,7 +71,7 @@ public class SplashActivity extends AppCompatActivity {
     private boolean ifInOpenHour()
     {
         SimpleDateFormat formatters = new SimpleDateFormat("HHmm");
-        Date curDates = new Date(System.currentTimeMillis());// 获取当前时间
+        Date curDates = new Date(System.currentTimeMillis());
         String strs = formatters.format(curDates);
         int curDateInt=Integer.parseInt(strs);
         System.out.println(strs);
