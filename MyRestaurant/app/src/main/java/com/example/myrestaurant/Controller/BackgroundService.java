@@ -19,7 +19,7 @@ import java.util.Objects;
 public class BackgroundService extends Service {
     private static final String TAG = "BackgroundService";
     private CustomerList customerList=CustomerList.getInstance();
-    private Customer currentCustomer;
+    public static Customer currentCustomer;
     private Inventory inventory=Inventory.getInstance();
     private Order partialOrder=new Order();
 

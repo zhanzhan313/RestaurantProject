@@ -1,32 +1,60 @@
 package com.example.myrestaurant.Controller;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.myrestaurant.Model.Customer;
 import com.example.myrestaurant.Model.Order;
 import com.example.myrestaurant.R;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class OrderDetails extends AppCompatActivity {
+    public static final int UPDATE_TEXTFILE=1;
     TextView priceText_1, priceText_2,priceText_3,priceText_4, totalPriceText, orderStatus;
     private static final String TAG = "OrderDetails";
+    private Customer customer=BackgroundService.currentCustomer;
+    private Order currentorder;
     private  TextView quantityText_1, quantityText_2, quantityText_3, quantityText_4;
     private int quantity_1 = 0, quantity_2 = 0,quantity_3 =0,quantity_4 =0, totalItems=0;
+
+    private Handler handler=new Handler() {
+
+        public void handleMessage(Message msg)
+        {
+
+            switch (msg.what)
+            {
+
+                case UPDATE_TEXTFILE:
+                    Log.d(TAG, "Inside msg"+currentorder.getStatus());
+                    orderStatus.setText(currentorder.getStatus());
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_details);
         Intent intent=super.getIntent();
         Bundle b = intent.getExtras();
-        Order currentorder = (Order) b.get("DetailOrderObject");
-        ArrayList<Integer> orderNums= currentorder.getOrderItemQuantity();
-        Log.d(TAG, "onCreate: "+currentorder);
-        Log.d(TAG, "onCreate: "+currentorder.getOrderPlacedTime());
+        Log.d(TAG, "onCreate: "+customer);
+        int index=b.getInt("DetailOrderObject");
+        currentorder=customer.getOrderList().getOrderArrayList().get(index);
+        ArrayList<Integer> orderNums= customer.getOrderList().getOrderArrayList().get(index).getOrderItemQuantity();
+        Log.d(TAG, "onCreate: "+orderNums);
+//        Log.d(TAG, "onCreate: "+currentorder.getOrderPlacedTime());
 
         quantityText_1 = (TextView) findViewById(R.id.Viewquantity_1);
         quantityText_2 = (TextView) findViewById(R.id.Viewquantity_2);
@@ -57,5 +85,15 @@ public class OrderDetails extends AppCompatActivity {
         orderStatus.setText(currentorder.getStatus());
 
         Log.d(TAG, "Information Updated ");
+        final long period = 1000;
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Log.d(TAG, "Inside timer method");
+                Message message=new Message();
+                message.what=UPDATE_TEXTFILE;
+                handler.sendMessage(message);
+            }
+        }, 0, period);
     }
 }

@@ -126,7 +126,7 @@ private  ArrayList<String> data=new ArrayList<>();
             {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Order order=orders.get(position);
+//                    Order order=orders.get(position);
 //                    Intent intent=new Intent(OrderHistory.this,BackgroundService.class);
 //                    intent.putExtra(BackgroundService.actiontodo, "ViewOrderDetail");
 //                    Log.d(TAG, "ViewOrderDetail " + order);
@@ -134,8 +134,8 @@ private  ArrayList<String> data=new ArrayList<>();
 //                    startService(intent);
                     Intent intent=new Intent(OrderHistory.this,OrderDetails.class);
 
-                    Log.d(TAG, "ViewOrderDetail " + order);
-                    intent.putExtra("DetailOrderObject", order);
+                    Log.d(TAG, "ViewOrderDetail " + position);
+                    intent.putExtra("DetailOrderObject", position);
                     startActivity(intent);
                 }
             });
