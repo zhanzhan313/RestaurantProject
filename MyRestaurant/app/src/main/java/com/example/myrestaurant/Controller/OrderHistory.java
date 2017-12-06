@@ -57,7 +57,6 @@ private  ArrayList<String> data=new ArrayList<>();
         receiver= new MyReceiver();
         IntentFilter filter=new IntentFilter();
 
-        this.setTitle("Welcome " + BackgroundService.currentCustomer.getUserName() + "!");
         filter.addAction(".BackOrderHistory");
         this.registerReceiver(receiver,filter);
 
@@ -100,12 +99,10 @@ private  ArrayList<String> data=new ArrayList<>();
             Bundle bundle=intent.getExtras();
             String name = bundle.getString("BackOrderHistory");
             Log.d(TAG, "In BroadcastReceiver : customer: "+ name);
-//            orders.clear();
             Customer customer=customerlist.getCustomer(name);
             Log.d(TAG, "In BroadcastReceiver : customer: "+ customer);
             orders=customer.getOrderList().getOrderArrayList();
             Log.d(TAG, "In BroadcastReceiver : orders: "+ orders);
-//            adapter.notifyDataSetChanged();
             int i=0;
 
                     for(Order order:orders)
@@ -127,12 +124,6 @@ private  ArrayList<String> data=new ArrayList<>();
             {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    Order order=orders.get(position);
-//                    Intent intent=new Intent(OrderHistory.this,BackgroundService.class);
-//                    intent.putExtra(BackgroundService.actiontodo, "ViewOrderDetail");
-//                    Log.d(TAG, "ViewOrderDetail " + order);
-//                    intent.putExtra("DetailOrderObject", order);
-//                    startService(intent);
                     Intent intent=new Intent(OrderHistory.this,OrderDetails.class);
 
                     Log.d(TAG, "ViewOrderDetail " + position);

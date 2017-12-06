@@ -21,8 +21,8 @@ public class Order implements Parcelable,Runnable{
     private  int orderId;
 
     public enum OrderStatus{
-        Submitted("Submitted"),
-        Receiving("Received"),
+        Submitted("Submitting"),
+        Receiving("Receiving"),
         Preparing("Preparing"),
         Packaging("Packaging"),
         FoodReady("Food Ready"),
@@ -177,7 +177,7 @@ private void calculatime()
 
     @Override
     public void run() {
-        String[] order_status = {"Submitted","Received","Preparing","Packaging","Food Ready"};
+        String[] order_status = {"Submitting","Receiving","Preparing","Packaging","Food Ready"};
         Random rn = new Random();
         int sleepTime = rn.nextInt(60 - 20 + 1) + 20 ; //Sleep Time for thread between 20 to 60 seconds.
         for (int i=0; i<order_status.length; i++) {

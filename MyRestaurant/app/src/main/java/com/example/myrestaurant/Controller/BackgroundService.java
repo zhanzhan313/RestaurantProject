@@ -1,7 +1,6 @@
 package com.example.myrestaurant.Controller;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,12 +13,7 @@ import com.example.myrestaurant.Model.CustomerList;
 import com.example.myrestaurant.Model.Inventory;
 import com.example.myrestaurant.Model.Order;
 
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.Objects;
-import java.util.Timer;
 
 
 public class BackgroundService extends Service {
@@ -28,59 +22,15 @@ public class BackgroundService extends Service {
     public static Customer currentCustomer;
     private Inventory inventory=Inventory.getInstance();
     private Order partialOrder=new Order();
-    private Timer timer;
 
     public static final String actiontodo = "";
 
 
-    public void createInventoryDatabase(){
-        FileOutputStream out = null;
-        BufferedWriter writer = null;
-        try {
-            out = openFileOutput("SupplierInventory.txt", Context.MODE_PRIVATE);
-            writer = new BufferedWriter(new OutputStreamWriter(out));
-
-            writer.write("Burger 500" + "\n" + "Chicken 500" + "\n" + "FrenchFries 500" +  "\n" + "OnionRings 500");
-            writer.flush();
-
-            Log.d(TAG, "Done adding items to Supplier database");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (writer != null) {
-                    writer.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
     @Override
     public void onCreate() {
 
-        Log.d(TAG, "OnCreate");
-        timer = new Timer();
-        /* Create Supplier Database */
-        createInventoryDatabase();
-        inventory.setmContext(BackgroundService.this);
-        inventory.setFoodItemCountNeeded(50);
-
-        timer = new Timer();
-        timer.scheduleAtFixedRate(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        Thread inventoryThread = new Thread(inventory);
-                        inventoryThread.start();
-                    }
-                },
-                2000, (30 * 60 * 1000)
-        );
-
+        Log.d(TAG, "onCreate"+inventory.getInventory());
     }
-
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
@@ -262,4 +212,48 @@ private void orderFromInventory(Order currentorder)
         Log.d(TAG, "Sent broadcast LoginSuccess");
         sendBroadcast(broadcastIntent);
     }
+
+//    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+//    public void updateInventoryDatabase(Inventory inventory){
+//        FileInputStream in = null;
+//        FileOutputStream out = null;
+//        BufferedReader reader = null;
+//        StringBuilder content = new StringBuilder();
+//        try {
+//            Log.d(TAG, "inside updateInventoryDatabase");
+//            in = openFileInput("InventoryDatabase.txt");
+//            reader = new BufferedReader(new InputStreamReader(in));
+//            String[] tempstring = null;
+//            String Currline = "";
+//            int FoodItemCount;
+//            while ((Currline = reader.readLine()) != null) {
+//                Log.d(TAG, "Currline is " + Currline);
+//                oldContent = Currline;
+//                tempstring = Currline.split(" ");
+//                System.out.println("Value = " + tempstring[1]);
+//                FoodItemCount = getFoodItemCount(tempstring, inventory);
+//                // Now update with the latest food item count
+//                String newContent = oldContent.replaceAll(tempstring[1], Integer.toString(FoodItemCount));
+//                Log.d(TAG, "Newline is " + newContent);
+//
+//                out = openFileOutput("InventoryDatabase.txt", Context.MODE_PRIVATE);
+//                bufout = new BufferedWriter(new OutputStreamWriter(out));
+//
+//                bufout.write(newContent);
+//                bufout.flush();
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            if (reader != null) {
+//                try {
+//                    reader.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        return;
+//    }
 }

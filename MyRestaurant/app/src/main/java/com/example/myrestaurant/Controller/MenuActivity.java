@@ -65,8 +65,8 @@ public class MenuActivity extends AppCompatActivity {
 //            userName = getIntent().getStringExtra("username");
 //            NameGotFlag = false;
 //        }
-            this.setTitle("Welcome " + BackgroundService.currentCustomer.getUserName() + "!");
-            Log.d(TAG, "Received username at MenuActivity from LoginActivity " + userName);
+        this.setTitle("Welcome " + BackgroundService.currentCustomer.getUserName() + "!");
+        Log.d(TAG, "Received username at MenuActivity from LoginActivity " + userName);
 
 
         priceText_1 = (TextView) findViewById(R.id.item_price_1);
@@ -439,7 +439,7 @@ public class MenuActivity extends AppCompatActivity {
                 Log.d(TAG, "onReceive: PartlyAvaliable,before dialog");
                 showDialog();
                 Log.d(TAG, "onReceive: PartlyAvaliable,after dialog");
-         }
+            }
             else if(test.equals("OrderFail"))
             {
 //                Toast.makeText(getApplicationContext(), "Order fail, partially order Contains Nothing!  " , Toast.LENGTH_SHORT).show();
