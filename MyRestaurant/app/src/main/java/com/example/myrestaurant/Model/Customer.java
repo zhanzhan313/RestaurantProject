@@ -3,8 +3,6 @@ package com.example.myrestaurant.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-
 /**
  * Created by vj on 11/25/17.
  */
@@ -14,12 +12,6 @@ public class Customer implements Parcelable{
     private   String passWord;
     private OrderList orderList;
 
-//    protected Customer(Parcel in) {
-//        userName=in.readString();
-//        passWord = in.readString();
-//
-//
-//    }
     public Customer()
     {
         orderList=new OrderList();
@@ -78,9 +70,6 @@ public class Customer implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
 
-//        private   String userName;
-//        private   String passWord;
-//        private OrderList orderList;
         dest.writeString(userName);
         dest.writeString(passWord);
         dest.writeParcelable(orderList,flags);
