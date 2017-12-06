@@ -12,8 +12,7 @@
         android:id="@+id/total_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginLeft="16dp"
         android:text="0"
         app:layout_constraintLeft_toRightOf="@+id/text_view"
         app:layout_constraintTop_toTopOf="@+id/text_view" />
@@ -32,11 +31,10 @@
         android:id="@+id/text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total Price:"
-        android:layout_marginLeft="16dp"
-        app:layout_constraintLeft_toLeftOf="@+id/placeOrderbutton"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/placeOrderbutton" />
+        android:layout_marginBottom="56dp"
+        android:text="Sub Total:"
+        app:layout_constraintBottom_toTopOf="@+id/placeOrderbutton"
+        app:layout_constraintLeft_toLeftOf="@+id/placeOrderbutton" />
 
     <ImageView
         android:id="@+id/item_img_1"
@@ -349,10 +347,10 @@
 
     <Button
         android:id="@+id/placeOrderbutton"
-        android:layout_width="168dp"
-        android:layout_height="32dp"
-        android:layout_marginBottom="35dp"
-        android:layout_marginRight="92dp"
+        android:layout_width="187dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="36dp"
+        android:layout_marginRight="96dp"
         android:background="@color/colorPrimary"
         android:text="PLACE ORDER"
         android:textColor="@android:color/white"
@@ -368,5 +366,40 @@
         android:text="Total Items:"
         app:layout_constraintBottom_toTopOf="@+id/text_view"
         app:layout_constraintLeft_toLeftOf="@+id/text_view" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="TAX:"
+        app:layout_constraintStart_toStartOf="@+id/text_view"
+        app:layout_constraintTop_toBottomOf="@+id/text_view" />
+
+    <TextView
+        android:id="@+id/taxView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:text="0"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toTopOf="@+id/textView6" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total:"
+        app:layout_constraintStart_toStartOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <TextView
+        android:id="@+id/groundTotal_TV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:text="0"
+        app:layout_constraintStart_toEndOf="@+id/textView7"
+        app:layout_constraintTop_toTopOf="@+id/textView7" />
 
 </android.support.constraint.ConstraintLayout>
