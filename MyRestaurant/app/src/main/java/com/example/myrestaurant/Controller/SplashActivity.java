@@ -10,7 +10,7 @@ import com.example.myrestaurant.R;
 public class SplashActivity extends AppCompatActivity {
 
     /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 4000;
+    private final int SPLASH_DISPLAY_LENGTH = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,22 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, SPLASH_DISPLAY_LENGTH);
 
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                /* Create an Intent that will start the Next-Activity. */
+
+                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                //finish();
+
+            }
+        }, SPLASH_DISPLAY_LENGTH);
     }
 
 }
