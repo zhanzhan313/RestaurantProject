@@ -357,10 +357,6 @@ public class MenuActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Nothing in Chart!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-//                quantityText_1.setText(""+0);
-//                quantityText_2.setText(""+0);
-//                quantityText_3.setText(""+0);
-//                quantityText_4.setText(""+0);
                 order=new Order();
                 order.setActionTodo("");
                 Log.d(TAG, "setStatus"+"Sending");
@@ -378,16 +374,11 @@ public class MenuActivity extends AppCompatActivity {
                 Intent intent = new Intent(MenuActivity.this, BackgroundService.class);
                 Log.d(TAG, "Just before intent sending OrderPlacement");
                 intent.putExtra(BackgroundService.actiontodo, "OrderPlacement");
-                Log.d(TAG, "Passing username now to Food order server with Order, order: " + order);
                 intent.putExtra("OrderObject", order);
                 startService(intent);
 
             }
         });
-
-
-
-
     }
 
     @Override
@@ -399,7 +390,6 @@ public class MenuActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mainmenu,menu);
         return true;
-//        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -430,12 +420,11 @@ public class MenuActivity extends AppCompatActivity {
             Log.d(TAG, "In BroadcastReceiver : orderplaced: "+ test + " and estimatedtime " );
             if(test.equals("avaliable"))
             {  Log.d(TAG, "onReceive: avaliable");
-//               Toast.makeText(getApplicationContext(), "Order Successful!  " , Toast.LENGTH_SHORT).show();
                 Toast toast = Toast.makeText(MenuActivity.this, "Order Successful!  " , Toast.LENGTH_LONG);
-                LinearLayout toastView = (LinearLayout) toast.getView();//获取Toast的LinearLayout，注意需要是线性布局
+                LinearLayout toastView = (LinearLayout) toast.getView();
                 ImageView image = new ImageView(MenuActivity.this);
-                image.setImageResource(R.drawable.success);//生成一个现实Logo的ImageView
-                toastView.addView(image);//将ImageView加载到LinearLayout上面
+                image.setImageResource(R.drawable.success);
+                toastView.addView(image);
                 toast.show();
             }
             else if(test.equals("PartlyAvaliable"))
@@ -447,12 +436,6 @@ public class MenuActivity extends AppCompatActivity {
             else if(test.equals("OrderFail"))
             {
                 Toast.makeText(getApplicationContext(), "Order fail, partially order Contains Nothing!  " , Toast.LENGTH_SHORT).show();
-//                Toast toast = Toast.makeText(MenuActivity.this, "Order fail, partially order Contains Nothing!  " , Toast.LENGTH_LONG);
-//                LinearLayout toastView = (LinearLayout) toast.getView();//获取Toast的LinearLayout，注意需要是线性布局
-//                ImageView image = new ImageView(MenuActivity.this);
-//                image.setImageResource(R.drawable.fail);//生成一个现实Logo的ImageView
-//                toastView.addView(image);//将ImageView加载到LinearLayout上面
-//                toast.show();
             }
 
             quantityText_1.setText(""+0);
@@ -473,13 +456,11 @@ public class MenuActivity extends AppCompatActivity {
                 .setPositiveButton("I want this Order", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        Toast.makeText(getApplicationContext(), "Order Successfully!  " , Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MenuActivity.this, BackgroundService.class);
                         Log.d(TAG, "Just before intent sending");
                         Log.d(TAG, "totalPrice"+totalPrice);
                         intent.putExtra(BackgroundService.actiontodo, "ParticallyOrderPlacement");
                         Log.d(TAG, "Passing username now to Food order server with Order, order: " + order);
-//                        intent.putExtra("ParticallyOrderObject", order);
                         startService(intent);
                     }
                 })
@@ -490,7 +471,7 @@ public class MenuActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Order Cancelled!  " , Toast.LENGTH_SHORT).show();
                     }
                 })
-                .create();//创建对话框
-        dialog.show();//显示对话框
+                .create();
+        dialog.show();
     }
 }
