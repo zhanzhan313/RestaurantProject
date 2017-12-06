@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,8 +50,8 @@ public class MenuActivity extends AppCompatActivity {
         }
         receiver = new MenuActivity.MyOrderReceiver();
         IntentFilter filter = new IntentFilter();
-
         filter.addAction(".OrderStatus");
+
         MenuActivity.this.registerReceiver(receiver,filter);
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
@@ -368,8 +369,13 @@ public class MenuActivity extends AppCompatActivity {
             Log.d(TAG, "In BroadcastReceiver : orderplaced: "+ test + " and estimatedtime " );
             if(test.equals("avaliable"))
             {  Log.d(TAG, "onReceive: avaliable");
-               Toast.makeText(getApplicationContext(), "Order Successful!  " , Toast.LENGTH_SHORT).show();
-
+//               Toast.makeText(getApplicationContext(), "Order Successful!  " , Toast.LENGTH_SHORT).show();
+                Toast toast = Toast.makeText(MenuActivity.this, "Order Successful!  " , Toast.LENGTH_LONG);
+                LinearLayout toastView = (LinearLayout) toast.getView();//获取Toast的LinearLayout，注意需要是线性布局
+                ImageView image = new ImageView(MenuActivity.this);
+                image.setImageResource(R.drawable.success);//生成一个现实Logo的ImageView
+                toastView.addView(image);//将ImageView加载到LinearLayout上面
+                toast.show();
             }
             else if(test.equals("PartlyAvaliable"))
             {
@@ -380,7 +386,14 @@ public class MenuActivity extends AppCompatActivity {
             else if(test.equals("OrderFail"))
             {
                 Toast.makeText(getApplicationContext(), "Order fail, partially order Contains Nothing!  " , Toast.LENGTH_SHORT).show();
+//                Toast toast = Toast.makeText(MenuActivity.this, "Order fail, partially order Contains Nothing!  " , Toast.LENGTH_LONG);
+//                LinearLayout toastView = (LinearLayout) toast.getView();//获取Toast的LinearLayout，注意需要是线性布局
+//                ImageView image = new ImageView(MenuActivity.this);
+//                image.setImageResource(R.drawable.fail);//生成一个现实Logo的ImageView
+//                toastView.addView(image);//将ImageView加载到LinearLayout上面
+//                toast.show();
             }
+
         }
     }
     private void showDialog() {

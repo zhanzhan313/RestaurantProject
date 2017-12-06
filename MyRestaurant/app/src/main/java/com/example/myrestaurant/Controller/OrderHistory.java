@@ -40,13 +40,6 @@ private  ArrayList<String> data=new ArrayList<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.orderhistory);
 
-
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         refreshBut=(Button)findViewById(R.id.refreshBut);
         refreshBut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +59,13 @@ private  ArrayList<String> data=new ArrayList<>();
 
         filter.addAction(".BackOrderHistory");
         this.registerReceiver(receiver,filter);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         // The activity has become visible (it is now "resumed").
     }
 

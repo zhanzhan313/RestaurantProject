@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyRestaurant</string>
+    <string name="app_name">Hungry Husky</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

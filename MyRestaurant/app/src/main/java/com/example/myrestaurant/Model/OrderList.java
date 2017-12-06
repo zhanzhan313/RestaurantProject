@@ -20,6 +20,11 @@ public class OrderList implements Parcelable{
     public ArrayList<Order> getOrderArrayList() {
         return orderArrayList;
     }
+    public Order newOrderToadd()
+    {   Order order=new Order();
+        orderArrayList.add(order);
+        return order;
+    }
 
     public void setOrderArrayList(ArrayList<Order> orderArrayList) {
         this.orderArrayList = orderArrayList;

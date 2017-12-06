@@ -47,31 +47,31 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+                getUsername = editTextUsername.getText().toString();
+                getPassword = editTextPassword.getText().toString();
+                if(getUsername.equals("")||getPassword.equals(""))
+                {
+                    Toast.makeText(getApplicationContext(), "Login Fail! Please input Something", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 new  Thread(new Runnable() {
                     @Override
                     public void run() {
-                        getUsername = editTextUsername.getText().toString();
-                        getPassword = editTextPassword.getText().toString();
-                        if(getUsername.equals("")||getPassword.equals(""))
-                        {
-                            Toast.makeText(getApplicationContext(), "Login Fail! Please input Something", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        Log.d(TAG, "GetUsername: "+getUsername);
-                        Log.d(TAG, "GetPassword: "+getPassword);
-                        Intent intent = new Intent(SignupActivity.this, BackgroundService.class);
-                        Log.d(TAG, "Just before intent sending");
-                        intent.putExtra(BackgroundService.actiontodo, "SignUp");
-                        intent.putExtra("Username", getUsername);
-                        intent.putExtra("Password", getPassword);
-                        startService(intent);
 
-                        receiver=new MyReceiver();
-                        IntentFilter filter=new IntentFilter();
+                Log.d(TAG, "GetUsername: "+getUsername);
+                Log.d(TAG, "GetPassword: "+getPassword);
+                Intent intent = new Intent(SignupActivity.this, BackgroundService.class);
+                Log.d(TAG, "Just before intent sending");
+                intent.putExtra(BackgroundService.actiontodo, "SignUp");
+                intent.putExtra("Username", getUsername);
+                intent.putExtra("Password", getPassword);
+                startService(intent);
 
-                        filter.addAction(".SignUpStatus");
-                        SignupActivity.this.registerReceiver(receiver,filter);
+                receiver=new MyReceiver();
+                IntentFilter filter=new IntentFilter();
 
+                filter.addAction(".SignUpStatus");
+                SignupActivity.this.registerReceiver(receiver,filter);
                     }
                 }).start();
                 // TODO Auto-generated method stub

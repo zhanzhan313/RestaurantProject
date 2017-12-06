@@ -104,11 +104,14 @@ public class BackgroundService extends Service {
             Log.d(TAG, "CurrentInventory"+inventory.getInventory());
 
             Intent broadcastIntent = new Intent();
-            partialOrder.setUserName(currentCustomer.getUserName());
-            partialOrder.setStatus(Order.OrderStatus.Submitted.getValue());
-            currentCustomer.getOrderList().getOrderArrayList().add(partialOrder);
-            partialOrder.setOrderId(Order.orderIdCount+1);
-            partialOrder.setOrderPlacedTime(Order.getStringToday());
+            Order order= currentCustomer.getOrderList().newOrderToadd();
+            for(int i=0;i<4;i++)
+            { order.getOrderItemQuantity().set(i,partialOrder.getOrderItemQuantity().get(i));}
+            order.setUserName(currentCustomer.getUserName());
+            order.setStatus(Order.OrderStatus.Submitted.getValue());
+            order.setOrderId(Order.orderIdCount+1);
+            order.setOrderPlacedTime(Order.getStringToday());
+
             Thread d=new Thread(partialOrder);
             d.start();
             orderFromInventory(partialOrder);
