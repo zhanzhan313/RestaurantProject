@@ -31,11 +31,11 @@
         android:id="@+id/text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="55dp"
+        android:layout_marginBottom="53dp"
         android:text="Sub Total:"
         app:layout_constraintBottom_toTopOf="@+id/placeOrderbutton"
         app:layout_constraintLeft_toLeftOf="@+id/placeOrderbutton"
-        android:layout_marginLeft="97dp" />
+        android:layout_marginLeft="64dp" />
 
     <ImageView
         android:id="@+id/item_img_1"
