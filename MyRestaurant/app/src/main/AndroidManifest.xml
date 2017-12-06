@@ -44,7 +44,9 @@
 
         <activity android:name=".Controller.OrderHistory" />
         <activity android:name=".Controller.OrderDetails" />
-        <activity android:name=".Controller.ClosedActivity"></activity>
+        <activity android:name=".Controller.ClosedActivity"
+            android:label="Hungry Husky Closed">
+        </activity>
     </application>
 
 </manifest>

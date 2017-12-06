@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_signup"
     android:layout_width="match_parent"
@@ -8,8 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.myrestaurant.Controller.SignupActivity"
-    android:background="@drawable/d9">
+    tools:context="com.example.myrestaurant.Controller.SignupActivity">
 
     <TextView
         android:id="@+id/textView3"
@@ -17,14 +17,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-    android:layout_marginTop="80dp"
-    android:fontFamily="serif"
-    android:text="Sign Up"
-    android:textAllCaps="false"
-    android:textColor="@color/colorAccent"
-    android:textSize="36dp"
-    android:textStyle="normal|bold"
-    android:typeface="serif" />
+        android:layout_marginTop="80dp"
+        android:fontFamily="serif"
+        android:text="Sign Up"
+        android:textAllCaps="false"
+        android:textColor="?attr/actionModeSplitBackground"
+        android:textSize="36dp"
+        android:textStyle="normal|bold"
+        android:typeface="serif" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -61,28 +61,28 @@
         android:fontFamily="monospace" />
 
     <TextView
-        android:text="Password"
+        android:id="@+id/passwordText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/TextUsername"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/TextUsername"
         android:layout_marginTop="19dp"
-        android:id="@+id/passwordText"
-        android:textStyle="normal|bold"
-        android:textColor="@color/colorAccent" />
+        android:text="Password"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="normal|bold" />
 
     <TextView
-        android:text="Username"
+        android:id="@+id/usernameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
-        android:id="@+id/usernameText"
-        android:layout_below="@+id/textView3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textStyle="normal|bold"
-        android:textColor="@color/colorAccent" />
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="11dp"
+        android:text="Username"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="normal|bold" />
 
     <Button
         android:id="@+id/buttonSubmit"
@@ -103,12 +103,21 @@
         android:id="@+id/SignupText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Have a Account?   Click Here to Login"
-        android:textColor="@color/colorAccent"
-        android:textStyle="normal|bold"
-        android:layout_marginTop="16dp"
         android:layout_below="@+id/buttonSubmit"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Have a Account?   Click Here to Login"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="normal|bold" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/logo2"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
 

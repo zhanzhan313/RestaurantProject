@@ -57,6 +57,7 @@ private  ArrayList<String> data=new ArrayList<>();
         receiver= new MyReceiver();
         IntentFilter filter=new IntentFilter();
 
+        this.setTitle("Welcome " + BackgroundService.currentCustomer.getUserName() + "!");
         filter.addAction(".BackOrderHistory");
         this.registerReceiver(receiver,filter);
 

@@ -105,7 +105,7 @@ public class MyReceiver extends BroadcastReceiver {
             Toast toast=Toast.makeText(getApplicationContext(), "Sign Up Successful!", Toast.LENGTH_SHORT);
             toast.show();
             Intent signtoMenu =new Intent(SignupActivity.this,MenuActivity.class);
-            signtoMenu.putExtra("username", username);
+            signtoMenu.putExtra("username", getUsername);
             startActivity(signtoMenu);
 
         }

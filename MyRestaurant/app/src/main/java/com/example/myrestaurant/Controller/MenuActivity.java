@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class MenuActivity extends AppCompatActivity {
 
     static double TaxRate = 6.0/100;
-    static double Profit =3.0/100;
+    static double Profit =30.0/100;
     EditText quantityText_1, quantityText_2, quantityText_3, quantityText_4;
     ImageView buttonAdd_1, buttonAdd_2, buttonAdd_3,buttonAdd_4;
     ImageView buttonRemove_1,buttonRemove_2,buttonRemove_3,buttonRemove_4;
@@ -43,8 +43,10 @@ public class MenuActivity extends AppCompatActivity {
     private MenuActivity.MyOrderReceiver receiver = null;
     Button placeOrderbutton;
     Order order;
+    Boolean NameGotFlag = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         if(SignupActivity.instance!=null)
         {
             SignupActivity.instance.finish();
@@ -59,9 +61,13 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        userName = getIntent().getStringExtra("username");
+//        if(NameGotFlag) {
+//            userName = getIntent().getStringExtra("username");
+//            NameGotFlag = false;
+//        }
+            this.setTitle("Welcome " + BackgroundService.currentCustomer.getUserName() + "!");
+            Log.d(TAG, "Received username at MenuActivity from LoginActivity " + userName);
 
-        Log.d(TAG, "Received username at MenuActivity from LoginActivity " + userName);
 
         priceText_1 = (TextView) findViewById(R.id.item_price_1);
         priceText_2 = (TextView) findViewById(R.id.item_price_2);
@@ -78,10 +84,10 @@ public class MenuActivity extends AppCompatActivity {
         quantityText_3 = (EditText) findViewById(R.id.Viewquantity_3);
         quantityText_4 = (EditText) findViewById(R.id.Viewquantity_4);
 
-        priceText_1.setText("$"+ price_1);
-        priceText_2.setText("$"+ price_2);
-        priceText_3.setText("$"+ price_3);
-        priceText_4.setText("$"+ price_4);
+        priceText_1.setText("$"+ String.format("%.2f",price_1));
+        priceText_2.setText("$"+ String.format("%.2f",price_2));
+        priceText_3.setText("$"+ String.format("%.2f",price_3));
+        priceText_4.setText("$"+ String.format("%.2f",price_4));
 
         quantityText_1.setText(""+0);
         quantityText_2.setText(""+0);
@@ -100,9 +106,9 @@ public class MenuActivity extends AppCompatActivity {
                     totalPrice = quantity_1 * price_1 + quantity_2 * price_2 + quantity_3 * price_3 + quantity_4 * price_4;
                     tax = totalPrice * TaxRate;
                     groundTotal = tax + totalPrice;
-                    taxText.setText("$" + tax);
-                    groundTotalText.setText("$" + groundTotal);
-                    totalPriceText.setText("$" + totalPrice);
+                    taxText.setText("$" + String.format("%.2f",tax) );
+                    groundTotalText.setText("$" + String.format("%.2f",groundTotal) );
+                    totalPriceText.setText("$" + String.format("%.2f",totalPrice) );
                     totalItemsText.setText("" + totalItems);
                 }
             }
@@ -121,9 +127,9 @@ public class MenuActivity extends AppCompatActivity {
                     totalPrice = quantity_1 * price_1 + quantity_2 * price_2 + quantity_3 * price_3 + quantity_4 * price_4;
                     tax = totalPrice * TaxRate;
                     groundTotal = tax + totalPrice;
-                    taxText.setText("$" + tax);
-                    groundTotalText.setText("$" + groundTotal);
-                    totalPriceText.setText("$" + totalPrice);
+                    taxText.setText("$" + String.format("%.2f",tax));
+                    groundTotalText.setText("$" + String.format("%.2f",groundTotal));
+                    totalPriceText.setText("$" + String.format("%.2f",totalPrice));
                     totalItemsText.setText("" + totalItems);
                 }
             }
@@ -141,9 +147,9 @@ public class MenuActivity extends AppCompatActivity {
                     totalPrice = quantity_1 * price_1 + quantity_2 * price_2 + quantity_3 * price_3 + quantity_4 * price_4;
                     tax = totalPrice * TaxRate;
                     groundTotal = tax + totalPrice;
-                    taxText.setText("$" + tax);
-                    groundTotalText.setText("$" + groundTotal);
-                    totalPriceText.setText("$" + totalPrice);
+                    taxText.setText("$" + String.format("%.2f",tax));
+                    groundTotalText.setText("$" + String.format("%.2f",groundTotal));
+                    totalPriceText.setText("$" + String.format("%.2f",totalPrice));
                     totalItemsText.setText("" + totalItems);
                 }
             }
@@ -162,9 +168,9 @@ public class MenuActivity extends AppCompatActivity {
                     totalPrice = quantity_1 * price_1 + quantity_2 * price_2 + quantity_3 * price_3 + quantity_4 * price_4;
                     tax = totalPrice * TaxRate;
                     groundTotal = tax + totalPrice;
-                    taxText.setText("$" + tax);
-                    groundTotalText.setText("$" + groundTotal);
-                    totalPriceText.setText("$" + totalPrice);
+                    taxText.setText("$" + String.format("%.2f",tax));
+                    groundTotalText.setText("$" + String.format("%.2f",groundTotal));
+                    totalPriceText.setText("$" + String.format("%.2f",totalPrice));
                     totalItemsText.setText("" + totalItems);
                 }
             }
@@ -184,9 +190,9 @@ public class MenuActivity extends AppCompatActivity {
                 totalPrice = quantity_1 * price_1 + quantity_2 * price_2 + quantity_3 * price_3 + quantity_4 * price_4;
                 tax = totalPrice * TaxRate;
                 groundTotal = tax + totalPrice;
-                taxText.setText("$" + tax);
-                groundTotalText.setText("$" + groundTotal);
-                totalPriceText.setText("$" + totalPrice);
+                taxText.setText("$" + String.format("%.2f",tax));
+                groundTotalText.setText("$" + String.format("%.2f",groundTotal));
+                totalPriceText.setText("$" + String.format("%.2f",totalPrice));
                 totalItemsText.setText("" + totalItems);
             }
         });
@@ -205,9 +211,9 @@ public class MenuActivity extends AppCompatActivity {
                 totalPrice = quantity_1 * price_1 + quantity_2 * price_2 + quantity_3 * price_3 + quantity_4 * price_4;
                 tax = totalPrice * TaxRate;
                 groundTotal = tax + totalPrice;
-                taxText.setText("$" + tax);
-                groundTotalText.setText("$" + groundTotal);
-                totalPriceText.setText("$" + totalPrice);
+                taxText.setText("$" + String.format("%.2f",tax));
+                groundTotalText.setText("$" + String.format("%.2f",groundTotal));
+                totalPriceText.setText("$" + String.format("%.2f",totalPrice));
                 totalItemsText.setText("" + totalItems);
             }
         });
@@ -224,9 +230,9 @@ public class MenuActivity extends AppCompatActivity {
                 totalPrice = quantity_1 * price_1 + quantity_2 * price_2 + quantity_3 * price_3 + quantity_4 * price_4;
                 tax = totalPrice * TaxRate;
                 groundTotal = tax + totalPrice;
-                taxText.setText("$" + tax);
-                groundTotalText.setText("$" + groundTotal);
-                totalPriceText.setText("$" + totalPrice);
+                taxText.setText("$" + String.format("%.2f",tax));
+                groundTotalText.setText("$" + String.format("%.2f",groundTotal));
+                totalPriceText.setText("$" + String.format("%.2f",totalPrice));
                 totalItemsText.setText("" + totalItems);
             }
         });
@@ -245,9 +251,9 @@ public class MenuActivity extends AppCompatActivity {
                 totalPrice = quantity_1 * price_1 + quantity_2 * price_2 + quantity_3 * price_3 + quantity_4 * price_4;
                 tax = totalPrice * TaxRate;
                 groundTotal = tax + totalPrice;
-                taxText.setText("$" + tax);
-                groundTotalText.setText("$" + groundTotal);
-                totalPriceText.setText("$" + totalPrice);
+                taxText.setText("$" + String.format("%.2f",tax));
+                groundTotalText.setText("$" + String.format("%.2f",groundTotal));
+                totalPriceText.setText("$" + String.format("%.2f",totalPrice));
                 totalItemsText.setText("" + totalItems);
             }
         });
@@ -263,9 +269,9 @@ public class MenuActivity extends AppCompatActivity {
                 totalPrice = quantity_1 * price_1 + quantity_2 * price_2 + quantity_3 * price_3 + quantity_4 * price_4;
                 tax = totalPrice * TaxRate;
                 groundTotal = tax + totalPrice;
-                taxText.setText("$" + tax);
-                groundTotalText.setText("$" + groundTotal);
-                totalPriceText.setText("$" + totalPrice);
+                taxText.setText("$" + String.format("%.2f",tax));
+                groundTotalText.setText("$" + String.format("%.2f",groundTotal));
+                totalPriceText.setText("$" + String.format("%.2f",totalPrice));
                 totalItemsText.setText("" + totalItems);
             }
         });
@@ -283,9 +289,9 @@ public class MenuActivity extends AppCompatActivity {
                 totalPrice = quantity_1 * price_1 + quantity_2 * price_2 + quantity_3 * price_3 + quantity_4 * price_4;
                 tax = totalPrice * TaxRate;
                 groundTotal = tax + totalPrice;
-                taxText.setText("$" + tax);
-                groundTotalText.setText("$" + groundTotal);
-                totalPriceText.setText("$" + totalPrice);
+                taxText.setText("$" + String.format("%.2f",tax));
+                groundTotalText.setText("$" + String.format("%.2f",groundTotal));
+                totalPriceText.setText("$" + String.format("%.2f",totalPrice));
                 totalItemsText.setText("" + totalItems);
 
                 quantityText_3.setText(""+quantity_3);
@@ -301,9 +307,9 @@ public class MenuActivity extends AppCompatActivity {
                 totalPrice = quantity_1 * price_1 + quantity_2 * price_2 + quantity_3 * price_3 + quantity_4 * price_4;
                 tax = totalPrice * TaxRate;
                 groundTotal = tax + totalPrice;
-                taxText.setText("$" + tax);
-                groundTotalText.setText("$" + groundTotal);
-                totalPriceText.setText("$" + totalPrice);
+                taxText.setText("$" + String.format("%.2f",tax));
+                groundTotalText.setText("$" + String.format("%.2f",groundTotal));
+                totalPriceText.setText("$" + String.format("%.2f",totalPrice));
                 totalItemsText.setText("" + totalItems);
 
                 quantityText_4.setText(""+ quantity_4);
@@ -322,9 +328,9 @@ public class MenuActivity extends AppCompatActivity {
                 totalPrice = quantity_1 * price_1 + quantity_2 * price_2 + quantity_3 * price_3 + quantity_4 * price_4;
                 tax = totalPrice * TaxRate;
                 groundTotal = tax + totalPrice;
-                taxText.setText("$" + tax);
-                groundTotalText.setText("$" + groundTotal);
-                totalPriceText.setText("$" + totalPrice);
+                taxText.setText("$" + String.format("%.2f",tax));
+                groundTotalText.setText("$" + String.format("%.2f",groundTotal));
+                totalPriceText.setText("$" + String.format("%.2f",totalPrice));
                 totalItemsText.setText("" + totalItems);
 
                 quantityText_4.setText(""+quantity_4);
@@ -420,11 +426,12 @@ public class MenuActivity extends AppCompatActivity {
             Log.d(TAG, "In BroadcastReceiver : orderplaced: "+ test + " and estimatedtime " );
             if(test.equals("avaliable"))
             {  Log.d(TAG, "onReceive: avaliable");
-                Toast toast = Toast.makeText(MenuActivity.this, "Order Successful!  " , Toast.LENGTH_LONG);
-                LinearLayout toastView = (LinearLayout) toast.getView();
+//               Toast.makeText(getApplicationContext(), "Order Successful!  " , Toast.LENGTH_SHORT).show();
+                Toast toast = Toast.makeText(MenuActivity.this, "Order Submitted!  " , Toast.LENGTH_SHORT);
+                LinearLayout toastView = (LinearLayout) toast.getView();//获取Toast的LinearLayout，注意需要是线性布局
                 ImageView image = new ImageView(MenuActivity.this);
-                image.setImageResource(R.drawable.success);
-                toastView.addView(image);
+                image.setImageResource(R.drawable.success_1);//生成一个现实Logo的ImageView
+                toastView.addView(image);//将ImageView加载到LinearLayout上面
                 toast.show();
             }
             else if(test.equals("PartlyAvaliable"))
@@ -435,7 +442,13 @@ public class MenuActivity extends AppCompatActivity {
          }
             else if(test.equals("OrderFail"))
             {
-                Toast.makeText(getApplicationContext(), "Order fail, partially order Contains Nothing!  " , Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Order fail, partially order Contains Nothing!  " , Toast.LENGTH_SHORT).show();
+                Toast toast = Toast.makeText(MenuActivity.this, "Order Failed, Items chosen are sold out!" , Toast.LENGTH_SHORT);
+                LinearLayout toastView = (LinearLayout) toast.getView();//获取Toast的LinearLayout，注意需要是线性布局
+                ImageView image = new ImageView(MenuActivity.this);
+                image.setImageResource(R.drawable.fail);//生成一个现实Logo的ImageView
+                toastView.addView(image);//将ImageView加载到LinearLayout上面
+                toast.show();
             }
 
             quantityText_1.setText(""+0);

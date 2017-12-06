@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
@@ -8,22 +9,23 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.myrestaurant.Controller.LoginActivity"
-    android:background="@drawable/d9">
+    tools:context="com.example.myrestaurant.Controller.LoginActivity">
+    <!--android:background="@drawable/d9"-->
+
 
     <TextView
-        android:text="Login"
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"
-        android:id="@+id/textView3"
-        android:textStyle="normal|bold"
-        android:textSize="36dp"
-        android:textColor="@color/colorAccent"
         android:fontFamily="serif"
+        android:text="Login"
         android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="36dp"
+        android:textStyle="normal|bold"
         android:typeface="serif" />
 
     <EditText
@@ -61,28 +63,28 @@
         android:fontFamily="monospace" />
 
     <TextView
-        android:text="Password"
+        android:id="@+id/passwordText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/TextUsername"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/TextUsername"
         android:layout_marginTop="19dp"
-        android:id="@+id/passwordText"
-        android:textStyle="normal|bold"
-        android:textColor="@color/colorAccent" />
+        android:text="Password"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="normal|bold" />
 
     <TextView
-        android:text="Username"
+        android:id="@+id/usernameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
-        android:id="@+id/usernameText"
-        android:layout_below="@+id/textView3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textStyle="normal|bold"
-        android:textColor="@color/colorAccent" />
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="11dp"
+        android:text="Username"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="normal|bold" />
 
     <Button
         android:id="@+id/buttonLogin"
@@ -103,12 +105,21 @@
         android:id="@+id/SignupText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Customer?   Click Here to Sign Up"
-        android:textColor="@color/colorAccent"
-        android:textStyle="normal|bold"
-        android:layout_marginTop="12dp"
         android:layout_below="@+id/buttonLogin"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:text="New Customer?   Click Here to Sign Up"
+        android:textColor="?android:attr/colorEdgeEffect"
+        android:textStyle="normal|bold" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/logo1"
+        android:layout_below="@+id/SignupText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
 

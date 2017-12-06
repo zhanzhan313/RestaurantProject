@@ -76,11 +76,18 @@ public class SplashActivity extends AppCompatActivity {
         int curDateInt=Integer.parseInt(strs);
         System.out.println(strs);
 
-        int sth = 100;
-        int eth = 2400;//hour
+        int sth = 1100;
+        int eth = 1900;//hour
         if(sth<=curDateInt&&eth>=curDateInt)
         {return true;}
         else return false;
+
+    }
+
+
+    public boolean IsResturantOpen(){
+
+       return true;
 
     }
 

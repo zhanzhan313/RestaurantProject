@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private TextView signuptext;
     Button buttonLogin;
-    public static final String USER_NAME = "USERNAME";
+    public static final String USER_NAME = "username";
     private static final String TAG = "LoginActivity";
     private LoginActivity.MyReceiver receiver = null;
     private String username;
@@ -95,6 +95,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
                 Intent signtoMenu = new Intent(LoginActivity.this,MenuActivity.class);
                 Log.d(TAG, "Added username to intent and sending to Menu page");
+                signtoMenu.putExtra(USER_NAME, username);
                 startActivity(signtoMenu);
             }
             else if(result.equals("LoginFailed"))

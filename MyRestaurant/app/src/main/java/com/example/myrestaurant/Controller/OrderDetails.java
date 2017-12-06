@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -23,8 +24,9 @@ public class OrderDetails extends AppCompatActivity {
     private static final String TAG = "OrderDetails";
     private Customer customer=BackgroundService.currentCustomer;
     private Order currentorder;
-    private  TextView quantityText_1, quantityText_2, quantityText_3, quantityText_4;
+    private  TextView quantityText_1, quantityText_2, quantityText_3, quantityText_4, taxText, groundTotalText;
     private int quantity_1 = 0, quantity_2 = 0,quantity_3 =0,quantity_4 =0, totalItems=0;
+    private double totalPrice=0, groundTotal=0,tax=0;
 
     private Handler handler=new Handler() {
 
@@ -56,6 +58,7 @@ public class OrderDetails extends AppCompatActivity {
         Log.d(TAG, "onCreate: "+orderNums);
 //        Log.d(TAG, "onCreate: "+currentorder.getOrderPlacedTime());
 
+        this.setTitle("Welcome " + BackgroundService.currentCustomer.getUserName() + "!");
         quantityText_1 = (TextView) findViewById(R.id.Viewquantity_1);
         quantityText_2 = (TextView) findViewById(R.id.Viewquantity_2);
         quantityText_3 = (TextView) findViewById(R.id.Viewquantity_3);
@@ -72,17 +75,29 @@ public class OrderDetails extends AppCompatActivity {
         priceText_3 = (TextView) findViewById(R.id.Viewitem_price_3);
         priceText_4 = (TextView) findViewById(R.id.Viewitem_price_4);
 
+        taxText = (TextView) findViewById(R.id.tax);
+        groundTotalText = (TextView) findViewById(R.id.groundTotalView);
+
+        priceText_1.setText("$"+ String.format("%.2f",MenuActivity.price_1));
+        priceText_2.setText("$"+ String.format("%.2f",MenuActivity.price_2));
+        priceText_3.setText("$"+ String.format("%.2f",MenuActivity.price_3));
+        priceText_4.setText("$"+ String.format("%.2f",MenuActivity.price_4));
 
 
+//        priceText_1.setText("$"+ MenuActivity.price_1);
+//        priceText_2.setText("$"+ MenuActivity.price_2);
+//        priceText_3.setText("$"+ MenuActivity.price_3);
+//        priceText_4.setText("$"+ MenuActivity.price_4);
 
-        priceText_1.setText("$"+ MenuActivity.price_1);
-        priceText_2.setText("$"+ MenuActivity.price_2);
-        priceText_3.setText("$"+ MenuActivity.price_3);
-        priceText_4.setText("$"+ MenuActivity.price_4);
-
+        totalPrice = currentorder.getOrderTotal();
+        tax = totalPrice * MenuActivity.TaxRate;
+        groundTotal = tax + totalPrice;
         totalPriceText = (TextView) findViewById(R.id.Viewtotal_price);
-        totalPriceText.setText("$" + currentorder.getOrderTotal());
+        totalPriceText.setText("$" + String.format("%.2f",totalPrice));
         orderStatus.setText(currentorder.getStatus());
+        taxText.setText("$" + String.format("%.2f",tax));
+        groundTotalText.setText("$" +String.format("%.2f",groundTotal));
+
 
         Log.d(TAG, "Information Updated ");
         final long period = 1000;
