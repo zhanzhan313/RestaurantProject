@@ -12,30 +12,38 @@
         android:id="@+id/total_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="19dp"
         android:text="0"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
         app:layout_constraintLeft_toRightOf="@+id/text_view"
-        app:layout_constraintTop_toTopOf="@+id/text_view" />
+        app:layout_constraintTop_toTopOf="@+id/text_view"
+        android:layout_marginStart="19dp" />
 
     <TextView
         android:id="@+id/total_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0"
-        app:layout_constraintLeft_toRightOf="@+id/textView5"
         android:layout_marginLeft="5dp"
+        android:text="0"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/textView5"
         app:layout_constraintTop_toTopOf="@+id/textView5"
-        android:layout_marginTop="0dp" />
+        android:layout_marginStart="5dp" />
 
     <TextView
         android:id="@+id/text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="55dp"
+        android:layout_marginBottom="54dp"
+        android:layout_marginLeft="64dp"
         android:text="Sub Total:"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/placeOrderbutton"
         app:layout_constraintLeft_toLeftOf="@+id/placeOrderbutton"
-        android:layout_marginLeft="97dp" />
+        android:layout_marginStart="64dp" />
 
     <ImageView
         android:id="@+id/item_img_1"
@@ -46,7 +54,8 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/burger"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="16dp" />
 
     <ImageView
         android:id="@+id/item_img_2"
@@ -56,7 +65,8 @@
         android:layout_marginTop="11dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_img_1"
-        app:srcCompat="@drawable/fries" />
+        app:srcCompat="@drawable/fries"
+        android:layout_marginStart="16dp" />
 
     <ImageView
         android:id="@+id/item_img_3"
@@ -66,7 +76,8 @@
         android:layout_marginTop="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_img_2"
-        app:srcCompat="@drawable/chickens1" />
+        app:srcCompat="@drawable/chickens1"
+        android:layout_marginStart="16dp" />
 
     <ImageView
         android:id="@+id/item_img_4"
@@ -76,16 +87,16 @@
         android:layout_marginTop="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_img_3"
-        app:srcCompat="@drawable/rings" />
+        app:srcCompat="@drawable/rings"
+        android:layout_marginStart="16dp" />
 
     <TextView
         android:id="@+id/item_price_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
         android:paddingLeft="25dp"
         android:text="price"
+        android:textColor="@android:color/black"
         app:layout_constraintLeft_toLeftOf="@+id/food_name_1"
         app:layout_constraintTop_toBottomOf="@+id/food_name_1" />
 
@@ -93,10 +104,9 @@
         android:id="@+id/item_price_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
         android:paddingLeft="25dp"
         android:text="price"
+        android:textColor="@android:color/black"
         app:layout_constraintLeft_toLeftOf="@+id/food_name_2"
         app:layout_constraintTop_toBottomOf="@+id/food_name_2" />
 
@@ -106,19 +116,17 @@
         android:layout_height="wrap_content"
         android:paddingLeft="25dp"
         android:text="price"
-        android:layout_marginTop="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/food_name_3"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/food_name_3" />
+        android:textColor="@android:color/black"
+        app:layout_constraintLeft_toLeftOf="@+id/food_name_3"
+        app:layout_constraintTop_toBottomOf="@+id/food_name_3" />
 
     <TextView
         android:id="@+id/item_price_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
         android:paddingLeft="25dp"
         android:text="price"
+        android:textColor="@android:color/black"
         app:layout_constraintLeft_toLeftOf="@+id/food_name_4"
         app:layout_constraintTop_toBottomOf="@+id/food_name_4" />
 
@@ -131,7 +139,7 @@
         app:layout_constraintLeft_toRightOf="@+id/Viewquantity_1"
         android:layout_marginLeft="7dp"
         app:layout_constraintTop_toTopOf="@+id/item_remove_1"
-        android:layout_marginTop="0dp" />
+        android:layout_marginStart="7dp" />
 
     <ImageView
         android:id="@+id/item_add_2"
@@ -140,9 +148,9 @@
         android:contentDescription="@string/app_name"
         android:src="@drawable/add_1"
         app:layout_constraintTop_toTopOf="@+id/item_remove_2"
-        android:layout_marginTop="0dp"
         app:layout_constraintLeft_toRightOf="@+id/Viewquantity_2"
-        android:layout_marginLeft="7dp" />
+        android:layout_marginLeft="7dp"
+        android:layout_marginStart="7dp" />
 
     <ImageView
         android:id="@+id/item_add_3"
@@ -153,7 +161,7 @@
         app:layout_constraintLeft_toRightOf="@+id/Viewquantity_3"
         android:layout_marginLeft="7dp"
         app:layout_constraintTop_toTopOf="@+id/item_remove_3"
-        android:layout_marginTop="0dp" />
+        android:layout_marginStart="7dp" />
 
     <ImageView
         android:id="@+id/item_add_4"
@@ -164,7 +172,7 @@
         app:layout_constraintLeft_toRightOf="@+id/Viewquantity_4"
         android:layout_marginLeft="7dp"
         app:layout_constraintTop_toTopOf="@+id/item_remove_4"
-        android:layout_marginTop="0dp" />
+        android:layout_marginStart="7dp" />
 
     <TextView
         android:id="@+id/food_name_1"
@@ -172,11 +180,10 @@
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:text="Burgers"
+        android:textColor="@android:color/black"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@+id/item_img_1"
-        android:layout_marginTop="0dp"
         app:layout_constraintLeft_toRightOf="@+id/item_img_1"
-        android:layout_marginLeft="0dp" />
+        app:layout_constraintTop_toTopOf="@+id/item_img_1" />
 
 
     <TextView
@@ -185,11 +192,10 @@
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:text="French Fries"
+        android:textColor="@android:color/black"
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/item_img_2"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintTop_toTopOf="@+id/item_img_2"
-        android:layout_marginTop="0dp" />
+        app:layout_constraintTop_toTopOf="@+id/item_img_2" />
 
     <TextView
         android:id="@+id/food_name_3"
@@ -197,11 +203,10 @@
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:text="Chickens"
+        android:textColor="@android:color/black"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@+id/item_img_3"
-        android:layout_marginTop="0dp"
         app:layout_constraintLeft_toRightOf="@+id/item_img_3"
-        android:layout_marginLeft="0dp" />
+        app:layout_constraintTop_toTopOf="@+id/item_img_3" />
 
     <TextView
         android:id="@+id/food_name_4"
@@ -209,11 +214,10 @@
         android:layout_height="wrap_content"
         android:paddingLeft="20dp"
         android:text="Onion Rings"
+        android:textColor="@android:color/black"
         android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@+id/item_img_4"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintTop_toTopOf="@+id/item_img_4"
-        android:layout_marginTop="0dp" />
+        app:layout_constraintTop_toTopOf="@+id/item_img_4" />
 
     <ImageView
         android:id="@+id/item_remove_1"
@@ -224,7 +228,8 @@
         app:layout_constraintLeft_toRightOf="@+id/item_img_1"
         android:layout_marginLeft="136dp"
         app:layout_constraintTop_toTopOf="@+id/item_img_1"
-        android:layout_marginTop="17dp" />
+        android:layout_marginTop="17dp"
+        android:layout_marginStart="136dp" />
 
 
     <ImageView
@@ -236,7 +241,8 @@
         app:layout_constraintLeft_toRightOf="@+id/item_img_2"
         android:layout_marginLeft="136dp"
         app:layout_constraintTop_toTopOf="@+id/item_img_2"
-        android:layout_marginTop="17dp" />
+        android:layout_marginTop="17dp"
+        android:layout_marginStart="136dp" />
 
     <ImageView
         android:id="@+id/item_remove_3"
@@ -247,7 +253,8 @@
         app:layout_constraintLeft_toRightOf="@+id/item_img_3"
         android:layout_marginLeft="136dp"
         app:layout_constraintTop_toTopOf="@+id/item_img_3"
-        android:layout_marginTop="17dp" />
+        android:layout_marginTop="17dp"
+        android:layout_marginStart="136dp" />
 
     <ImageView
         android:id="@+id/item_remove_4"
@@ -258,7 +265,8 @@
         app:layout_constraintLeft_toRightOf="@+id/item_img_4"
         android:layout_marginLeft="136dp"
         app:layout_constraintTop_toTopOf="@+id/item_img_4"
-        android:layout_marginTop="17dp" />
+        android:layout_marginTop="17dp"
+        android:layout_marginStart="136dp" />
 
     <EditText
         android:id="@+id/Viewquantity_1"
@@ -279,7 +287,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/item_remove_1"
         android:layout_marginBottom="7dp"
         app:layout_constraintTop_toTopOf="@+id/item_remove_1"
-        android:layout_marginTop="1dp" />
+        android:layout_marginTop="1dp"
+        android:layout_marginStart="10dp" />
 
 
 
@@ -302,7 +311,8 @@
         app:layout_constraintTop_toTopOf="@+id/item_remove_2"
         android:layout_marginTop="7dp"
         app:layout_constraintBottom_toBottomOf="@+id/item_remove_2"
-        android:layout_marginBottom="1dp"/>
+        android:layout_marginBottom="1dp"
+        android:layout_marginStart="10dp" />
 
     <EditText
         android:id="@+id/Viewquantity_3"
@@ -323,7 +333,8 @@
         app:layout_constraintTop_toTopOf="@+id/item_remove_3"
         android:layout_marginTop="7dp"
         app:layout_constraintBottom_toBottomOf="@+id/item_remove_3"
-        android:layout_marginBottom="1dp" />
+        android:layout_marginBottom="1dp"
+        android:layout_marginStart="10dp" />
 
     <EditText
         android:id="@+id/Viewquantity_4"
@@ -344,27 +355,29 @@
         app:layout_constraintTop_toTopOf="@+id/item_remove_4"
         android:layout_marginTop="7dp"
         app:layout_constraintBottom_toBottomOf="@+id/item_remove_4"
-        android:layout_marginBottom="1dp" />
+        android:layout_marginBottom="1dp"
+        android:layout_marginStart="10dp" />
 
     <Button
         android:id="@+id/placeOrderbutton"
         android:layout_width="187dp"
-        android:layout_height="39dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="36dp"
         android:layout_marginRight="96dp"
         android:background="@color/colorPrimary"
         android:text="PLACE ORDER"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginEnd="96dp" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="-4dp"
         android:text="Total Items:"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/text_view"
         app:layout_constraintLeft_toLeftOf="@+id/text_view" />
 
@@ -372,36 +385,38 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:text="TAX:"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/text_view"
-        app:layout_constraintTop_toBottomOf="@+id/text_view" />
-
-    <TextView
-        android:id="@+id/taxView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:text="0"
-        app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="@+id/textView6" />
+        android:layout_marginTop="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/text_view"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="@+id/text_view" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Total:"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        tools:layout_editor_absoluteX="192dp" />
 
     <TextView
         android:id="@+id/groundTotal_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
         android:text="0"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView7"
-        app:layout_constraintTop_toTopOf="@+id/textView7" />
+        app:layout_constraintLeft_toRightOf="@+id/textView7"
+        android:layout_marginLeft="54dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <ImageView
         android:id="@+id/imageView5"
@@ -411,5 +426,17 @@
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/item_img_4"
         tools:layout_editor_absoluteX="8dp" />
+
+    <TextView
+        android:id="@+id/taxView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="61dp"
+        android:layout_marginTop="0dp"
+        android:text="0"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/textView6"
+        app:layout_constraintTop_toTopOf="@+id/textView6" />
 
 </android.support.constraint.ConstraintLayout>

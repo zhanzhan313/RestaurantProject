@@ -90,13 +90,13 @@ public class SplashActivity extends AppCompatActivity {
 
     private boolean ifInOpenHour() {
         SimpleDateFormat formatters = new SimpleDateFormat("HHmm");
-        Date curDates = new Date(System.currentTimeMillis());// 获取当前时间
+        Date curDates = new Date(System.currentTimeMillis());// get current time
         String strs = formatters.format(curDates);
         int curDateInt = Integer.parseInt(strs);
         System.out.println(strs);
 
-        int sth = 100;
-        int eth = 2400;//hour
+        int sth = 1100;
+        int eth = 2100;//close time
         if (sth <= curDateInt && eth >= curDateInt) {
             return true;
         } else return false;
