@@ -1,6 +1,7 @@
 package com.example.myrestaurant.Controller;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,7 +14,12 @@ import com.example.myrestaurant.Model.CustomerList;
 import com.example.myrestaurant.Model.Inventory;
 import com.example.myrestaurant.Model.Order;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Objects;
+import java.util.Timer;
 
 
 public class BackgroundService extends Service {
@@ -26,10 +32,60 @@ public class BackgroundService extends Service {
     public static final String actiontodo = "";
 
 
+    public void createInventoryDatabase(){
+        FileOutputStream out = null;
+        BufferedWriter writer = null;
+        try {
+            out = openFileOutput("SupplierInventory.txt", Context.MODE_PRIVATE);
+            writer = new BufferedWriter(new OutputStreamWriter(out));
+
+            writer.write("Burger 500" + "\n" + "Chicken 500" + "\n" + "FrenchFries 500" +  "\n" + "OnionRings 500");
+            writer.flush();
+
+            Log.d(TAG, "Done adding items to Supplier database");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (writer != null) {
+                    writer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
     @Override
     public void onCreate() {
 
         Log.d(TAG, "onCreate"+inventory.getInventory());
+
+        Timer timer;
+        timer = new Timer();
+        /* Create Supplier Database */
+        createInventoryDatabase();
+        inventory.setmContext(BackgroundService.this);
+        Log.d(TAG, "Creating new thread for inventory");
+        Thread inventoryThread = new Thread(inventory);
+        inventory.setFoodItemCountNeeded(50);
+        Log.d(TAG, "Starting thread");
+        inventoryThread.start();
+
+/*
+        timer = new Timer();
+        timer.scheduleAtFixedRate(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        Thread inventoryThread = new Thread(inventory);
+                        inventoryThread.start();
+                    }
+                },
+                2000, (30 * 60 * 1000)
+        );*/
     }
     @Override
     public IBinder onBind(Intent intent) {
